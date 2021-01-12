@@ -6,6 +6,7 @@ AsyncSnapshot<T> useQuery<T>(Future<T> Function() create,
     [List<String?>? deps]) {
   deps ??= [];
   final future = useMemoized(create, deps);
+  // TODO: Add error handling for the future
   return useFuture(future);
 }
 

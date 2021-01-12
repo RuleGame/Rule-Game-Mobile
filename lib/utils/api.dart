@@ -83,8 +83,8 @@ Future<String> getApi(String route, {ReqQuery? query}) async {
   return response.body;
 }
 
-Future<Map<String, String>> getApiJson(String route, {ReqQuery? query}) async {
-  Map<String, String> json = jsonDecode(await getApi(route, query: query));
+Future<Map<String, dynamic>> getApiJson(String route, {ReqQuery? query}) async {
+  Map<String, dynamic> json = jsonDecode(await getApi(route, query: query));
   return json;
 }
 
@@ -101,9 +101,9 @@ Future<String> postApi(String route, {ReqQuery? query, ReqBody? body}) async {
   return response.body;
 }
 
-Future<dynamic> postApiJson(String route,
+Future<Map<String, dynamic>> postApiJson(String route,
     {ReqQuery? query, ReqBody? body}) async {
-  Map<String, String> json =
+  Map<String, dynamic> json =
       jsonDecode(await postApi(route, query: query, body: body));
   return json;
 }
