@@ -44,10 +44,10 @@ class ErrorMsg {
 }
 
 class TransitionMap {
-  final String? main;
-  final String? bonus;
-  final String? next;
-  final String? end;
+  final String main;
+  final String bonus;
+  final String next;
+  final String end;
 
   TransitionMap.fromJson(Map<String, dynamic> json)
       : main = json['MAIN'],
@@ -59,7 +59,7 @@ class TransitionMap {
 class BoardObject {
   final int buckets;
   final String color;
-  final int? dropped;
+  final int dropped;
   final int id;
   final String shape;
   final int x;
@@ -80,7 +80,7 @@ class Board {
   final int id;
   final List<BoardObject> value;
 
-  Board({required this.longId, required this.id, required this.value});
+  Board({this.longId, this.id, this.value});
 
   factory Board.fromJson(Map<String, dynamic> json) => Board(
         longId: json['longId'],
@@ -103,15 +103,11 @@ class RulesSrc {
 
 class TranscriptElement {
   final int pos;
-  final int? bucketNo;
+  final int bucketNo;
   final int code;
   final int pieceId;
 
-  TranscriptElement(
-      {required this.pos,
-      this.bucketNo,
-      required this.code,
-      required this.pieceId});
+  TranscriptElement({this.pos, this.bucketNo, this.code, this.pieceId});
 
   factory TranscriptElement.fromJson(Map<String, dynamic> json) =>
       TranscriptElement(
@@ -137,7 +133,7 @@ class Display {
   final List<TranscriptElement> transcript;
   final RulesSrc rulesSrc;
   final int ruleLineNo;
-  final int? movesLeftToStayInBonus;
+  final int movesLeftToStayInBonus;
   final TransitionMap transitionMap;
 
   Display.fromJson(Map<String, dynamic> json)
@@ -184,7 +180,7 @@ class Para {
   final int stackMemoryDepth;
   final int maxBoards;
   final int activateBonusAt;
-  final int? giveUpAt;
+  final int giveUpAt;
 
   Para.fromJson(Map<String, dynamic> json)
       : clearingThreshold = json['clearing_threshold'],
@@ -224,7 +220,7 @@ class DummyReqQuery implements ReqQuery {
 class GetShapeReqQuery implements ReqQuery {
   final String shape;
 
-  GetShapeReqQuery({required this.shape});
+  GetShapeReqQuery({this.shape});
 
   @override
   Map<String, dynamic> toMap() => {'shape': shape};
@@ -249,7 +245,7 @@ class DummyResBody implements ResBody {
 
 class GetColorMapResBody implements ResBody {
   final String errmsg;
-  final bool? error;
+  final bool error;
   final Map<String, List<int>> colorToRgbMap;
 
   GetColorMapResBody.fromJson(Map<String, dynamic> json)
@@ -267,8 +263,7 @@ class PostWriteFileReqBody implements ReqBody {
   final String file;
   final String data;
 
-  PostWriteFileReqBody(
-      {required this.dir, required this.file, required this.data});
+  PostWriteFileReqBody({this.dir, this.file, this.data});
 
   @override
   Map<String, dynamic> toMap() => {
@@ -284,14 +279,14 @@ class PostPlayerResBody implements ResBody {
   final bool newlyRegistered;
   final String trialListId;
   final List<Para> trialList;
-  final String? completionCode;
+  final String completionCode;
 
   PostPlayerResBody({
-    required this.errmsg,
-    required this.error,
-    required this.newlyRegistered,
-    required this.trialListId,
-    required this.trialList,
+    this.errmsg,
+    this.error,
+    this.newlyRegistered,
+    this.trialListId,
+    this.trialList,
     this.completionCode,
   });
 
@@ -306,9 +301,9 @@ class PostPlayerResBody implements ResBody {
 
 class PostPlayerReqBody implements ReqBody {
   final String playerId;
-  final String? exp;
+  final String exp;
 
-  PostPlayerReqBody({required this.playerId, this.exp});
+  PostPlayerReqBody({this.playerId, this.exp});
 
   @override
   Map<String, dynamic> toMap() => {
@@ -318,13 +313,13 @@ class PostPlayerReqBody implements ReqBody {
 }
 
 class PostMostRecentEpisodeResBody implements ResBody {
-  final String? errmsg;
+  final String errmsg;
   final bool error;
   final bool alreadyFinished;
   final Display display;
   final String episodeId;
   final Para para;
-  final String? completionCode;
+  final String completionCode;
 
   PostMostRecentEpisodeResBody.fromJson(Map<String, dynamic> json)
       : errmsg = json['errmsg'],
@@ -339,7 +334,7 @@ class PostMostRecentEpisodeResBody implements ResBody {
 class PostMostRecentEpisodeReqBody implements ReqBody {
   final String playerId;
 
-  PostMostRecentEpisodeReqBody({required this.playerId});
+  PostMostRecentEpisodeReqBody({this.playerId});
 
   @override
   Map<String, dynamic> toMap() => {
@@ -348,13 +343,13 @@ class PostMostRecentEpisodeReqBody implements ReqBody {
 }
 
 class PostNewEpisodeResBody implements ResBody {
-  final String? errmsg;
+  final String errmsg;
   final bool error;
   final bool alreadyFinished;
   final Display display;
   final String episodeId;
   final Para para;
-  final String? completionCode;
+  final String completionCode;
 
   PostNewEpisodeResBody.fromJson(Map<String, dynamic> json)
       : errmsg = json['errmsg'],
@@ -369,7 +364,7 @@ class PostNewEpisodeResBody implements ResBody {
 class PostNewEpisodeReqBody implements ReqBody {
   final String playerId;
 
-  PostNewEpisodeReqBody({required this.playerId});
+  PostNewEpisodeReqBody({this.playerId});
 
   @override
   Map<String, dynamic> toMap() => {
@@ -384,7 +379,7 @@ class GetDisplayResBody extends Display implements ResBody {
 class GetDisplayReqQuery implements ReqQuery {
   final String episode;
 
-  GetDisplayReqQuery({required this.episode});
+  GetDisplayReqQuery({this.episode});
 
   @override
   Map<String, dynamic> toMap() => {'episode': episode};
@@ -418,12 +413,12 @@ class PostMoveReqBody implements ReqBody {
   final int cnt;
 
   PostMoveReqBody({
-    required this.episode,
-    required this.x,
-    required this.y,
-    required this.bx,
-    required this.by,
-    required this.cnt,
+    this.episode,
+    this.x,
+    this.y,
+    this.bx,
+    this.by,
+    this.cnt,
   });
 
   @override
@@ -463,10 +458,10 @@ class PostPickReqBody implements ReqBody {
   final int cnt;
 
   PostPickReqBody({
-    required this.episode,
-    required this.x,
-    required this.y,
-    required this.cnt,
+    this.episode,
+    this.x,
+    this.y,
+    this.cnt,
   });
 
   @override
@@ -490,7 +485,7 @@ class PostActivateBonusResBody implements ResBody {
 class PostActivateBonusReqBody implements ReqBody {
   final String playerId;
 
-  PostActivateBonusReqBody({required this.playerId});
+  PostActivateBonusReqBody({this.playerId});
 
   @override
   Map<String, dynamic> toMap() => {
@@ -511,7 +506,7 @@ class PostGiveUpReqBody implements ReqBody {
   final String playerId;
   final int seriesNo;
 
-  PostGiveUpReqBody({required this.playerId, required this.seriesNo});
+  PostGiveUpReqBody({this.playerId, this.seriesNo});
 
   @override
   Map<String, dynamic> toMap() => {
@@ -539,9 +534,9 @@ class PostGuessReqBody implements ReqBody {
   final int confidence;
 
   PostGuessReqBody({
-    required this.episode,
-    required this.data,
-    required this.confidence,
+    this.episode,
+    this.data,
+    this.confidence,
   });
 
   @override

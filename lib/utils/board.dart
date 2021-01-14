@@ -4,7 +4,7 @@ class BoardMap {
   final int bx;
   final int by;
 
-  BoardMap({required this.bx, required this.by});
+  BoardMap({this.bx, this.by});
 }
 
 final boardPositionToBxBy = {

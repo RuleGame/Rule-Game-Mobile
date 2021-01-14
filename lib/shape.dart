@@ -5,9 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rulegamemobile/utils/hooks.dart';
 
 class Shape extends HookWidget {
-  Shape({required this.shape, this.color});
+  Shape({this.shape, this.color});
 
-  final String? color;
+  final String color;
   final String shape;
 
   @override

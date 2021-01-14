@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:rulegamemobile/board.dart';
@@ -46,7 +47,7 @@ class GamePage extends HookWidget {
 }
 
 class MyHomePage extends HookWidget {
-  MyHomePage({required Key key, required this.title}) : super(key: key);
+  MyHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
 

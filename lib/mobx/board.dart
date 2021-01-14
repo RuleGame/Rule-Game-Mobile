@@ -9,7 +9,7 @@ import 'package:rulegamemobile/utils/page.dart';
 part 'board.g.dart';
 
 // This is the class used by rest of your codebase
-class Board = _Board with _$Board;
+class BoardStore = _Board with _$Board;
 
 // The store-class
 abstract class _Board with Store {
@@ -61,7 +61,7 @@ abstract class _Board with Store {
   RulesSrc rulesSrc = RulesSrc();
 
   @observable
-  int? ruleLineNo;
+  int ruleLineNo;
 
   @observable
   int numMovesMade = 0;
@@ -73,10 +73,10 @@ abstract class _Board with Store {
   int stackMemoryDepth = 0;
 
   @observable
-  int? movesLeftToStayInBonus;
+  int movesLeftToStayInBonus;
 
   @observable
-  TransitionMap? transitionMap;
+  TransitionMap transitionMap;
 
   @observable
   String episodeId = 'N/A';
@@ -85,7 +85,7 @@ abstract class _Board with Store {
   double maxPoints = 0;
 
   @observable
-  int? giveUpAt;
+  int giveUpAt;
 
   @observable
   String feedbackSwitches = FeedbackSwitches.FIXED;
@@ -148,7 +148,7 @@ abstract class _Board with Store {
     giveUpAt = para.giveUpAt;
     isPaused = false;
 
-    refreshBoard();
+    await refreshBoard();
 
     goToPage(Page.TRIALS);
   }
@@ -193,20 +193,20 @@ abstract class _Board with Store {
           episode: episodeId,
           x: boardObject.x,
           y: boardObject.y,
-          bx: boardPositionToBxBy[bucket]!.bx,
-          by: boardPositionToBxBy[bucket]!.by,
+          bx: boardPositionToBxBy[bucket].bx,
+          by: boardPositionToBxBy[bucket].by,
           cnt: numMovesMade,
         ),
       );
 
       if (postMoveResBody.code == Code.ACCEPT) {
-        validMove(boardObjectId, bucket);
+        await validMove(boardObjectId, bucket);
       } else if (postMoveResBody.code == Code.DENY) {
-        invalidMove(boardObjectId, bucket);
+        await invalidMove(boardObjectId, bucket);
       }
 
       await Future.delayed(const Duration(milliseconds: FEEDBACK_DURATION));
-      refreshBoard();
+      await refreshBoard();
     }
   }
 

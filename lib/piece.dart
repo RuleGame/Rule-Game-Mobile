@@ -6,9 +6,9 @@ import 'package:rulegamemobile/shape.dart';
 class Piece extends HookWidget {
   final String shape;
 
-  final String? color;
+  final String color;
 
-  Piece({required this.shape, this.color});
+  Piece({this.shape, this.color});
 
   @override
   Widget build(BuildContext context) {
