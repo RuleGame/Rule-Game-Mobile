@@ -36,8 +36,10 @@ Future<PostNewEpisodeResBody> postNewEpisodeApi(
       await postApiJson('/game-data/GameService2/newEpisode', body: body),
     );
 
-Future<GetDisplayResBody> getDisplayApi() async => GetDisplayResBody.fromJson(
-      await getApiJson('/game-data/GameService2/display'),
+Future<GetDisplayResBody> getDisplayApi(
+        {required GetDisplayReqQuery query}) async =>
+    GetDisplayResBody.fromJson(
+      await getApiJson('/game-data/GameService2/display', query: query),
     );
 
 Future<PostMoveResBody> postMoveApi({required PostMoveReqBody body}) async =>

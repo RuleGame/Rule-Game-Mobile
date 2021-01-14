@@ -93,7 +93,7 @@ class RulesSrc {
   final List<int> orders;
   final List<String> rows;
 
-  RulesSrc({required this.orders, required this.rows});
+  RulesSrc({this.orders = const [], this.rows = const []});
 
   factory RulesSrc.fromJson(Map<String, dynamic> json) => RulesSrc(
         orders: json['orders'],
@@ -101,19 +101,20 @@ class RulesSrc {
       );
 }
 
-class Transcript {
+class TranscriptElement {
   final int pos;
   final int? bucketNo;
   final int code;
   final int pieceId;
 
-  Transcript(
+  TranscriptElement(
       {required this.pos,
       this.bucketNo,
       required this.code,
       required this.pieceId});
 
-  factory Transcript.fromJson(Map<String, dynamic> json) => Transcript(
+  factory TranscriptElement.fromJson(Map<String, dynamic> json) =>
+      TranscriptElement(
         pos: json['pos'],
         bucketNo: json['bucketNo'],
         code: json['code'],
@@ -133,7 +134,7 @@ class Display {
   final int seriesNo;
   final int totalBoardsPredicted;
   final double totalRewardEarned;
-  final Transcript transcript;
+  final List<TranscriptElement> transcript;
   final RulesSrc rulesSrc;
   final int ruleLineNo;
   final int? movesLeftToStayInBonus;
@@ -151,7 +152,9 @@ class Display {
         seriesNo = json['seriesNo'],
         totalBoardsPredicted = json['totalBoardsPredicted'],
         totalRewardEarned = json['totalRewardEarned'],
-        transcript = Transcript.fromJson(json['transcript']),
+        transcript = (json['transcript'] as List<Map<String, dynamic>>)
+            .map((m) => TranscriptElement.fromJson(m))
+            .toList(),
         rulesSrc = RulesSrc.fromJson(json['rulesSrc']),
         ruleLineNo = json['ruleLineNo'],
         movesLeftToStayInBonus = json['movesLeftToStayInBonus'],
@@ -160,7 +163,7 @@ class Display {
 
 class Para {
   final int clearingThreshold;
-  final int maxPoints;
+  final double maxPoints;
   final int b;
   final int minPoints;
   final int maxColors;

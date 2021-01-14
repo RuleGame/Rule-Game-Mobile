@@ -43,23 +43,23 @@ class Board extends HookWidget {
               child: DragTarget(
                 onWillAccept: (data) => true,
                 builder: (context, List<Object?> candidateData, rejectedData) =>
-                    Shape(shape: SepecialShape.BUCKET),
+                    Shape(shape: SpecialShape.BUCKET),
               ),
               rowStart: 0,
               columnStart: 0,
             ),
             GridPlacement(
-              child: Shape(shape: SepecialShape.BUCKET),
+              child: Shape(shape: SpecialShape.BUCKET),
               rowStart: 2,
               columnStart: 2,
             ),
             GridPlacement(
-              child: Shape(shape: SepecialShape.BUCKET),
+              child: Shape(shape: SpecialShape.BUCKET),
               rowStart: 0,
               columnStart: 2,
             ),
             GridPlacement(
-              child: Shape(shape: SepecialShape.BUCKET),
+              child: Shape(shape: SpecialShape.BUCKET),
               rowStart: 2,
               columnStart: 0,
             ),
