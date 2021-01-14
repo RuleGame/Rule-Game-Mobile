@@ -9,10 +9,10 @@ import 'package:rulegamemobile/utils/page.dart';
 part 'board.g.dart';
 
 // This is the class used by rest of your codebase
-class BoardStore = _Board with _$Board;
+class BoardStore = _BoardStore with _$BoardStore;
 
 // The store-class
-abstract class _Board with Store {
+abstract class _BoardStore with Store {
   @observable
   Map<int, BoardObject> board = {};
 
@@ -91,27 +91,15 @@ abstract class _Board with Store {
   String feedbackSwitches = FeedbackSwitches.FIXED;
 
   @observable
-  Page page = PAGE_ORDER[0];
-
-  @observable
-  int pageIndex = 0;
+  Page page;
 
   // TODO: Implement logic to generate a random playerId
   @observable
   String playerId = 'test-flutter';
 
   @action
-  void nextPage() {
-    page = PAGE_ORDER[pageIndex++];
-  }
-
-  @action
   void goToPage(Page page) {
     this.page = page;
-    pageIndex = PAGE_ORDER.indexOf(page);
-    if (pageIndex == -1) {
-      throw Exception('Page $page is not valid');
-    }
   }
 
   @action
@@ -127,34 +115,49 @@ abstract class _Board with Store {
         postMostRecentEpisodeResBody.errmsg ==
             ErrorMsg.FAILED_TO_FIND_ANY_EPISODE;
 
-    var alreadyFinished = postMostRecentEpisodeResBody.alreadyFinished;
-    var episodeId = postMostRecentEpisodeResBody.episodeId;
-    var para = postMostRecentEpisodeResBody.para;
+    goToPage(Page.TRIALS);
 
     if (noEpisodeStarted) {
       final postNewEpisodeResBody = await postNewEpisodeApi(
           body: PostNewEpisodeReqBody(playerId: playerId));
-      alreadyFinished = postNewEpisodeResBody.alreadyFinished;
       episodeId = postNewEpisodeResBody.episodeId;
-      para = postNewEpisodeResBody.para;
+      await newEpisode();
+    } else {
+      await updateBoard();
     }
-
-    showGridMemoryOrder = para.gridMemoryShowOrder;
-    stackMemoryDepth = para.stackMemoryDepth;
-    showStackMemoryOrder = para.stackMemoryShowOrder;
-    this.episodeId = episodeId;
-    maxPoints = para.maxPoints;
-    feedbackSwitches = para.feedbackSwitches;
-    giveUpAt = para.giveUpAt;
-    isPaused = false;
-
-    await refreshBoard();
-
-    goToPage(Page.TRIALS);
   }
 
   @action
-  Future<void> refreshBoard() async {
+  Future<void> newEpisode() async {
+    final postNewEpisodeResBody = await postNewEpisodeApi(
+        body: PostNewEpisodeReqBody(playerId: playerId));
+
+    if (postNewEpisodeResBody.alreadyFinished) {
+      goToPage(Page.DEMOGRAPHICS_INSTRUCTIONS);
+    } else {
+      await updateEpisode(
+        postNewEpisodeResBody.para,
+        postNewEpisodeResBody.episodeId,
+      );
+      await updateBoard();
+      goToPage(Page.TRIALS);
+    }
+    isPaused = false;
+  }
+
+  @action
+  Future<void> updateEpisode(Para para, String episodeId) async {
+    showGridMemoryOrder = para.gridMemoryShowOrder;
+    stackMemoryDepth = para.stackMemoryDepth;
+    showStackMemoryOrder = para.stackMemoryShowOrder;
+    episodeId = episodeId;
+    maxPoints = para.maxPoints;
+    feedbackSwitches = para.feedbackSwitches;
+    giveUpAt = para.giveUpAt;
+  }
+
+  @action
+  Future<void> updateBoard() async {
     final getDisplayResBody =
         await getDisplayApi(query: GetDisplayReqQuery(episode: episodeId));
     board = {
@@ -187,52 +190,98 @@ abstract class _Board with Store {
   @action
   Future<void> move(int boardObjectId, int bucket) async {
     final boardObject = board[boardObjectId];
-    if (boardObject != null) {
-      final postMoveResBody = await postMoveApi(
-        body: PostMoveReqBody(
-          episode: episodeId,
-          x: boardObject.x,
-          y: boardObject.y,
-          bx: boardPositionToBxBy[bucket].bx,
-          by: boardPositionToBxBy[bucket].by,
-          cnt: numMovesMade,
-        ),
-      );
+    final postMoveResBody = await postMoveApi(
+      body: PostMoveReqBody(
+        episode: episodeId,
+        x: boardObject.x,
+        y: boardObject.y,
+        bx: boardPositionToBxBy[bucket].bx,
+        by: boardPositionToBxBy[bucket].by,
+        cnt: numMovesMade,
+      ),
+    );
 
-      if (postMoveResBody.code == Code.ACCEPT) {
-        await validMove(boardObjectId, bucket);
-      } else if (postMoveResBody.code == Code.DENY) {
-        await invalidMove(boardObjectId, bucket);
-      }
-
-      await Future.delayed(const Duration(milliseconds: FEEDBACK_DURATION));
-      await refreshBoard();
+    if (postMoveResBody.code == Code.ACCEPT) {
+      isPaused = true;
+      bucketShapes[bucket] = SpecialShape.HAPPY;
+    } else if (postMoveResBody.code == Code.DENY) {
+      isPaused = true;
+      bucketShapes[bucket] = SpecialShape.UNHAPPY;
     }
+
+    await Future.delayed(const Duration(milliseconds: FEEDBACK_DURATION));
+    await updateBoard();
   }
 
   @action
-  Future<void> giveUp() async {}
+  Future<void> giveUp() async {
+    await postGiveUpBonusApi(
+      body: PostGiveUpReqBody(playerId: playerId, seriesNo: seriesNo),
+    );
 
-  @action
-  Future<void> guess() async {}
-
-  @action
-  Future<void> skipGuess() async {}
-
-  @action
-  Future<void> loadNextBonus() async {}
-
-  @action
-  Future<void> pick() async {}
-
-  @action
-  Future<void> validMove(int boardObjectId, int bucket) async {
-    isPaused = true;
-//    bucketShapes.
+    await updateBoard();
   }
 
   @action
-  Future<void> invalidMove(int boardObjectId, int bucket) async {
-    isPaused = true;
+  Future<void> guess(String data, int confidence) async {
+    await postGuessApi(
+      body: PostGuessReqBody(
+        episode: episodeId,
+        data: data,
+        confidence: confidence,
+      ),
+    );
+
+    await newEpisode();
+  }
+
+  @action
+  Future<void> skipGuess() async {
+    await newEpisode();
+  }
+
+  @action
+  Future<void> loadNextBonus() async {
+    await newEpisode();
+  }
+
+  @action
+  Future<void> pick(int boardObjectId) async {
+    final boardObject = board[boardObjectId];
+    await postPickApi(
+      body: PostPickReqBody(
+        episode: episodeId,
+        x: boardObject.x,
+        y: boardObject.y,
+        cnt: numMovesMade,
+      ),
+    );
+
+    await updateBoard();
+  }
+
+  @action
+  void setIsInBonus(bool isInBonus) {
+    this.isInBonus = isInBonus;
+  }
+
+  @action
+  Future<void> recordDemographics(String demographics) async {
+    await postWriteFileApi(
+      body: PostWriteFileReqBody(
+        dir: DEMOGRAPHICS_DIR,
+        file: '$playerId.csv',
+        data: demographics,
+      ),
+    );
+
+    goToPage(Page.DEBRIEFING);
+  }
+
+  @action
+  Future<void> activateBonus(String playerId) async {
+    await postActivateBonusApi(
+      body: PostActivateBonusReqBody(playerId: playerId),
+    );
   }
 }

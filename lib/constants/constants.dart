@@ -10,3 +10,5 @@ const ROWS = 8;
 const COLS = 8;
 
 const FEEDBACK_DURATION = 1000;
+
+const DEMOGRAPHICS_DIR = 'demographics';

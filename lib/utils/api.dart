@@ -50,17 +50,17 @@ Future<PostPickResBody> postPickApi({PostPickReqBody body}) async =>
     );
 
 Future<PostActivateBonusResBody> postActivateBonusApi(
-        {PostPickReqBody body}) async =>
+        {PostActivateBonusReqBody body}) async =>
     PostActivateBonusResBody.fromJson(
       await postApiJson('/game-data/GameService2/activateBonus', body: body),
     );
 
-Future<PostGiveUpResBody> PostGiveUpBonusApi({PostGiveUpReqBody body}) async =>
+Future<PostGiveUpResBody> postGiveUpBonusApi({PostGiveUpReqBody body}) async =>
     PostGiveUpResBody.fromJson(
       await postApiJson('/game-data/GameService2/giveUp', body: body),
     );
 
-Future<PostGuessResBody> PostGuessApi({PostGuessReqBody body}) async =>
+Future<PostGuessResBody> postGuessApi({PostGuessReqBody body}) async =>
     PostGuessResBody.fromJson(
       await postApiJson('/game-data/GameService2/guess', body: body),
     );

@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+
 part of 'board.dart';
 
 // **************************************************************************
@@ -7,8 +8,8 @@ part of 'board.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
-mixin _$Board on _Board, Store {
-  final _$boardAtom = Atom(name: '_Board.board');
+mixin _$BoardStore on _BoardStore, Store {
+  final _$boardAtom = Atom(name: '_BoardStore.board');
 
   @override
   Map<int, BoardObject> get board {
@@ -23,7 +24,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$isInBonusAtom = Atom(name: '_Board.isInBonus');
+  final _$isInBonusAtom = Atom(name: '_BoardStore.isInBonus');
 
   @override
   bool get isInBonus {
@@ -38,7 +39,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$bonusEpisodeNoAtom = Atom(name: '_Board.bonusEpisodeNo');
+  final _$bonusEpisodeNoAtom = Atom(name: '_BoardStore.bonusEpisodeNo');
 
   @override
   int get bonusEpisodeNo {
@@ -53,7 +54,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$canActivateBonusAtom = Atom(name: '_Board.canActivateBonus');
+  final _$canActivateBonusAtom = Atom(name: '_BoardStore.canActivateBonus');
 
   @override
   bool get canActivateBonus {
@@ -68,7 +69,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$finishCodeAtom = Atom(name: '_Board.finishCode');
+  final _$finishCodeAtom = Atom(name: '_BoardStore.finishCode');
 
   @override
   int get finishCode {
@@ -83,7 +84,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$totalRewardEarnedAtom = Atom(name: '_Board.totalRewardEarned');
+  final _$totalRewardEarnedAtom = Atom(name: '_BoardStore.totalRewardEarned');
 
   @override
   double get totalRewardEarned {
@@ -98,7 +99,8 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$totalBoardsPredictedAtom = Atom(name: '_Board.totalBoardsPredicted');
+  final _$totalBoardsPredictedAtom =
+      Atom(name: '_BoardStore.totalBoardsPredicted');
 
   @override
   int get totalBoardsPredicted {
@@ -114,7 +116,8 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$showGridMemoryOrderAtom = Atom(name: '_Board.showGridMemoryOrder');
+  final _$showGridMemoryOrderAtom =
+      Atom(name: '_BoardStore.showGridMemoryOrder');
 
   @override
   bool get showGridMemoryOrder {
@@ -129,7 +132,8 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$showStackMemoryOrderAtom = Atom(name: '_Board.showStackMemoryOrder');
+  final _$showStackMemoryOrderAtom =
+      Atom(name: '_BoardStore.showStackMemoryOrder');
 
   @override
   bool get showStackMemoryOrder {
@@ -145,7 +149,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$bucketShapesAtom = Atom(name: '_Board.bucketShapes');
+  final _$bucketShapesAtom = Atom(name: '_BoardStore.bucketShapes');
 
   @override
   Map<int, String> get bucketShapes {
@@ -160,7 +164,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$isPausedAtom = Atom(name: '_Board.isPaused');
+  final _$isPausedAtom = Atom(name: '_BoardStore.isPaused');
 
   @override
   bool get isPaused {
@@ -175,7 +179,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$seriesNoAtom = Atom(name: '_Board.seriesNo');
+  final _$seriesNoAtom = Atom(name: '_BoardStore.seriesNo');
 
   @override
   int get seriesNo {
@@ -190,7 +194,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$transcriptAtom = Atom(name: '_Board.transcript');
+  final _$transcriptAtom = Atom(name: '_BoardStore.transcript');
 
   @override
   List<TranscriptElement> get transcript {
@@ -205,7 +209,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$rulesSrcAtom = Atom(name: '_Board.rulesSrc');
+  final _$rulesSrcAtom = Atom(name: '_BoardStore.rulesSrc');
 
   @override
   RulesSrc get rulesSrc {
@@ -220,7 +224,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$ruleLineNoAtom = Atom(name: '_Board.ruleLineNo');
+  final _$ruleLineNoAtom = Atom(name: '_BoardStore.ruleLineNo');
 
   @override
   int get ruleLineNo {
@@ -235,7 +239,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$numMovesMadeAtom = Atom(name: '_Board.numMovesMade');
+  final _$numMovesMadeAtom = Atom(name: '_BoardStore.numMovesMade');
 
   @override
   int get numMovesMade {
@@ -250,7 +254,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$episodeNoAtom = Atom(name: '_Board.episodeNo');
+  final _$episodeNoAtom = Atom(name: '_BoardStore.episodeNo');
 
   @override
   int get episodeNo {
@@ -265,7 +269,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$stackMemoryDepthAtom = Atom(name: '_Board.stackMemoryDepth');
+  final _$stackMemoryDepthAtom = Atom(name: '_BoardStore.stackMemoryDepth');
 
   @override
   int get stackMemoryDepth {
@@ -281,7 +285,7 @@ mixin _$Board on _Board, Store {
   }
 
   final _$movesLeftToStayInBonusAtom =
-      Atom(name: '_Board.movesLeftToStayInBonus');
+      Atom(name: '_BoardStore.movesLeftToStayInBonus');
 
   @override
   int get movesLeftToStayInBonus {
@@ -297,7 +301,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$transitionMapAtom = Atom(name: '_Board.transitionMap');
+  final _$transitionMapAtom = Atom(name: '_BoardStore.transitionMap');
 
   @override
   TransitionMap get transitionMap {
@@ -312,7 +316,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$episodeIdAtom = Atom(name: '_Board.episodeId');
+  final _$episodeIdAtom = Atom(name: '_BoardStore.episodeId');
 
   @override
   String get episodeId {
@@ -327,7 +331,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$maxPointsAtom = Atom(name: '_Board.maxPoints');
+  final _$maxPointsAtom = Atom(name: '_BoardStore.maxPoints');
 
   @override
   double get maxPoints {
@@ -342,7 +346,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$giveUpAtAtom = Atom(name: '_Board.giveUpAt');
+  final _$giveUpAtAtom = Atom(name: '_BoardStore.giveUpAt');
 
   @override
   int get giveUpAt {
@@ -357,7 +361,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$feedbackSwitchesAtom = Atom(name: '_Board.feedbackSwitches');
+  final _$feedbackSwitchesAtom = Atom(name: '_BoardStore.feedbackSwitches');
 
   @override
   String get feedbackSwitches {
@@ -372,7 +376,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$pageAtom = Atom(name: '_Board.page');
+  final _$pageAtom = Atom(name: '_BoardStore.page');
 
   @override
   Page get page {
@@ -387,22 +391,7 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$pageIndexAtom = Atom(name: '_Board.pageIndex');
-
-  @override
-  int get pageIndex {
-    _$pageIndexAtom.reportRead();
-    return super.pageIndex;
-  }
-
-  @override
-  set pageIndex(int value) {
-    _$pageIndexAtom.reportWrite(value, super.pageIndex, () {
-      super.pageIndex = value;
-    });
-  }
-
-  final _$playerIdAtom = Atom(name: '_Board.playerId');
+  final _$playerIdAtom = Atom(name: '_BoardStore.playerId');
 
   @override
   String get playerId {
@@ -417,99 +406,114 @@ mixin _$Board on _Board, Store {
     });
   }
 
-  final _$loadTrialsAsyncAction = AsyncAction('_Board.loadTrials');
+  final _$loadTrialsAsyncAction = AsyncAction('_BoardStore.loadTrials');
 
   @override
   Future<void> loadTrials() {
     return _$loadTrialsAsyncAction.run(() => super.loadTrials());
   }
 
-  final _$refreshBoardAsyncAction = AsyncAction('_Board.refreshBoard');
+  final _$newEpisodeAsyncAction = AsyncAction('_BoardStore.newEpisode');
 
   @override
-  Future<void> refreshBoard() {
-    return _$refreshBoardAsyncAction.run(() => super.refreshBoard());
+  Future<void> newEpisode() {
+    return _$newEpisodeAsyncAction.run(() => super.newEpisode());
   }
 
-  final _$moveAsyncAction = AsyncAction('_Board.move');
+  final _$updateEpisodeAsyncAction = AsyncAction('_BoardStore.updateEpisode');
+
+  @override
+  Future<void> updateEpisode(Para para, String episodeId) {
+    return _$updateEpisodeAsyncAction
+        .run(() => super.updateEpisode(para, episodeId));
+  }
+
+  final _$updateBoardAsyncAction = AsyncAction('_BoardStore.updateBoard');
+
+  @override
+  Future<void> updateBoard() {
+    return _$updateBoardAsyncAction.run(() => super.updateBoard());
+  }
+
+  final _$moveAsyncAction = AsyncAction('_BoardStore.move');
 
   @override
   Future<void> move(int boardObjectId, int bucket) {
     return _$moveAsyncAction.run(() => super.move(boardObjectId, bucket));
   }
 
-  final _$giveUpAsyncAction = AsyncAction('_Board.giveUp');
+  final _$giveUpAsyncAction = AsyncAction('_BoardStore.giveUp');
 
   @override
   Future<void> giveUp() {
     return _$giveUpAsyncAction.run(() => super.giveUp());
   }
 
-  final _$guessAsyncAction = AsyncAction('_Board.guess');
+  final _$guessAsyncAction = AsyncAction('_BoardStore.guess');
 
   @override
-  Future<void> guess() {
-    return _$guessAsyncAction.run(() => super.guess());
+  Future<void> guess(String data, int confidence) {
+    return _$guessAsyncAction.run(() => super.guess(data, confidence));
   }
 
-  final _$skipGuessAsyncAction = AsyncAction('_Board.skipGuess');
+  final _$skipGuessAsyncAction = AsyncAction('_BoardStore.skipGuess');
 
   @override
   Future<void> skipGuess() {
     return _$skipGuessAsyncAction.run(() => super.skipGuess());
   }
 
-  final _$loadNextBonusAsyncAction = AsyncAction('_Board.loadNextBonus');
+  final _$loadNextBonusAsyncAction = AsyncAction('_BoardStore.loadNextBonus');
 
   @override
   Future<void> loadNextBonus() {
     return _$loadNextBonusAsyncAction.run(() => super.loadNextBonus());
   }
 
-  final _$pickAsyncAction = AsyncAction('_Board.pick');
+  final _$pickAsyncAction = AsyncAction('_BoardStore.pick');
 
   @override
-  Future<void> pick() {
-    return _$pickAsyncAction.run(() => super.pick());
+  Future<void> pick(int boardObjectId) {
+    return _$pickAsyncAction.run(() => super.pick(boardObjectId));
   }
 
-  final _$validMoveAsyncAction = AsyncAction('_Board.validMove');
+  final _$recordDemographicsAsyncAction =
+      AsyncAction('_BoardStore.recordDemographics');
 
   @override
-  Future<void> validMove(int boardObjectId, int bucket) {
-    return _$validMoveAsyncAction
-        .run(() => super.validMove(boardObjectId, bucket));
+  Future<void> recordDemographics(String demographics) {
+    return _$recordDemographicsAsyncAction
+        .run(() => super.recordDemographics(demographics));
   }
 
-  final _$invalidMoveAsyncAction = AsyncAction('_Board.invalidMove');
+  final _$activateBonusAsyncAction = AsyncAction('_BoardStore.activateBonus');
 
   @override
-  Future<void> invalidMove(int boardObjectId, int bucket) {
-    return _$invalidMoveAsyncAction
-        .run(() => super.invalidMove(boardObjectId, bucket));
+  Future<void> activateBonus(String playerId) {
+    return _$activateBonusAsyncAction.run(() => super.activateBonus(playerId));
   }
 
-  final _$_BoardActionController = ActionController(name: '_Board');
-
-  @override
-  void nextPage() {
-    final _$actionInfo =
-        _$_BoardActionController.startAction(name: '_Board.nextPage');
-    try {
-      return super.nextPage();
-    } finally {
-      _$_BoardActionController.endAction(_$actionInfo);
-    }
-  }
+  final _$_BoardStoreActionController = ActionController(name: '_BoardStore');
 
   @override
   void goToPage(Page page) {
     final _$actionInfo =
-        _$_BoardActionController.startAction(name: '_Board.goToPage');
+        _$_BoardStoreActionController.startAction(name: '_BoardStore.goToPage');
     try {
       return super.goToPage(page);
     } finally {
-      _$_BoardActionController.endAction(_$actionInfo);
+      _$_BoardStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setIsInBonus(bool isInBonus) {
+    final _$actionInfo = _$_BoardStoreActionController.startAction(
+        name: '_BoardStore.setIsInBonus');
+    try {
+      return super.setIsInBonus(isInBonus);
+    } finally {
+      _$_BoardStoreActionController.endAction(_$actionInfo);
     }
   }
 
@@ -541,7 +545,6 @@ maxPoints: ${maxPoints},
 giveUpAt: ${giveUpAt},
 feedbackSwitches: ${feedbackSwitches},
 page: ${page},
-pageIndex: ${pageIndex},
 playerId: ${playerId}
     ''';
   }
