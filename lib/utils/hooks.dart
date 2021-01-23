@@ -28,3 +28,7 @@ String useSvg<T>(String shape) {
   final response = useQuery(() => getShapeApi(shape), [shape]);
   return response.data;
 }
+
+void useMount(Dispose Function() effect) {
+  useEffect(effect, []);
+}

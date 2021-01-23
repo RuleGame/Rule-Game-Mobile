@@ -1,83 +1,116 @@
 // @dart=2.9
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 import 'package:rulegamemobile/board.dart';
+import 'package:rulegamemobile/mobx/board.dart';
+import 'package:rulegamemobile/utils/page.dart';
 
 void main() {
   runApp(MyApp());
 }
 
+//final BoardStore boardStore = BoardStore();
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return Provider<BoardStore>(
+      create: (_) => BoardStore(),
+      child: MaterialApp(
+        title: 'Rule Game',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: Pages(),
       ),
-      home: GamePage(),
     );
   }
 }
 
-class GamePage extends HookWidget {
+class Pages extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final boardStore = Provider.of<BoardStore>(context);
+
+    return Observer(builder: (_) {
+      switch (boardStore.page) {
+        case Page.LOADING_TRIALS:
+          return LoadingPage();
+        case Page.CONSENT:
+          // TODO: Handle this case.
+          break;
+        case Page.INTRODUCTION:
+          return IntroductionPage();
+        case Page.TRIALS:
+          return TrialsPage();
+        case Page.DEMOGRAPHICS_INSTRUCTIONS:
+          // TODO: Handle this case.
+          break;
+        case Page.DEMOGRAPHICS:
+          // TODO: Handle this case.
+          break;
+        case Page.DEBRIEFING:
+          // TODO: Handle this case.
+          break;
+      }
+      return null;
+    });
+  }
+}
+
+class IntroductionPage extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final boardStore = Provider.of<BoardStore>(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('First Route'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          child: Text('Start'),
+          onPressed: () {
+            boardStore.goToPage(Page.LOADING_TRIALS);
+            boardStore.loadTrials();
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class LoadingPage extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+//    final boardStore = Provider.of<BoardStore>(context);
+//    useMount(() {
+//      boardStore.loadTrials();
+//      return;
+//    });
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('First Route'),
+      ),
+      body: Center(
+        child: Text('Loading...'),
+      ),
+    );
+  }
+}
+
+class TrialsPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Rule Game'),
       ),
-      body: Column(children: [
-//        Draggable(
-//          data: true,
-//          child: Image.asset(
-//            'assets/smiley-face.png',
-//            width: 100,
-//          ),
-//          feedback: Image.asset(
-//            'assets/smiley-face.png',
-//            width: 100,
-//          ),
-//        ),
-        Center(child: Board())
-      ]),
-    );
-  }
-}
-
-class MyHomePage extends HookWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    final counter = useState(0);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '${counter.value}',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => counter.value++,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: Column(children: [Center(child: Board())]),
     );
   }
 }

@@ -57,7 +57,7 @@ class TransitionMap {
 }
 
 class BoardObject {
-  final int buckets;
+  final List<int> buckets;
   final String color;
   final int dropped;
   final int id;
@@ -66,7 +66,7 @@ class BoardObject {
   final int y;
 
   BoardObject.fromJson(Map<String, dynamic> json)
-      : buckets = json['buckets'],
+      : buckets = List.castFrom(json['buckets']),
         color = json['color'],
         dropped = json['dropped'],
         id = json['id'],
@@ -80,13 +80,14 @@ class Board {
   final int id;
   final List<BoardObject> value;
 
-  Board({this.longId, this.id, this.value});
-
-  factory Board.fromJson(Map<String, dynamic> json) => Board(
-        longId: json['longId'],
-        value: json['value'],
-        id: json['id'],
-      );
+  Board.fromJson(Map<String, dynamic> json)
+      : longId = json['longId'],
+        value = json['value'] != null
+            ? (List.castFrom<dynamic, Map<String, dynamic>>(json['value']))
+                .map((m) => BoardObject.fromJson(m))
+                .toList()
+            : null,
+        id = json['id'];
 }
 
 class RulesSrc {
@@ -96,8 +97,8 @@ class RulesSrc {
   RulesSrc({this.orders = const [], this.rows = const []});
 
   factory RulesSrc.fromJson(Map<String, dynamic> json) => RulesSrc(
-        orders: json['orders'],
-        rows: json['rows'],
+        orders: List.castFrom(json['orders']),
+        rows: List.castFrom(json['rows']),
       );
 }
 
@@ -137,7 +138,7 @@ class Display {
   final TransitionMap transitionMap;
 
   Display.fromJson(Map<String, dynamic> json)
-      : board = Board.fromJson(json['board']),
+      : board = json['board'] != null ? Board.fromJson(json['board']) : null,
         finishCode = json['finishCode'],
         numMovesMade = json['numMovesMade'],
         bonus = json['bonus'],
@@ -147,20 +148,26 @@ class Display {
         guessSaved = json['guessSaved'],
         seriesNo = json['seriesNo'],
         totalBoardsPredicted = json['totalBoardsPredicted'],
-        totalRewardEarned = json['totalRewardEarned'],
-        transcript = (json['transcript'] as List<Map<String, dynamic>>)
-            .map((m) => TranscriptElement.fromJson(m))
-            .toList(),
-        rulesSrc = RulesSrc.fromJson(json['rulesSrc']),
+        totalRewardEarned = (json['totalRewardEarned'] as int)?.toDouble(),
+        transcript = json['transcript'] != null
+            ? (List.castFrom<dynamic, Map<String, dynamic>>(json['transcript']))
+                .map((m) => TranscriptElement.fromJson(m))
+                .toList()
+            : null,
+        rulesSrc = json['rulesSrc'] != null
+            ? RulesSrc.fromJson(json['rulesSrc'])
+            : null,
         ruleLineNo = json['ruleLineNo'],
         movesLeftToStayInBonus = json['movesLeftToStayInBonus'],
-        transitionMap = TransitionMap.fromJson(json['transitionMap']);
+        transitionMap = json['transitionMap'] != null
+            ? TransitionMap.fromJson(json['transitionMap'])
+            : null;
 }
 
 class Para {
-  final int clearingThreshold;
+  final double clearingThreshold;
   final double maxPoints;
-  final int b;
+  final double b;
   final int minPoints;
   final int maxColors;
   final int f;
@@ -184,7 +191,7 @@ class Para {
 
   Para.fromJson(Map<String, dynamic> json)
       : clearingThreshold = json['clearing_threshold'],
-        maxPoints = json['max_points'],
+        maxPoints = (json['max_points'] as int)?.toDouble(),
         b = json['b'],
         minPoints = json['min_points'],
         maxColors = json['max_colors'],
@@ -295,7 +302,7 @@ class PostPlayerResBody implements ResBody {
         error = json['error'],
         newlyRegistered = json['newlyRegistered'],
         trialListId = json['trialListId'],
-        trialList = json['trialList'],
+        trialList = List.castFrom(json['trialList']),
         completionCode = json['completionCode'];
 }
 
@@ -325,9 +332,10 @@ class PostMostRecentEpisodeResBody implements ResBody {
       : errmsg = json['errmsg'],
         error = json['error'],
         alreadyFinished = json['alreadyFinished'],
-        display = json['alreadyFinished'],
+        display =
+            json['display'] != null ? Display.fromJson(json['display']) : null,
         episodeId = json['episodeId'],
-        para = json['para'],
+        para = Para.fromJson(json['para']),
         completionCode = json['completionCode'];
 }
 
@@ -355,7 +363,8 @@ class PostNewEpisodeResBody implements ResBody {
       : errmsg = json['errmsg'],
         error = json['error'],
         alreadyFinished = json['alreadyFinished'],
-        display = json['display'],
+        display =
+            json['display'] != null ? Display.fromJson(json['display']) : null,
         episodeId = json['episodeId'],
         para = json['para'],
         completionCode = json['completionCode'];
@@ -373,7 +382,13 @@ class PostNewEpisodeReqBody implements ReqBody {
 }
 
 class GetDisplayResBody extends Display implements ResBody {
-  GetDisplayResBody.fromJson(Map<String, dynamic> json) : super.fromJson(json);
+  final int code;
+  final String errmsg;
+
+  GetDisplayResBody.fromJson(Map<String, dynamic> json)
+      : code = json['code'],
+        errmsg = json['errmsg'],
+        super.fromJson(json);
 }
 
 class GetDisplayReqQuery implements ReqQuery {
@@ -395,7 +410,7 @@ class PostMoveResBody implements ResBody {
   final int totalRewardEarned;
 
   PostMoveResBody.fromJson(Map<String, dynamic> json)
-      : board = Board.fromJson(json['board']),
+      : board = json['board'] != null ? Board.fromJson(json['board']) : null,
         bonus = json['bonus'],
         code = json['code'],
         errmsg = json['errmsg'],
@@ -442,7 +457,7 @@ class PostPickResBody implements ResBody {
   final int totalRewardEarned;
 
   PostPickResBody.fromJson(Map<String, dynamic> json)
-      : board = Board.fromJson(json['board']),
+      : board = json['board'] != null ? Board.fromJson(json['board']) : null,
         bonus = json['bonus'],
         code = json['code'],
         errmsg = json['errmsg'],

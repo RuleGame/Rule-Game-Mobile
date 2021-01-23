@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:rulegamemobile/main.dart';
+
 enum Page {
   LOADING_TRIALS,
   CONSENT,
@@ -17,3 +20,9 @@ const PAGE_ORDER = [
   Page.DEMOGRAPHICS,
   Page.DEBRIEFING,
 ];
+
+final Map<Page, Widget> PAGE_TO_WIDGET = {
+  Page.INTRODUCTION: IntroductionPage(),
+  Page.LOADING_TRIALS: LoadingPage(),
+  Page.TRIALS: TrialsPage(),
+};

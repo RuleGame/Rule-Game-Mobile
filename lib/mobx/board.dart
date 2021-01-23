@@ -79,7 +79,7 @@ abstract class _BoardStore with Store {
   TransitionMap transitionMap;
 
   @observable
-  String episodeId = 'N/A';
+  String episodeId;
 
   @observable
   double maxPoints = 0;
@@ -91,11 +91,14 @@ abstract class _BoardStore with Store {
   String feedbackSwitches = FeedbackSwitches.FIXED;
 
   @observable
-  Page page;
+  Page page = Page.INTRODUCTION;
 
   // TODO: Implement logic to generate a random playerId
   @observable
-  String playerId = 'test-flutter';
+  String playerId = 'test-flutter123456789';
+
+  @observable
+  String exp = 'vmColorTest';
 
   @action
   void goToPage(Page page) {
@@ -106,7 +109,7 @@ abstract class _BoardStore with Store {
   Future<void> loadTrials() async {
     goToPage(Page.LOADING_TRIALS);
 
-    await postPlayerApi(body: PostPlayerReqBody(playerId: playerId));
+    await postPlayerApi(body: PostPlayerReqBody(playerId: playerId, exp: exp));
 
     final postMostRecentEpisodeResBody = await postMostRecentEpisodeApi(
       body: PostMostRecentEpisodeReqBody(playerId: playerId),
@@ -117,10 +120,9 @@ abstract class _BoardStore with Store {
 
     goToPage(Page.TRIALS);
 
+    episodeId = postMostRecentEpisodeResBody.episodeId;
+
     if (noEpisodeStarted) {
-      final postNewEpisodeResBody = await postNewEpisodeApi(
-          body: PostNewEpisodeReqBody(playerId: playerId));
-      episodeId = postNewEpisodeResBody.episodeId;
       await newEpisode();
     } else {
       await updateBoard();
@@ -131,6 +133,7 @@ abstract class _BoardStore with Store {
   Future<void> newEpisode() async {
     final postNewEpisodeResBody = await postNewEpisodeApi(
         body: PostNewEpisodeReqBody(playerId: playerId));
+    episodeId = postNewEpisodeResBody.episodeId;
 
     if (postNewEpisodeResBody.alreadyFinished) {
       goToPage(Page.DEMOGRAPHICS_INSTRUCTIONS);
@@ -160,6 +163,10 @@ abstract class _BoardStore with Store {
   Future<void> updateBoard() async {
     final getDisplayResBody =
         await getDisplayApi(query: GetDisplayReqQuery(episode: episodeId));
+    if (getDisplayResBody.code < 0 &&
+        getDisplayResBody.code != Code.JUST_A_DISPLAY) {
+      throw Exception(getDisplayResBody.errmsg);
+    }
     board = {
       for (var boardObject in getDisplayResBody.board.value)
         boardObject.id: boardObject
