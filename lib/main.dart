@@ -3,9 +3,9 @@ import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-import 'package:rulegamemobile/board.dart';
 import 'package:rulegamemobile/mobx/board.dart';
 import 'package:rulegamemobile/utils/page.dart';
+import 'package:rulegamemobile/widgets/board.dart';
 
 void main() {
   runApp(MyApp());
@@ -86,12 +86,6 @@ class IntroductionPage extends HookWidget {
 class LoadingPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-//    final boardStore = Provider.of<BoardStore>(context);
-//    useMount(() {
-//      boardStore.loadTrials();
-//      return;
-//    });
-
     return Scaffold(
       appBar: AppBar(
         title: Text('First Route'),
