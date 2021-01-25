@@ -65,6 +65,10 @@ Future<PostGuessResBody> postGuessApi({PostGuessReqBody body}) async =>
       await postApiJson('/game-data/GameService2/guess', body: body),
     );
 
+//Future<String> getShapeApi(shape) async =>
+//    (await getApi('/admin/getSvg.jsp', query: GetShapeReqQuery(shape: shape)))
+//        .replaceAll('currentColor', 'black');
+
 Future<String> getShapeApi(shape) async =>
     (await getApi('/admin/getSvg.jsp', query: GetShapeReqQuery(shape: shape)))
         .replaceAll('currentColor', 'black');

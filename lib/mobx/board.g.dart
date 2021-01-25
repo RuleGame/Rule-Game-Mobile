@@ -12,13 +12,13 @@ mixin _$BoardStore on _BoardStore, Store {
   final _$boardAtom = Atom(name: '_BoardStore.board');
 
   @override
-  Map<int, BoardObject> get board {
+  ObservableMap<int, BoardObject> get board {
     _$boardAtom.reportRead();
     return super.board;
   }
 
   @override
-  set board(Map<int, BoardObject> value) {
+  set board(ObservableMap<int, BoardObject> value) {
     _$boardAtom.reportWrite(value, super.board, () {
       super.board = value;
     });
@@ -152,13 +152,13 @@ mixin _$BoardStore on _BoardStore, Store {
   final _$bucketShapesAtom = Atom(name: '_BoardStore.bucketShapes');
 
   @override
-  Map<int, String> get bucketShapes {
+  ObservableMap<int, String> get bucketShapes {
     _$bucketShapesAtom.reportRead();
     return super.bucketShapes;
   }
 
   @override
-  set bucketShapes(Map<int, String> value) {
+  set bucketShapes(ObservableMap<int, String> value) {
     _$bucketShapesAtom.reportWrite(value, super.bucketShapes, () {
       super.bucketShapes = value;
     });
@@ -197,13 +197,13 @@ mixin _$BoardStore on _BoardStore, Store {
   final _$transcriptAtom = Atom(name: '_BoardStore.transcript');
 
   @override
-  List<TranscriptElement> get transcript {
+  ObservableList<TranscriptElement> get transcript {
     _$transcriptAtom.reportRead();
     return super.transcript;
   }
 
   @override
-  set transcript(List<TranscriptElement> value) {
+  set transcript(ObservableList<TranscriptElement> value) {
     _$transcriptAtom.reportWrite(value, super.transcript, () {
       super.transcript = value;
     });
@@ -406,6 +406,21 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
+  final _$expAtom = Atom(name: '_BoardStore.exp');
+
+  @override
+  String get exp {
+    _$expAtom.reportRead();
+    return super.exp;
+  }
+
+  @override
+  set exp(String value) {
+    _$expAtom.reportWrite(value, super.exp, () {
+      super.exp = value;
+    });
+  }
+
   final _$loadTrialsAsyncAction = AsyncAction('_BoardStore.loadTrials');
 
   @override
@@ -545,7 +560,8 @@ maxPoints: ${maxPoints},
 giveUpAt: ${giveUpAt},
 feedbackSwitches: ${feedbackSwitches},
 page: ${page},
-playerId: ${playerId}
+playerId: ${playerId},
+exp: ${exp}
     ''';
   }
 }

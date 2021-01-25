@@ -1,0 +1,24 @@
+{
+  "name": "rule_game_mobile",
+  "version": "1.0.0",
+  "description": "A mobile implementation of Rule Game",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "build": "flutter packages pub run build_runner build",
+    "watch": "flutter packages pub run build_runner watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lupyanlab/Rule-Game-Mobile.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lupyanlab/Rule-Game-Mobile/issues"
+  },
+  "homepage": "https://github.com/lupyanlab/Rule-Game-Mobile#readme"
+}

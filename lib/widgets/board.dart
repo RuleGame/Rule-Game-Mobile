@@ -2,13 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 import 'package:rulegamemobile/constants/constants.dart';
+import 'package:rulegamemobile/mobx/board.dart';
 import 'package:rulegamemobile/widgets/piece.dart';
 import 'package:rulegamemobile/widgets/shape.dart';
 
 class Board extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final store = Provider.of<BoardStore>(context);
+
     return AspectRatio(
       aspectRatio: 1,
       child: Container(
@@ -30,15 +35,6 @@ class Board extends HookWidget {
             FlexibleTrackSize(1)
           ],
           children: [
-//            GridPlacement(
-//              child: DragTarget(
-//                onWillAccept: (data) => true,
-//                builder: (context, List<String> candidateData, rejectedData) =>
-//                    SvgPicture.asset('assets/bucket.svg'),
-//              ),
-//              rowStart: 0,
-//              columnStart: 0,
-//            ),
             GridPlacement(
               child: DragTarget(
                 onWillAccept: (data) => true,
@@ -71,67 +67,38 @@ class Board extends HookWidget {
                     color: const Color.fromRGBO(255, 0, 0, 1.0),
                   ),
                 ),
-                child: LayoutGrid(
-                  templateColumnSizes: [
-                    FlexibleTrackSize(1),
-                    FlexibleTrackSize(1),
-                    FlexibleTrackSize(1),
-                    FlexibleTrackSize(1),
-                    FlexibleTrackSize(1),
-                    FlexibleTrackSize(1),
-                  ],
-                  templateRowSizes: [
-                    FlexibleTrackSize(1),
-                    FlexibleTrackSize(1),
-                    FlexibleTrackSize(1),
-                    FlexibleTrackSize(1),
-                    FlexibleTrackSize(1),
-                    FlexibleTrackSize(1),
-                  ],
-                  children: [
-                    GridPlacement(
-                      child: Piece(shape: 'CLOUD', color: 'RED'),
-                      rowStart: 0,
-                      columnStart: 0,
-                      rowSpan: 1,
-                      columnSpan: 1,
-                    ),
-                    GridPlacement(
-                      child: Piece(shape: 'TRIANGLE', color: 'BLUE'),
-                      rowStart: 0,
-                      columnStart: 1,
-                      rowSpan: 1,
-                      columnSpan: 1,
-                    ),
-                    GridPlacement(
-                      child: Piece(shape: 'CIRCLE', color: 'YELLOW'),
-                      rowStart: 0,
-                      columnStart: 2,
-                      rowSpan: 1,
-                      columnSpan: 1,
-                    ),
-                    GridPlacement(
-                      child: Piece(shape: 'STAR', color: 'BLACK'),
-                      rowStart: 0,
-                      columnStart: 3,
-                      rowSpan: 1,
-                      columnSpan: 1,
-                    ),
-                    GridPlacement(
-                      child: Piece(shape: 'SQUARE', color: 'BLUE'),
-                      rowStart: 0,
-                      columnStart: 4,
-                      rowSpan: 1,
-                      columnSpan: 1,
-                    ),
-                    GridPlacement(
-                      child: Piece(shape: 'SQUARE', color: 'BLACK'),
-                      rowStart: 0,
-                      columnStart: 5,
-                      rowSpan: 1,
-                      columnSpan: 1,
-                    ),
-                  ],
+                child: Observer(
+                  builder: (_) => LayoutGrid(
+                    templateColumnSizes: [
+                      FlexibleTrackSize(1),
+                      FlexibleTrackSize(1),
+                      FlexibleTrackSize(1),
+                      FlexibleTrackSize(1),
+                      FlexibleTrackSize(1),
+                      FlexibleTrackSize(1),
+                    ],
+                    templateRowSizes: [
+                      FlexibleTrackSize(1),
+                      FlexibleTrackSize(1),
+                      FlexibleTrackSize(1),
+                      FlexibleTrackSize(1),
+                      FlexibleTrackSize(1),
+                      FlexibleTrackSize(1),
+                    ],
+                    children: [
+                      for (var boardObject in store.board.values)
+                        GridPlacement(
+                          child: Piece(
+                            shape: boardObject.shape,
+                            color: boardObject.color,
+                          ),
+                          rowStart: boardObject.y,
+                          columnStart: boardObject.x,
+                          rowSpan: 1,
+                          columnSpan: 1,
+                        ),
+                    ],
+                  ),
                 ),
               ),
               rowStart: 1,

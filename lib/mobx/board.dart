@@ -14,7 +14,7 @@ class BoardStore = _BoardStore with _$BoardStore;
 // The store-class
 abstract class _BoardStore with Store {
   @observable
-  Map<int, BoardObject> board = {};
+  ObservableMap<int, BoardObject> board = ObservableMap.of({});
 
   @observable
   bool isInBonus = false;
@@ -41,12 +41,12 @@ abstract class _BoardStore with Store {
   bool showStackMemoryOrder = false;
 
   @observable
-  Map<int, String> bucketShapes = {
+  ObservableMap<int, String> bucketShapes = ObservableMap.of({
     BucketPosition.BL: SpecialShape.BUCKET,
     BucketPosition.BR: SpecialShape.BUCKET,
     BucketPosition.TR: SpecialShape.BUCKET,
     BucketPosition.TL: SpecialShape.BUCKET,
-  };
+  });
 
   @observable
   bool isPaused = false;
@@ -55,7 +55,7 @@ abstract class _BoardStore with Store {
   int seriesNo = 0;
 
   @observable
-  List<TranscriptElement> transcript = [];
+  ObservableList<TranscriptElement> transcript = ObservableList.of([]);
 
   @observable
   RulesSrc rulesSrc = RulesSrc();
@@ -167,10 +167,11 @@ abstract class _BoardStore with Store {
         getDisplayResBody.code != Code.JUST_A_DISPLAY) {
       throw Exception(getDisplayResBody.errmsg);
     }
-    board = {
+    board = ObservableMap.of({
       for (var boardObject in getDisplayResBody.board.value)
         boardObject.id: boardObject
-    };
+    });
+
     isInBonus = getDisplayResBody.bonus;
     bonusEpisodeNo = getDisplayResBody.bonusEpisodeNo;
     canActivateBonus = getDisplayResBody.canActivateBonus;
@@ -178,7 +179,7 @@ abstract class _BoardStore with Store {
     totalRewardEarned = getDisplayResBody.totalRewardEarned;
     totalBoardsPredicted = getDisplayResBody.totalBoardsPredicted;
     seriesNo = getDisplayResBody.seriesNo;
-    transcript = getDisplayResBody.transcript;
+    transcript = ObservableList.of(getDisplayResBody.transcript);
     rulesSrc = getDisplayResBody.rulesSrc;
     ruleLineNo = getDisplayResBody.ruleLineNo;
     numMovesMade = getDisplayResBody.numMovesMade;
@@ -186,12 +187,12 @@ abstract class _BoardStore with Store {
     movesLeftToStayInBonus = getDisplayResBody.movesLeftToStayInBonus;
     transitionMap = getDisplayResBody.transitionMap;
     isPaused = false;
-    bucketShapes = {
+    bucketShapes = ObservableMap.of({
       BucketPosition.BL: SpecialShape.BUCKET,
       BucketPosition.BR: SpecialShape.BUCKET,
       BucketPosition.TR: SpecialShape.BUCKET,
       BucketPosition.TL: SpecialShape.BUCKET,
-    };
+    });
   }
 
   @action
