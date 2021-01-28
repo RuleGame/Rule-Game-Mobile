@@ -6,8 +6,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:rulegamemobile/constants/constants.dart';
 import 'package:rulegamemobile/mobx/board.dart';
+import 'package:rulegamemobile/utils/models.dart';
+import 'package:rulegamemobile/widgets/bucket.dart';
 import 'package:rulegamemobile/widgets/piece.dart';
-import 'package:rulegamemobile/widgets/shape.dart';
 
 class Board extends HookWidget {
   @override
@@ -36,26 +37,22 @@ class Board extends HookWidget {
           ],
           children: [
             GridPlacement(
-              child: DragTarget(
-                onWillAccept: (data) => true,
-                builder: (context, List<Object> candidateData, rejectedData) =>
-                    Shape(shape: SpecialShape.BUCKET),
-              ),
+              child: Bucket(pos: BucketPosition.TL),
               rowStart: 0,
               columnStart: 0,
             ),
             GridPlacement(
-              child: Shape(shape: SpecialShape.BUCKET),
+              child: Bucket(pos: BucketPosition.BR),
               rowStart: 2,
               columnStart: 2,
             ),
             GridPlacement(
-              child: Shape(shape: SpecialShape.BUCKET),
+              child: Bucket(pos: BucketPosition.TR),
               rowStart: 0,
               columnStart: 2,
             ),
             GridPlacement(
-              child: Shape(shape: SpecialShape.BUCKET),
+              child: Bucket(pos: BucketPosition.BL),
               rowStart: 2,
               columnStart: 0,
             ),
@@ -69,30 +66,15 @@ class Board extends HookWidget {
                 ),
                 child: Observer(
                   builder: (_) => LayoutGrid(
-                    templateColumnSizes: [
-                      FlexibleTrackSize(1),
-                      FlexibleTrackSize(1),
-                      FlexibleTrackSize(1),
-                      FlexibleTrackSize(1),
-                      FlexibleTrackSize(1),
-                      FlexibleTrackSize(1),
-                    ],
-                    templateRowSizes: [
-                      FlexibleTrackSize(1),
-                      FlexibleTrackSize(1),
-                      FlexibleTrackSize(1),
-                      FlexibleTrackSize(1),
-                      FlexibleTrackSize(1),
-                      FlexibleTrackSize(1),
-                    ],
+                    templateRowSizes:
+                        List.generate(PIECES_ROWS, (_) => FlexibleTrackSize(1)),
+                    templateColumnSizes:
+                        List.generate(PIECES_COLS, (_) => FlexibleTrackSize(1)),
                     children: [
                       for (var boardObject in store.board.values)
                         GridPlacement(
-                          child: Piece(
-                            shape: boardObject.shape,
-                            color: boardObject.color,
-                          ),
-                          rowStart: boardObject.y,
+                          child: Piece(boardObject: boardObject),
+                          rowStart: PIECES_ROWS - boardObject.y - 1,
                           columnStart: boardObject.x,
                           rowSpan: 1,
                           columnSpan: 1,
@@ -110,30 +92,3 @@ class Board extends HookWidget {
     );
   }
 }
-
-//class Board extends HookWidget {
-//  @override
-//  Widget build(BuildContext context) {
-//    return AspectRatio(
-//        aspectRatio: 1,
-//        child: Container(
-//            decoration: BoxDecoration(
-//              border: Border.all(
-//                  width: 2.0, color: const Color.fromRGBO(255, 0, 0, 1.0)),
-//            ),
-//            child: GridView.count(
-//              physics: const NeverScrollableScrollPhysics(),
-//              // Create a grid with 2 columns. If you change the scrollDirection to
-//              // horizontal, this produces 2 rows.
-//              crossAxisCount: 8,
-//              // Generate 100 widgets that display their index in the List.
-//              children: List.generate(64, (index) {
-//                return Center(
-//                  child: Image.asset(
-//                      'assets/bucket.svg'
-//                  ),
-//                );
-//              }),
-//            )));
-//  }
-//}

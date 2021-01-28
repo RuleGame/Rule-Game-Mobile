@@ -335,7 +335,7 @@ class PostMostRecentEpisodeResBody implements ResBody {
         display =
             json['display'] != null ? Display.fromJson(json['display']) : null,
         episodeId = json['episodeId'],
-        para = Para.fromJson(json['para']),
+        para = json['para'] != null ? Para.fromJson(json['para']) : null,
         completionCode = json['completionCode'];
 }
 

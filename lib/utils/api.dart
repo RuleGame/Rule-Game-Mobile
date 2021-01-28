@@ -103,15 +103,12 @@ Future<String> postApi(String route, {ReqQuery query, ReqBody body}) async {
   final bodyMap = body.toMap();
   final nonNullMap = {
     for (var k in bodyMap.keys)
-      if (bodyMap[k] != null) k: bodyMap[k]
+      if (bodyMap[k] != null) k: bodyMap[k].toString()
   };
 
-  var response;
-  try {
-    response = await http.post(uri, body: nonNullMap);
-  } catch (e) {
-    response;
-  }
+  final response = await http.post(uri,
+      body: Uri(queryParameters: nonNullMap).query,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'});
   return response.body;
 }
 

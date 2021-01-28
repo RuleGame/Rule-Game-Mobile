@@ -153,7 +153,7 @@ abstract class _BoardStore with Store {
     showGridMemoryOrder = para.gridMemoryShowOrder;
     stackMemoryDepth = para.stackMemoryDepth;
     showStackMemoryOrder = para.stackMemoryShowOrder;
-    episodeId = episodeId;
+    this.episodeId = episodeId;
     maxPoints = para.maxPoints;
     feedbackSwitches = para.feedbackSwitches;
     giveUpAt = para.giveUpAt;
@@ -208,6 +208,10 @@ abstract class _BoardStore with Store {
         cnt: numMovesMade,
       ),
     );
+    if (postMoveResBody.code < 0 &&
+        postMoveResBody.code != Code.JUST_A_DISPLAY) {
+      throw Exception(postMoveResBody.errmsg);
+    }
 
     if (postMoveResBody.code == Code.ACCEPT) {
       isPaused = true;
