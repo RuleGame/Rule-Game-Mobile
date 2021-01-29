@@ -95,7 +95,7 @@ abstract class _BoardStore with Store {
 
   // TODO: Implement logic to generate a random playerId
   @observable
-  String playerId = 'test-flutter123456789';
+  String playerId = 'test-flutter12345678901';
 
   @observable
   String exp = 'vmColorTest';
@@ -167,6 +167,7 @@ abstract class _BoardStore with Store {
         getDisplayResBody.code != Code.JUST_A_DISPLAY) {
       throw Exception(getDisplayResBody.errmsg);
     }
+    // FIXME: getDisplayResBody.board might be null when code is JUST_A_DISPLAY
     board = ObservableMap.of({
       for (var boardObject in getDisplayResBody.board.value)
         boardObject.id: boardObject
@@ -220,6 +221,7 @@ abstract class _BoardStore with Store {
       isPaused = true;
       bucketShapes[bucket] = SpecialShape.UNHAPPY;
     }
+    numMovesMade = postMoveResBody.numMovesMade;
 
     await Future.delayed(const Duration(milliseconds: FEEDBACK_DURATION));
     await updateBoard();

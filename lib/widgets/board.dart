@@ -74,8 +74,8 @@ class Board extends HookWidget {
                       for (var boardObject in store.board.values)
                         GridPlacement(
                           child: Piece(boardObject: boardObject),
-                          rowStart: PIECES_ROWS - boardObject.y - 1,
-                          columnStart: boardObject.x,
+                          rowStart: PIECES_ROWS - boardObject.y,
+                          columnStart: boardObject.x - 1,
                           rowSpan: 1,
                           columnSpan: 1,
                         ),

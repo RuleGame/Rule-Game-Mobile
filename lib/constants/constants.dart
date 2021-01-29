@@ -4,6 +4,7 @@ class SpecialShape {
   static const UNHAPPY = 'UNHAPPY';
   static const CHECK = 'CHECK';
   static const X = 'X';
+  static const CLOSE = 'CLOSE';
 }
 
 const ROWS = 8;
@@ -15,3 +16,7 @@ const PIECES_COLS = COLS - 2;
 const FEEDBACK_DURATION = 1000;
 
 const DEMOGRAPHICS_DIR = 'demographics';
+
+const PAUSE_OPACITY = 0.5;
+
+const BUCKET_COLOR = 'RED';

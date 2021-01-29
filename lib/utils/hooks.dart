@@ -9,23 +9,33 @@ AsyncSnapshot<T> useQuery<T>(Future<T> Function() create, [List<String> deps]) {
   return useFuture(future);
 }
 
-Color useColorRgb<T>(String colorName) {
-  final response = useQuery(getColorMapApi, [colorName]);
+Map<String, List<int>> cachedColorMap;
+
+Color useColorRgb<T>(String colorName, {double opacity}) {
+  final response = useQuery(
+      () async => cachedColorMap ?? (await getColorMapApi()).colorToRgbMap,
+      [colorName]);
   if (response.data != null && colorName != null) {
-    final colorRgbTuple = response.data.colorToRgbMap[colorName];
+    cachedColorMap = response.data;
+    final colorRgbTuple = response.data[colorName];
     return Color.fromRGBO(
       colorRgbTuple[0],
       colorRgbTuple[1],
       colorRgbTuple[2],
-      1,
+      opacity ?? 1.0,
     );
   }
 
   return null;
 }
 
+//Map<String, String> cachedSvgs = {"HAPPY": "hi"};
+Map<String, String> cachedSvgs = {};
+
 String useSvg<T>(String shape) {
-  final response = useQuery(() => getShapeApi(shape), [shape]);
+  final response =
+      useQuery(() async => cachedSvgs[shape] ?? getShapeApi(shape), [shape]);
+  cachedSvgs[shape] = response.data as String;
   return response.data;
 }
 

@@ -366,7 +366,7 @@ class PostNewEpisodeResBody implements ResBody {
         display =
             json['display'] != null ? Display.fromJson(json['display']) : null,
         episodeId = json['episodeId'],
-        para = json['para'],
+        para = json['para'] != null ? Para.fromJson(json['para']) : null,
         completionCode = json['completionCode'];
 }
 
