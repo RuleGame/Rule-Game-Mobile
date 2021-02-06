@@ -18,12 +18,6 @@ class Board extends HookWidget {
     return AspectRatio(
       aspectRatio: 1,
       child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 2.0,
-            color: const Color.fromRGBO(255, 0, 0, 1.0),
-          ),
-        ),
         child: LayoutGrid(
           templateColumnSizes: [
             FlexibleTrackSize(1),
@@ -58,12 +52,6 @@ class Board extends HookWidget {
             ),
             GridPlacement(
               child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 2.0,
-                    color: const Color.fromRGBO(255, 0, 0, 1.0),
-                  ),
-                ),
                 child: Observer(
                   builder: (_) => LayoutGrid(
                     templateRowSizes:

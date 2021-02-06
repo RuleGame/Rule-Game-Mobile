@@ -34,8 +34,12 @@ class Piece extends HookWidget {
                 data: boardObject,
                 child: shapeWidget,
                 feedback: Container(
-                  child: shapeWidget,
-                ),
+                    child: Transform.translate(
+                      offset: Offset(-75, -75),
+                      child: shapeWidget,
+                    ),
+                    width: 100,
+                    height: 100),
                 dragAnchor: DragAnchor.pointer,
               );
             },

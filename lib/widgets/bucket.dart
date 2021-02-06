@@ -16,22 +16,37 @@ class Bucket extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final boardStore = Provider.of<BoardStore>(context);
+    final hover = useState(false);
 
     return Container(
       child: DragTarget<BoardObject>(
-        onAccept: (boardObject) => boardStore.move(boardObject.id, pos),
+        onAccept: (boardObject) {
+          hover.value = false;
+          return boardStore.move(boardObject.id, pos);
+        },
         onWillAccept: (_) => true,
+        onMove: (_) {
+          hover.value = true;
+        },
+        onLeave: (_) {
+          hover.value = false;
+        },
         builder: (context, List<Object> candidateData, rejectedData) =>
-            Observer(
-          builder: (_) => Shape(
-            shape: boardStore.bucketShapes[pos],
-            color: boardStore.bucketShapes[pos] == SpecialShape.BUCKET
-                ? BUCKET_COLOR
-                : null,
-            opacity: boardStore.isPaused &&
-                    boardStore.bucketShapes[pos] == SpecialShape.BUCKET
-                ? PAUSE_OPACITY
-                : 1,
+            Transform.scale(
+          scale: hover.value ? 2.5 : 1.0,
+          child: Observer(
+            builder: (_) => Shape(
+              shape: boardStore.bucketShapes[pos],
+              color: boardStore.bucketShapes[pos] == SpecialShape.BUCKET
+                  ? BUCKET_COLOR
+                  : null,
+              opacity: (boardStore.isPaused &&
+                          boardStore.bucketShapes[pos] ==
+                              SpecialShape.BUCKET) ||
+                      hover.value
+                  ? PAUSE_OPACITY
+                  : 1,
+            ),
           ),
         ),
       ),

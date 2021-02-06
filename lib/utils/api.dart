@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rulegamemobile/utils/models.dart';
 
-final API_HOST_ORIGIN = '10.0.2.2:7150';
+final API_HOST_ORIGIN = '192.168.1.9:7150';
 final BASE_ROUTE = '/w2020-dev';
 
 Future<GetColorMapResBody> getColorMapApi() async =>

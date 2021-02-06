@@ -95,7 +95,7 @@ abstract class _BoardStore with Store {
 
   // TODO: Implement logic to generate a random playerId
   @observable
-  String playerId = 'test-flutter12345678901';
+  String playerId = 'test-flutter1234567890123';
 
   @observable
   String exp = 'vmColorTest';
@@ -167,33 +167,38 @@ abstract class _BoardStore with Store {
         getDisplayResBody.code != Code.JUST_A_DISPLAY) {
       throw Exception(getDisplayResBody.errmsg);
     }
-    // FIXME: getDisplayResBody.board might be null when code is JUST_A_DISPLAY
-    board = ObservableMap.of({
-      for (var boardObject in getDisplayResBody.board.value)
-        boardObject.id: boardObject
-    });
+    // getDisplayResBody.board might be null when code is JUST_A_DISPLAY
+    if (getDisplayResBody.code == Code.JUST_A_DISPLAY &&
+        getDisplayResBody.board == null) {
+      await newEpisode();
+    } else {
+      board = ObservableMap.of({
+        for (var boardObject in getDisplayResBody.board.value)
+          boardObject.id: boardObject
+      });
 
-    isInBonus = getDisplayResBody.bonus;
-    bonusEpisodeNo = getDisplayResBody.bonusEpisodeNo;
-    canActivateBonus = getDisplayResBody.canActivateBonus;
-    finishCode = getDisplayResBody.finishCode;
-    totalRewardEarned = getDisplayResBody.totalRewardEarned;
-    totalBoardsPredicted = getDisplayResBody.totalBoardsPredicted;
-    seriesNo = getDisplayResBody.seriesNo;
-    transcript = ObservableList.of(getDisplayResBody.transcript);
-    rulesSrc = getDisplayResBody.rulesSrc;
-    ruleLineNo = getDisplayResBody.ruleLineNo;
-    numMovesMade = getDisplayResBody.numMovesMade;
-    episodeNo = getDisplayResBody.episodeNo;
-    movesLeftToStayInBonus = getDisplayResBody.movesLeftToStayInBonus;
-    transitionMap = getDisplayResBody.transitionMap;
-    isPaused = false;
-    bucketShapes = ObservableMap.of({
-      BucketPosition.BL: SpecialShape.BUCKET,
-      BucketPosition.BR: SpecialShape.BUCKET,
-      BucketPosition.TR: SpecialShape.BUCKET,
-      BucketPosition.TL: SpecialShape.BUCKET,
-    });
+      isInBonus = getDisplayResBody.bonus;
+      bonusEpisodeNo = getDisplayResBody.bonusEpisodeNo;
+      canActivateBonus = getDisplayResBody.canActivateBonus;
+      finishCode = getDisplayResBody.finishCode;
+      totalRewardEarned = getDisplayResBody.totalRewardEarned;
+      totalBoardsPredicted = getDisplayResBody.totalBoardsPredicted;
+      seriesNo = getDisplayResBody.seriesNo;
+      transcript = ObservableList.of(getDisplayResBody.transcript);
+      rulesSrc = getDisplayResBody.rulesSrc;
+      ruleLineNo = getDisplayResBody.ruleLineNo;
+      numMovesMade = getDisplayResBody.numMovesMade;
+      episodeNo = getDisplayResBody.episodeNo;
+      movesLeftToStayInBonus = getDisplayResBody.movesLeftToStayInBonus;
+      transitionMap = getDisplayResBody.transitionMap;
+      isPaused = false;
+      bucketShapes = ObservableMap.of({
+        BucketPosition.BL: SpecialShape.BUCKET,
+        BucketPosition.BR: SpecialShape.BUCKET,
+        BucketPosition.TR: SpecialShape.BUCKET,
+        BucketPosition.TL: SpecialShape.BUCKET,
+      });
+    }
   }
 
   @action
