@@ -5,7 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:rulegamemobile/mobx/board.dart';
 import 'package:rulegamemobile/utils/page.dart';
-import 'package:rulegamemobile/widgets/board.dart';
+import 'package:rulegamemobile/widgets/game.dart';
 
 void main() {
   runApp(MyApp());
@@ -104,7 +104,7 @@ class TrialsPage extends HookWidget {
       appBar: AppBar(
         title: Text('Rule Game'),
       ),
-      body: Column(children: [Center(child: Board())]),
+      body: Game(),
     );
   }
 }

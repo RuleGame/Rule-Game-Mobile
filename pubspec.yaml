@@ -22,7 +22,7 @@ environment:
 
 dependencies:
   flutter_hooks: ^0.15.0
-  flutter_layout_grid: ^0.10.2
+  flutter_layout_grid: ^0.11.0-nullsafety.1
   flutter_svg: ^0.20.0-nullsafety
   flutter:
     sdk: flutter
