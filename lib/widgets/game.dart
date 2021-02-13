@@ -25,36 +25,36 @@ class Game extends HookWidget {
 
     return SingleChildScrollView(
       padding: EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Observer(
-            builder: (_) => Text(
+      child: Observer(
+        builder: (_) => Column(
+          children: [
+            Text(
               'Number of moves made: ${store.numMovesMade}',
               style: textStyle,
             ),
-          ),
-          Board(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Observer(
-                builder: (_) => Text(
-                  'Board ${store.episodeNo + 1} of ${store.totalBoardsPredicted}',
-                  style: textStyle,
+            Board(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Observer(
+                  builder: (_) => Text(
+                    'Board ${store.episodeNo + 1} of ${store.totalBoardsPredicted}',
+                    style: textStyle,
+                  ),
                 ),
-              ),
-              Observer(
-                builder: (_) => Text(
-                  'Points: ${store.totalRewardEarned}',
-                  style: textStyle,
+                Observer(
+                  builder: (_) => Text(
+                    'Points: ${store.totalRewardEarned}',
+                    style: textStyle,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Text('No more moves left!'),
-          Text('Board succesfully cleared!'),
-          GuessRuleForm(),
-        ],
+              ],
+            ),
+            Text('No more moves left!'),
+            Text('Board succesfully cleared!'),
+            if (store.isGameCompleted) GuessRuleForm(),
+          ],
+        ),
       ),
     );
   }

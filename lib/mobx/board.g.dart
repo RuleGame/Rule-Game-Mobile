@@ -9,6 +9,14 @@ part of 'board.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$BoardStore on _BoardStore, Store {
+  Computed<bool> _$isGameCompletedComputed;
+
+  @override
+  bool get isGameCompleted =>
+      (_$isGameCompletedComputed ??= Computed<bool>(() => super.isGameCompleted,
+              name: '_BoardStore.isGameCompleted'))
+          .value;
+
   final _$boardAtom = Atom(name: '_BoardStore.board');
 
   @override
@@ -561,7 +569,8 @@ giveUpAt: ${giveUpAt},
 feedbackSwitches: ${feedbackSwitches},
 page: ${page},
 playerId: ${playerId},
-exp: ${exp}
+exp: ${exp},
+isGameCompleted: ${isGameCompleted}
     ''';
   }
 }

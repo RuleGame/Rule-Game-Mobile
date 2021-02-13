@@ -100,6 +100,13 @@ abstract class _BoardStore with Store {
   @observable
   String exp = 'vmColorTest';
 
+  @computed
+  bool get isGameCompleted =>
+      finishCode == FinishCode.STALEMATE ||
+      finishCode == FinishCode.LOST ||
+      finishCode == FinishCode.GIVEN_UP ||
+      finishCode == FinishCode.FINISH;
+
   @action
   void goToPage(Page page) {
     this.page = page;
