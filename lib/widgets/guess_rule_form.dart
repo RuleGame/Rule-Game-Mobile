@@ -11,11 +11,12 @@ class GuessRuleForm extends HookWidget {
     final store = Provider.of<BoardStore>(context);
 
     final controller = useTextEditingController();
+    final disableButtons = useState(true);
     useMount(() {
       controller.text = 'Saved guess';
+      disableButtons.value = controller.text.isEmpty;
       return null;
     });
-    final disableButtons = useState(true);
 
     return Column(
       children: [
