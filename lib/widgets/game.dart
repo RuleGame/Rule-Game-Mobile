@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:rulegamemobile/mobx/board.dart';
-import 'package:rulegamemobile/utils/hooks.dart';
 import 'package:rulegamemobile/utils/models.dart' hide Board;
 import 'package:rulegamemobile/widgets/board.dart';
 import 'package:rulegamemobile/widgets/guess_rule_form.dart';
@@ -18,11 +17,13 @@ class Game extends HookWidget {
         .style
         .apply(fontSizeFactor: 2.0)
         .apply(fontWeightDelta: 2);
-    final controller = useTextEditingController();
-    useMount(() {
-      controller.text = 'Saved guess';
-      return null;
-    });
+
+    // TODO: use SQLite to persist saved guess.
+    // final controller = useTextEditingController();
+    // useMount(() {
+    //   controller.text = 'Saved guess';
+    //   return null;
+    // });
 
     return SingleChildScrollView(
       padding: EdgeInsets.all(16),
