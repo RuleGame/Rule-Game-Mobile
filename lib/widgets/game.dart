@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:rulegamemobile/mobx/board.dart';
 import 'package:rulegamemobile/utils/hooks.dart';
+import 'package:rulegamemobile/utils/models.dart' hide Board;
 import 'package:rulegamemobile/widgets/board.dart';
 import 'package:rulegamemobile/widgets/guess_rule_form.dart';
 
@@ -50,8 +51,11 @@ class Game extends HookWidget {
                 ),
               ],
             ),
-            Text('No more moves left!'),
-            Text('Board succesfully cleared!'),
+            if (store.finishCode == FinishCode.FINISH)
+              Text('Board succesfully cleared!'),
+            if (store.finishCode == FinishCode.STALEMATE ||
+                store.finishCode == FinishCode.LOST)
+              Text('No more moves left!'),
             if (store.isGameCompleted) GuessRuleForm(),
           ],
         ),
