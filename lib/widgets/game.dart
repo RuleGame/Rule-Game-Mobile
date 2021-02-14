@@ -18,13 +18,6 @@ class Game extends HookWidget {
         .apply(fontSizeFactor: 2.0)
         .apply(fontWeightDelta: 2);
 
-    // TODO: use SQLite to persist saved guess.
-    // final controller = useTextEditingController();
-    // useMount(() {
-    //   controller.text = 'Saved guess';
-    //   return null;
-    // });
-
     return SingleChildScrollView(
       padding: EdgeInsets.all(16),
       child: Observer(
@@ -53,10 +46,16 @@ class Game extends HookWidget {
               ],
             ),
             if (store.finishCode == FinishCode.FINISH)
-              Text('Board succesfully cleared!'),
+              Text(
+                'Board succesfully cleared!',
+                style: textStyle.apply(color: Colors.green),
+              ),
             if (store.finishCode == FinishCode.STALEMATE ||
                 store.finishCode == FinishCode.LOST)
-              Text('No more moves left!'),
+              Text(
+                'No more moves left!',
+                style: textStyle.apply(color: Colors.red),
+              ),
             if (store.isGameCompleted) GuessRuleForm(),
           ],
         ),

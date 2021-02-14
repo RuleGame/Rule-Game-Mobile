@@ -20,3 +20,9 @@ const DEMOGRAPHICS_DIR = 'demographics';
 const PAUSE_OPACITY = 0.5;
 
 const BUCKET_COLOR = 'RED';
+
+class PREF_KEY {
+  static const LAST_GUESS = 'LAST_GUESS';
+  static const LAST_GUESS_SERIES_NO = 'LAST_GUESS_SERIES_NO';
+  static const WORKER_ID = 'WORKER_ID';
+}

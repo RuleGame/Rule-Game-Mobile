@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:provider/provider.dart';
+import 'package:rulegamemobile/constants/constants.dart';
 import 'package:rulegamemobile/mobx/board.dart';
 import 'package:rulegamemobile/utils/hooks.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GuessRuleForm extends HookWidget {
   @override
@@ -12,24 +14,48 @@ class GuessRuleForm extends HookWidget {
 
     final controller = useTextEditingController();
     final disableButtons = useState(true);
-    useMount(() {
-      controller.text = 'Saved guess';
+
+    final lastGuess = useSharedPref<String>(PREF_KEY.LAST_GUESS);
+    final lastGuessSeriesNo = useSharedPref<int>(PREF_KEY.LAST_GUESS_SERIES_NO);
+    final isPrevSeriesRuleGuessSaved =
+        store.seriesNo == lastGuessSeriesNo && lastGuess != null;
+
+    controller.addListener(() {
       disableButtons.value = controller.text.isEmpty;
-      return null;
     });
 
     return Column(
       children: [
-        TextField(
-          controller: controller,
-          onChanged: (value) {
-            disableButtons.value = value.isEmpty;
-          },
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Guess the rule',
+        Row(children: [
+          Expanded(
+            child: TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Guess the rule',
+              ),
+            ),
           ),
-        ),
+          if (isPrevSeriesRuleGuessSaved)
+            Container(
+              padding: EdgeInsets.only(left: 5, right: 5),
+              child: ClipOval(
+                child: Material(
+                  color: Colors.blue, // button color
+                  child: InkWell(
+                    splashColor: Colors.red, // inkwell color
+                    child: SizedBox(
+                        width: 56, height: 56, child: Icon(Icons.copy)),
+                    onTap: () {
+                      controller.text = lastGuess;
+                      controller.selection = TextSelection.fromPosition(
+                          TextPosition(offset: controller.text.length));
+                    },
+                  ),
+                ),
+              ),
+            ),
+        ]),
         Opacity(
           opacity: disableButtons.value ? 0.25 : 1,
           child: Column(
@@ -56,9 +82,22 @@ class GuessRuleForm extends HookWidget {
                               // enabled: false,
                               onPressed: disableButtons.value
                                   ? null
-                                  : () {
+                                  : () async {
                                       final ratingNum = i + 1;
-                                      store.guess(controller.text, ratingNum);
+                                      await store.guess(
+                                          controller.text, ratingNum);
+                                      final prefs =
+                                          await SharedPreferences.getInstance();
+                                      await Future.wait(
+                                        [
+                                          prefs.setString(PREF_KEY.LAST_GUESS,
+                                              controller.text),
+                                          prefs.setInt(
+                                            PREF_KEY.LAST_GUESS_SERIES_NO,
+                                            store.seriesNo,
+                                          ),
+                                        ],
+                                      );
                                     },
                               // onPressed: null,
                               child: Text(

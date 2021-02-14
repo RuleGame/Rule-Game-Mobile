@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:rulegamemobile/utils/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 AsyncSnapshot<T> useQuery<T>(Future<T> Function() create, [List<String> deps]) {
   deps ??= [];
@@ -41,4 +42,13 @@ String useSvg<T>(String shape) {
 
 void useMount(Dispose Function() effect) {
   useEffect(effect, []);
+}
+
+T useSharedPref<T>(String key, [List<String> deps]) {
+  deps ??= [];
+  final future = useMemoized(() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.get(key) as T;
+  }, deps);
+  return useFuture(future).data;
 }
