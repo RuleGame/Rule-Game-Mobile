@@ -107,6 +107,18 @@ abstract class _BoardStore with Store {
       finishCode == FinishCode.GIVEN_UP ||
       finishCode == FinishCode.FINISH;
 
+  @computed
+  Iterable<BoardObject> binBoardObjects(int bucketPosition) =>
+      transcript.reversed
+          .where(
+            (step) =>
+                step.bucketNo != null &&
+                step.code == Code.ACCEPT &&
+                step.bucketNo == bucketPosition,
+          )
+          .take(stackMemoryDepth)
+          .map((step) => board[step.pieceId]);
+
   @action
   void goToPage(Page page) {
     this.page = page;

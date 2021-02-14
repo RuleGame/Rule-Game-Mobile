@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:rulegamemobile/mobx/board.dart';
 import 'package:rulegamemobile/utils/models.dart' hide Board;
+import 'package:rulegamemobile/widgets/bin.dart';
 import 'package:rulegamemobile/widgets/board.dart';
 import 'package:rulegamemobile/widgets/guess_rule_form.dart';
 
@@ -22,12 +23,53 @@ class Game extends HookWidget {
       padding: EdgeInsets.all(16),
       child: Observer(
         builder: (_) => Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Text(
               'Number of moves made: ${store.numMovesMade}',
               style: textStyle,
             ),
-            Board(),
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          child: Bin(bucketPosition: BucketPosition.TL),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          child: Bin(bucketPosition: BucketPosition.BL),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Expanded(child: Board()),
+                  Column(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          child: Bin(bucketPosition: BucketPosition.TR),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          child: Bin(bucketPosition: BucketPosition.BR),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
