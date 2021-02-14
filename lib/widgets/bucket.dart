@@ -33,7 +33,7 @@ class Bucket extends HookWidget {
         },
         builder: (context, List<Object> candidateData, rejectedData) =>
             Transform.scale(
-          scale: hover.value ? 2.5 : 1.0,
+          scale: hover.value ? 4.0 : 1.0,
           child: Observer(
             builder: (_) => Shape(
               shape: boardStore.bucketShapes[pos],

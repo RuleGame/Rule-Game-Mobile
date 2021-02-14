@@ -11,8 +11,6 @@ void main() {
   runApp(MyApp());
 }
 
-//final BoardStore boardStore = BoardStore();
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -56,7 +54,12 @@ class Pages extends HookWidget {
           // TODO: Handle this case.
           break;
       }
-      return null;
+      return Scaffold(
+        body: Center(
+          child: Text(
+              'Error: This screen page is missing. Please restart the app. Or contact us.'),
+        ),
+      );
     });
   }
 }

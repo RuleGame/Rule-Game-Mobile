@@ -13,6 +13,7 @@ class Game extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final store = Provider.of<BoardStore>(context);
+    final binPadding = 0.5;
 
     final textStyle = DefaultTextStyle.of(context)
         .style
@@ -27,6 +28,7 @@ class Game extends HookWidget {
           children: [
             Text(
               'Number of moves made: ${store.numMovesMade}',
+              textAlign: TextAlign.center,
               style: textStyle,
             ),
             IntrinsicHeight(
@@ -39,13 +41,13 @@ class Game extends HookWidget {
                       children: [
                         Expanded(
                           child: Container(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(binPadding),
                             child: Bin(bucketPosition: BucketPosition.TL),
                           ),
                         ),
                         Expanded(
                           child: Container(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(binPadding),
                             child: Bin(bucketPosition: BucketPosition.BL),
                           ),
                         ),
@@ -57,13 +59,13 @@ class Game extends HookWidget {
                       children: [
                         Expanded(
                           child: Container(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(binPadding),
                             child: Bin(bucketPosition: BucketPosition.TR),
                           ),
                         ),
                         Expanded(
                           child: Container(
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(binPadding),
                             child: Bin(bucketPosition: BucketPosition.BR),
                           ),
                         ),
@@ -92,12 +94,14 @@ class Game extends HookWidget {
             if (store.finishCode == FinishCode.FINISH)
               Text(
                 'Board succesfully cleared!',
+                textAlign: TextAlign.center,
                 style: textStyle.apply(color: Colors.green),
               ),
             if (store.finishCode == FinishCode.STALEMATE ||
                 store.finishCode == FinishCode.LOST)
               Text(
                 'No more moves left!',
+                textAlign: TextAlign.center,
                 style: textStyle.apply(color: Colors.red),
               ),
             if (store.isGameCompleted) GuessRuleForm(),

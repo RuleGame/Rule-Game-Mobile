@@ -95,7 +95,7 @@ abstract class _BoardStore with Store {
 
   // TODO: Implement logic to generate a random playerId
   @observable
-  String playerId = 'test-flutter1234567890123';
+  String playerId = 'test-flutter12345678901234';
 
   @observable
   String exp = 'vmColorTest';
@@ -122,6 +122,14 @@ abstract class _BoardStore with Store {
   @computed
   bool get displayBucketBins => stackMemoryDepth > 0;
 
+  @computed
+  int getMoveNum(int boardObjectId) =>
+      transcript.indexWhere((step) =>
+          step.pieceId == boardObjectId &&
+          step.bucketNo != null &&
+          step.code == Code.ACCEPT) +
+      1;
+
   @action
   void goToPage(Page page) {
     this.page = page;
@@ -143,6 +151,10 @@ abstract class _BoardStore with Store {
     goToPage(Page.TRIALS);
 
     episodeId = postMostRecentEpisodeResBody.episodeId;
+    await updateEpisode(
+      postMostRecentEpisodeResBody.para,
+      postMostRecentEpisodeResBody.episodeId,
+    );
 
     if (noEpisodeStarted) {
       await newEpisode();

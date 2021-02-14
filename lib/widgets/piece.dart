@@ -16,8 +16,6 @@ class Piece extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final boardStore = Provider.of<BoardStore>(context);
-    final shapeWidget =
-        Shape(shape: boardObject.shape, color: boardObject.color);
 
     return Container(
       child: Stack(
@@ -32,11 +30,15 @@ class Piece extends HookWidget {
               return Draggable(
                 maxSimultaneousDrags: canDrag ? 1 : 0,
                 data: boardObject,
-                child: shapeWidget,
+                child:
+                    Shape(shape: boardObject.shape, color: boardObject.color),
                 feedback: Container(
                     child: Transform.translate(
                       offset: Offset(-75, -75),
-                      child: shapeWidget,
+                      child: Shape(
+                        shape: boardObject.shape,
+                        color: boardObject.color,
+                      ),
                     ),
                     width: 100,
                     height: 100),

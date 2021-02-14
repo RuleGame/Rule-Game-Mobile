@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:rulegamemobile/mobx/board.dart';
-import 'package:rulegamemobile/widgets/shape.dart';
+import 'package:rulegamemobile/widgets/bin_object.dart';
 
 class Bin extends HookWidget {
   final int bucketPosition;
@@ -16,8 +16,8 @@ class Bin extends HookWidget {
     final store = Provider.of<BoardStore>(context);
 
     return Container(
-      width: 25,
-      padding: EdgeInsets.all(1),
+      width: 46,
+      padding: EdgeInsets.all(0),
       decoration: BoxDecoration(
         border: Border.all(),
         borderRadius: BorderRadius.only(
@@ -28,11 +28,13 @@ class Bin extends HookWidget {
       child: Observer(
         builder: (_) => Column(
           mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: store
               .binBoardObjects(bucketPosition)
               .map(
-                (boardObject) =>
-                    Shape(shape: boardObject.shape, color: boardObject.color),
+                (boardObject) => BinObject(
+                  boardObject: boardObject,
+                ),
               )
               .toList(),
         ),
