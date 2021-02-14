@@ -119,6 +119,9 @@ abstract class _BoardStore with Store {
           .take(stackMemoryDepth)
           .map((step) => board[step.pieceId]);
 
+  @computed
+  bool get displayBucketBins => stackMemoryDepth > 0;
+
   @action
   void goToPage(Page page) {
     this.page = page;

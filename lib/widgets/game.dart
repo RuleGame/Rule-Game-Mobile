@@ -33,40 +33,42 @@ class Game extends HookWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          child: Bin(bucketPosition: BucketPosition.TL),
+                  if (store.displayBucketBins)
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            child: Bin(bucketPosition: BucketPosition.TL),
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          child: Bin(bucketPosition: BucketPosition.BL),
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            child: Bin(bucketPosition: BucketPosition.BL),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                   Expanded(child: Board()),
-                  Column(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          child: Bin(bucketPosition: BucketPosition.TR),
+                  if (store.displayBucketBins)
+                    Column(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            child: Bin(bucketPosition: BucketPosition.TR),
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          child: Bin(bucketPosition: BucketPosition.BR),
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            child: Bin(bucketPosition: BucketPosition.BR),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                 ],
               ),
             ),
