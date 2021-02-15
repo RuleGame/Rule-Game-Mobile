@@ -29,6 +29,9 @@ class GuessRuleForm extends HookWidget {
         Row(children: [
           Expanded(
             child: TextField(
+              // Setting maxLines to null dynamically increases the height of
+              // the TextField
+              maxLines: null,
               controller: controller,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
