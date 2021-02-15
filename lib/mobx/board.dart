@@ -95,7 +95,7 @@ abstract class _BoardStore with Store {
 
   // TODO: Implement logic to generate a random playerId
   @observable
-  String playerId = 'test-flutter12345678901234';
+  String playerId = 'test-flutter91';
 
   @observable
   String exp = 'vmColorTest';
@@ -150,15 +150,13 @@ abstract class _BoardStore with Store {
 
     goToPage(Page.TRIALS);
 
-    episodeId = postMostRecentEpisodeResBody.episodeId;
-    await updateEpisode(
-      postMostRecentEpisodeResBody.para,
-      postMostRecentEpisodeResBody.episodeId,
-    );
-
     if (noEpisodeStarted) {
       await newEpisode();
     } else {
+      await updateEpisode(
+        postMostRecentEpisodeResBody.para,
+        postMostRecentEpisodeResBody.episodeId,
+      );
       await updateBoard();
     }
   }
