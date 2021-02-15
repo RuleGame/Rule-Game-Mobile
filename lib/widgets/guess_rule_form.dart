@@ -87,19 +87,55 @@ class GuessRuleForm extends HookWidget {
                                   ? null
                                   : () async {
                                       final ratingNum = i + 1;
-                                      await store.guess(
-                                          controller.text, ratingNum);
-                                      final prefs =
-                                          await SharedPreferences.getInstance();
-                                      await Future.wait(
-                                        [
-                                          prefs.setString(PREF_KEY.LAST_GUESS,
-                                              controller.text),
-                                          prefs.setInt(
-                                            PREF_KEY.LAST_GUESS_SERIES_NO,
-                                            store.seriesNo,
-                                          ),
-                                        ],
+                                      final guess = controller.text;
+                                      // Prompt a dialog to confirm the guess
+                                      // and rating
+                                      await showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return SimpleDialog(
+                                            title: Text(
+                                              'Your Rating: $ratingNum\nYour Guess: $guess\n',
+                                            ),
+                                            children: <Widget>[
+                                              SimpleDialogOption(
+                                                onPressed: () async {
+                                                  await store.guess(
+                                                      guess, ratingNum);
+                                                  final prefs =
+                                                      await SharedPreferences
+                                                          .getInstance();
+                                                  await Future.wait(
+                                                    [
+                                                      prefs.setString(
+                                                          PREF_KEY.LAST_GUESS,
+                                                          guess),
+                                                      prefs.setInt(
+                                                        PREF_KEY
+                                                            .LAST_GUESS_SERIES_NO,
+                                                        store.seriesNo,
+                                                      ),
+                                                    ],
+                                                  );
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Row(children: <Widget>[
+                                                  Icon(Icons.check),
+                                                  Text('Submit')
+                                                ]),
+                                              ),
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Row(children: <Widget>[
+                                                  Icon(Icons.edit),
+                                                  Text('Edit')
+                                                ]),
+                                              ),
+                                            ],
+                                          );
+                                        },
                                       );
                                     },
                               // onPressed: null,

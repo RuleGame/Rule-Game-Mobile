@@ -57,7 +57,7 @@ class Pages extends HookWidget {
       return Scaffold(
         body: Center(
           child: Text(
-              'Error: This screen page is missing. Please restart the app. Or contact us.'),
+              'Error: This screen page (${boardStore.page}) is missing. Please restart the app. Or contact us.'),
         ),
       );
     });
