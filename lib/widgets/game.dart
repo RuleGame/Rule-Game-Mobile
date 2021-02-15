@@ -36,40 +36,48 @@ class Game extends HookWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   if (store.displayBucketBins)
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.all(binPadding),
-                            child: Bin(bucketPosition: BucketPosition.TL),
+                    Container(
+                      // Forces IntrinsicHeight to size based on Board child only
+                      height: 0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.all(binPadding),
+                              child: Bin(bucketPosition: BucketPosition.TL),
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.all(binPadding),
-                            child: Bin(bucketPosition: BucketPosition.BL),
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.all(binPadding),
+                              child: Bin(bucketPosition: BucketPosition.BL),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   Expanded(child: Board()),
                   if (store.displayBucketBins)
-                    Column(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.all(binPadding),
-                            child: Bin(bucketPosition: BucketPosition.TR),
+                    Container(
+                      // Forces IntrinsicHeight to size based on Board child only
+                      height: 0,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.all(binPadding),
+                              child: Bin(bucketPosition: BucketPosition.TR),
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.all(binPadding),
-                            child: Bin(bucketPosition: BucketPosition.BR),
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.all(binPadding),
+                              child: Bin(bucketPosition: BucketPosition.BR),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                 ],
               ),

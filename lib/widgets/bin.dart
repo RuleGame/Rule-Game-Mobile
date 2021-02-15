@@ -25,18 +25,23 @@ class Bin extends HookWidget {
           bottomRight: Radius.circular(20),
         ),
       ),
-      child: Observer(
-        builder: (_) => Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: store
-              .binBoardObjects(bucketPosition)
-              .map(
-                (boardObject) => BinObject(
-                  boardObject: boardObject,
-                ),
-              )
-              .toList(),
+      child: SingleChildScrollView(
+        reverse: true,
+        child: Observer(
+          builder: (_) => Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ...store
+                  .binBoardObjects(bucketPosition)
+                  .map(
+                    (boardObject) => BinObject(
+                      boardObject: boardObject,
+                    ),
+                  )
+                  .toList(),
+            ],
+          ),
         ),
       ),
     );
