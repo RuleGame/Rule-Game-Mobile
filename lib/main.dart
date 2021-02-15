@@ -147,9 +147,12 @@ class DemographicsPage extends HookWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Rule Game'),
+        title: Text('Demographics'),
       ),
-      body: Demographics(),
+      body: Container(
+        child: Demographics(),
+        padding: EdgeInsets.all(10),
+      ),
     );
   }
 }
