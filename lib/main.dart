@@ -45,8 +45,7 @@ class Pages extends HookWidget {
         case Page.TRIALS:
           return TrialsPage();
         case Page.DEMOGRAPHICS_INSTRUCTIONS:
-          // TODO: Handle this case.
-          break;
+          return DemographicsInstructionsPage();
         case Page.DEMOGRAPHICS:
           // TODO: Handle this case.
           break;
@@ -108,6 +107,36 @@ class TrialsPage extends HookWidget {
         title: Text('Rule Game'),
       ),
       body: Game(),
+    );
+  }
+}
+
+class DemographicsInstructionsPage extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final boardStore = Provider.of<BoardStore>(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Rule Game'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "Thank you! We'll now ask a few questions, and you'll be done!",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+          ),
+          ElevatedButton(
+            child: Text('Next'),
+            onPressed: () {
+              boardStore.goToPage(Page.DEMOGRAPHICS);
+            },
+          ),
+        ],
+      ),
     );
   }
 }
