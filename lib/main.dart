@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:rulegamemobile/mobx/board.dart';
 import 'package:rulegamemobile/utils/page.dart';
+import 'package:rulegamemobile/widgets/demographics.dart';
 import 'package:rulegamemobile/widgets/game.dart';
 
 void main() {
@@ -47,7 +48,7 @@ class Pages extends HookWidget {
         case Page.DEMOGRAPHICS_INSTRUCTIONS:
           return DemographicsInstructionsPage();
         case Page.DEMOGRAPHICS:
-          // TODO: Handle this case.
+          return DemographicsPage();
           break;
         case Page.DEBRIEFING:
           // TODO: Handle this case.
@@ -137,6 +138,18 @@ class DemographicsInstructionsPage extends HookWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class DemographicsPage extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Rule Game'),
+      ),
+      body: Demographics(),
     );
   }
 }

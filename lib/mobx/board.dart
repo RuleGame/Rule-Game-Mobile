@@ -95,7 +95,7 @@ abstract class _BoardStore with Store {
 
   // TODO: Implement logic to generate a random playerId
   @observable
-  String playerId = 'test-flutter91';
+  String playerId = 'test-flutter1234567890123';
 
   @observable
   String exp = 'vmColorTest';
