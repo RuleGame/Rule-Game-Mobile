@@ -17,8 +17,13 @@ class GuessRuleForm extends HookWidget {
 
     final lastGuess = useSharedPref<String>(PREF_KEY.LAST_GUESS);
     final lastGuessSeriesNo = useSharedPref<int>(PREF_KEY.LAST_GUESS_SERIES_NO);
-    final isPrevSeriesRuleGuessSaved =
-        store.seriesNo == lastGuessSeriesNo && lastGuess != null;
+    final lastGuessPlayerId =
+        useSharedPref<String>(PREF_KEY.LAST_GUESS_PLAYER_ID);
+    final lastGuessExp = useSharedPref<String>(PREF_KEY.LAST_GUESS_EXP);
+    final isPrevSeriesRuleGuessSaved = store.playerId == lastGuessPlayerId &&
+        store.exp == lastGuessExp &&
+        store.seriesNo == lastGuessSeriesNo &&
+        lastGuess != null;
 
     controller.addListener(() {
       disableButtons.value = controller.text.isEmpty;
@@ -96,6 +101,7 @@ class GuessRuleForm extends HookWidget {
                                           return SimpleDialog(
                                             title: Text(
                                               'Your Rating: $ratingNum\nYour Guess: $guess\n',
+                                              textAlign: TextAlign.center,
                                             ),
                                             children: <Widget>[
                                               SimpleDialogOption(
@@ -108,8 +114,18 @@ class GuessRuleForm extends HookWidget {
                                                   await Future.wait(
                                                     [
                                                       prefs.setString(
-                                                          PREF_KEY.LAST_GUESS,
-                                                          guess),
+                                                        PREF_KEY.LAST_GUESS,
+                                                        guess,
+                                                      ),
+                                                      prefs.setString(
+                                                        PREF_KEY.LAST_GUESS_EXP,
+                                                        store.exp,
+                                                      ),
+                                                      prefs.setString(
+                                                        PREF_KEY
+                                                            .LAST_GUESS_PLAYER_ID,
+                                                        store.playerId,
+                                                      ),
                                                       prefs.setInt(
                                                         PREF_KEY
                                                             .LAST_GUESS_SERIES_NO,
