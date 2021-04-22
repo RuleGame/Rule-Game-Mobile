@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:provider/provider.dart';
+import 'package:rulegamemobile/mobx/board.dart';
 
 final genders = ['Male', 'Female', 'Other', 'NA|Prefer not to say'];
 final native = ['Yes', 'No'];
@@ -92,6 +94,8 @@ class Demographics extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final store = Provider.of<BoardStore>(context);
+
     final selectedGender = useState<String>();
     final invalidGender = useState<bool>(false);
     final selectedNative = useState<String>();
@@ -101,6 +105,11 @@ class Demographics extends HookWidget {
     final selectedFun = useState<String>();
     final invalidFun = useState<bool>(false);
     final textStyle = TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold);
+
+    final nativeLanguageController = useTextEditingController();
+    final languagesController = useTextEditingController();
+    final ageController = useTextEditingController();
+    final commentsController = useTextEditingController();
 
     return Form(
       key: _formKey,
@@ -133,24 +142,35 @@ class Demographics extends HookWidget {
               selected: selectedNative.value,
             ),
             Divider(),
-            if (selectedNative.value == native[0])
+            if (selectedNative.value == native[1]) ...[
               Text(
                 '2.5 Please indicate your native language or languages:',
                 textAlign: TextAlign.center,
                 style: textStyle,
               ),
-            if (selectedNative.value == native[0]) TextFormField(),
+              TextFormField(controller: nativeLanguageController),
+            ],
             Divider(),
             Text(
               "3. What other languages do you speak? Please enter 'none' if just English.",
               textAlign: TextAlign.center,
               style: textStyle,
             ),
-            TextFormField(),
+            TextFormField(controller: languagesController),
+            Divider(),
+            Text(
+              '4. How old are you?',
+              textAlign: TextAlign.center,
+              style: textStyle,
+            ),
+            TextFormField(
+              controller: ageController,
+              keyboardType: TextInputType.number,
+            ),
             Divider(),
             RadioGroup(
               label:
-                  '4. What is the highest degree or level of school you have completed. If currently enrolled, indicate highest degree received',
+                  '5. What is the highest degree or level of school you have completed. If currently enrolled, indicate highest degree received',
               required: true,
               values: degrees,
               onChange: (value) {
@@ -162,7 +182,7 @@ class Demographics extends HookWidget {
             ),
             Divider(),
             RadioGroup(
-              label: '5. How fun was this game?',
+              label: '6. How fun was this game?',
               required: true,
               values: fun,
               onChange: (value) {
@@ -174,13 +194,13 @@ class Demographics extends HookWidget {
             ),
             Divider(),
             Text(
-              '6. Comments',
+              '7. Comments',
               textAlign: TextAlign.center,
               style: textStyle,
             ),
-            TextFormField(),
+            TextFormField(controller: commentsController),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 var invalid = false;
                 if (selectedGender.value == null) {
                   invalidGender.value = true;
@@ -200,8 +220,25 @@ class Demographics extends HookWidget {
                 }
                 // Validate returns true if the form is valid, otherwise false.
                 if (_formKey.currentState.validate() && !invalid) {
-                  // If the form is valid, display a snackbar. In the real world,
-                  // you'd often call a server or save the information in a database.
+                  await store.recordDemographics(
+                    {
+                      'mobile': true,
+                      'gender': selectedGender.value,
+                      'native': selectedNative.value,
+                      // Only include native language if not a native english speaker
+                      if (selectedNative.value == native[1])
+                        'native language': nativeLanguageController.text,
+                      'languages': languagesController.text,
+                      'age': ageController.text,
+                      'degree': selectedDegree.value,
+                      'fun': selectedFun.value,
+                      'comments': commentsController.text,
+                    }.entries.fold(
+                          'key,value\n',
+                          (value, element) =>
+                              '$value${element.key},${element.value}\n',
+                        ),
+                  );
                 }
               },
               child: Text('Submit'),
