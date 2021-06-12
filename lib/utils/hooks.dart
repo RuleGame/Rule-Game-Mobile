@@ -3,22 +3,27 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:rulegamemobile/utils/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-AsyncSnapshot<T> useQuery<T>(Future<T> Function() create, [List<String> deps]) {
+AsyncSnapshot<T?> useQuery<T>(Future<T> Function() create,
+    [List<Object?>? deps]) {
   deps ??= [];
   final future = useMemoized(create, deps);
   // TODO: Add error handling for the future
-  return useFuture(future);
+  return useFuture<T?>(future, initialData: null);
 }
 
-Map<String, List<int>> cachedColorMap;
+Map<String, List<int>>? cachedColorMap;
 
-Color useColorRgb<T>(String colorName, {double opacity}) {
+Color? useColorRgb<T>(String? colorName, {double? opacity}) {
   final response = useQuery(
       () async => cachedColorMap ?? (await getColorMapApi()).colorToRgbMap,
       [colorName]);
   if (response.data != null && colorName != null) {
     cachedColorMap = response.data;
-    final colorRgbTuple = response.data[colorName];
+    final colorRgbTuple = response.data![colorName];
+    if (colorRgbTuple == null) {
+      throw Exception(
+          'RGB color for "$colorName" is missing in color mapping.');
+    }
     return Color.fromRGBO(
       colorRgbTuple[0],
       colorRgbTuple[1],
@@ -33,10 +38,12 @@ Color useColorRgb<T>(String colorName, {double opacity}) {
 //Map<String, String> cachedSvgs = {"HAPPY": "hi"};
 Map<String, String> cachedSvgs = {};
 
-String useSvg<T>(String shape) {
-  final response =
-      useQuery(() async => cachedSvgs[shape] ?? getShapeApi(shape), [shape]);
-  cachedSvgs[shape] = response.data as String;
+String? useSvg<T>(String shape) {
+  final response = useQuery(
+      () async => (cachedSvgs[shape] ?? (await getShapeApi(shape))), [shape]);
+  if (response.data != null) {
+    cachedSvgs[shape] = response.data!;
+  }
   return response.data;
 }
 
@@ -44,11 +51,11 @@ void useMount(Dispose Function() effect) {
   useEffect(effect, []);
 }
 
-T useSharedPref<T>(String key, [List<String> deps]) {
+T? useSharedPref<T>(String key, [List<Object?>? deps]) {
   deps ??= [];
   final future = useMemoized(() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.get(key) as T;
   }, deps);
-  return useFuture(future).data;
+  return useFuture(future, initialData: null).data;
 }

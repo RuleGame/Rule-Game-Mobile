@@ -51,14 +51,14 @@ class GuessRuleForm extends HookWidget {
                 child: Material(
                   color: Colors.blue, // button color
                   child: InkWell(
-                    splashColor: Colors.red, // inkwell color
-                    child: SizedBox(
-                        width: 56, height: 56, child: Icon(Icons.copy)),
+                    splashColor: Colors.red,
                     onTap: () {
-                      controller.text = lastGuess;
+                      controller.text = lastGuess ?? '';
                       controller.selection = TextSelection.fromPosition(
                           TextPosition(offset: controller.text.length));
-                    },
+                    }, // inkwell color
+                    child: SizedBox(
+                        width: 56, height: 56, child: Icon(Icons.copy)),
                   ),
                 ),
               ),
@@ -154,6 +154,13 @@ class GuessRuleForm extends HookWidget {
                                         },
                                       );
                                     },
+                              style: OutlinedButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0),
+                                ),
+                                side: BorderSide(width: 4),
+                              ),
                               // onPressed: null,
                               child: Text(
                                 '${i + 1}',
@@ -161,13 +168,6 @@ class GuessRuleForm extends HookWidget {
                                     .style
                                     .apply(fontSizeFactor: 1.5)
                                     .apply(fontWeightDelta: 2),
-                              ),
-                              style: OutlinedButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                ),
-                                side: BorderSide(width: 4),
                               ),
                             ),
                           ),

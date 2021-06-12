@@ -5,11 +5,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rulegamemobile/utils/hooks.dart';
 
 class Shape extends HookWidget {
-  Shape({this.shape, this.color, this.opacity});
+  Shape({required this.shape, this.color, this.opacity});
 
-  final String color;
+  final String? color;
   final String shape;
-  final double opacity;
+  final double? opacity;
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +17,7 @@ class Shape extends HookWidget {
     final svg = useSvg(shape);
 
     return svg != null && !(color != null && colorRgb == null)
-        ? SvgPicture.string(
-            svg,
-            color: colorRgb,
-          )
+        ? SvgPicture.string(svg, color: colorRgb)
         : Container();
   }
 }

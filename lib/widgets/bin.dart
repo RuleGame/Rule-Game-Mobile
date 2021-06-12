@@ -9,7 +9,7 @@ import 'package:rulegamemobile/widgets/bin_object.dart';
 class Bin extends HookWidget {
   final int bucketPosition;
 
-  Bin({this.bucketPosition});
+  Bin({required this.bucketPosition});
 
   @override
   Widget build(BuildContext context) {

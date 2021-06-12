@@ -75,11 +75,11 @@ class IntroductionPage extends HookWidget {
       ),
       body: Center(
         child: ElevatedButton(
-          child: Text('Start'),
           onPressed: () {
             boardStore.goToPage(Page.LOADING_TRIALS);
             boardStore.loadTrials();
           },
+          child: Text('Start'),
         ),
       ),
     );

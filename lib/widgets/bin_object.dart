@@ -10,7 +10,7 @@ import 'package:rulegamemobile/widgets/shape.dart';
 class BinObject extends HookWidget {
   final BoardObject boardObject;
 
-  BinObject({this.boardObject});
+  BinObject({required this.boardObject});
 
   @override
   Widget build(BuildContext context) {

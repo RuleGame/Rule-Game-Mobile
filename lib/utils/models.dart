@@ -59,7 +59,7 @@ class TransitionMap {
 class BoardObject {
   final List<int> buckets;
   final String color;
-  final int dropped;
+  final int? dropped;
   final int id;
   final String shape;
   final int x;
@@ -86,7 +86,7 @@ class Board {
             ? (List.castFrom<dynamic, Map<String, dynamic>>(json['value']))
                 .map((m) => BoardObject.fromJson(m))
                 .toList()
-            : null,
+            : [],
         id = json['id'];
 }
 
@@ -104,11 +104,15 @@ class RulesSrc {
 
 class TranscriptElement {
   final int pos;
-  final int bucketNo;
+  final int? bucketNo;
   final int code;
   final int pieceId;
 
-  TranscriptElement({this.pos, this.bucketNo, this.code, this.pieceId});
+  TranscriptElement(
+      {required this.pos,
+      this.bucketNo,
+      required this.code,
+      required this.pieceId});
 
   factory TranscriptElement.fromJson(Map<String, dynamic> json) =>
       TranscriptElement(
@@ -120,7 +124,7 @@ class TranscriptElement {
 }
 
 class Display {
-  final Board board;
+  final Board? board;
   final int finishCode;
   final int numMovesMade;
   final bool bonus;
@@ -130,12 +134,14 @@ class Display {
   final bool guessSaved;
   final int seriesNo;
   final int totalBoardsPredicted;
-  final double totalRewardEarned;
-  final List<TranscriptElement> transcript;
-  final RulesSrc rulesSrc;
+  final double? totalRewardEarned;
+  final List<TranscriptElement>? transcript;
+  final RulesSrc? rulesSrc;
   final int ruleLineNo;
-  final int movesLeftToStayInBonus;
-  final TransitionMap transitionMap;
+  final int? movesLeftToStayInBonus;
+  final TransitionMap? transitionMap;
+  final String ruleSetName;
+  final String trialListId;
 
   Display.fromJson(Map<String, dynamic> json)
       : board = json['board'] != null ? Board.fromJson(json['board']) : null,
@@ -148,7 +154,7 @@ class Display {
         guessSaved = json['guessSaved'],
         seriesNo = json['seriesNo'],
         totalBoardsPredicted = json['totalBoardsPredicted'],
-        totalRewardEarned = (json['totalRewardEarned'] as int)?.toDouble(),
+        totalRewardEarned = (json['totalRewardEarned'] as int?)?.toDouble(),
         transcript = json['transcript'] != null
             ? (List.castFrom<dynamic, Map<String, dynamic>>(json['transcript']))
                 .map((m) => TranscriptElement.fromJson(m))
@@ -161,7 +167,9 @@ class Display {
         movesLeftToStayInBonus = json['movesLeftToStayInBonus'],
         transitionMap = json['transitionMap'] != null
             ? TransitionMap.fromJson(json['transitionMap'])
-            : null;
+            : null,
+        ruleSetName = json['ruleSetName'],
+        trialListId = json['trialListId'];
 }
 
 class Para {
@@ -187,11 +195,11 @@ class Para {
   final int stackMemoryDepth;
   final int maxBoards;
   final int activateBonusAt;
-  final int giveUpAt;
+  final int? giveUpAt;
 
   Para.fromJson(Map<String, dynamic> json)
       : clearingThreshold = json['clearing_threshold'],
-        maxPoints = (json['max_points'] as int)?.toDouble(),
+        maxPoints = (json['max_points'] as int?)?.toDouble() ?? 0.0,
         b = json['b'],
         minPoints = json['min_points'],
         maxColors = json['max_colors'],
@@ -227,7 +235,7 @@ class DummyReqQuery implements ReqQuery {
 class GetShapeReqQuery implements ReqQuery {
   final String shape;
 
-  GetShapeReqQuery({this.shape});
+  GetShapeReqQuery({required this.shape});
 
   @override
   Map<String, dynamic> toMap() => {'shape': shape};
@@ -270,7 +278,11 @@ class PostWriteFileReqBody implements ReqBody {
   final String file;
   final String data;
 
-  PostWriteFileReqBody({this.dir, this.file, this.data});
+  PostWriteFileReqBody({
+    required this.dir,
+    required this.file,
+    required this.data,
+  });
 
   @override
   Map<String, dynamic> toMap() => {
@@ -289,12 +301,12 @@ class PostPlayerResBody implements ResBody {
   final String completionCode;
 
   PostPlayerResBody({
-    this.errmsg,
-    this.error,
-    this.newlyRegistered,
-    this.trialListId,
-    this.trialList,
-    this.completionCode,
+    required this.errmsg,
+    required this.error,
+    required this.newlyRegistered,
+    required this.trialListId,
+    required this.trialList,
+    required this.completionCode,
   });
 
   PostPlayerResBody.fromJson(Map<String, dynamic> json)
@@ -310,7 +322,7 @@ class PostPlayerReqBody implements ReqBody {
   final String playerId;
   final String exp;
 
-  PostPlayerReqBody({this.playerId, this.exp});
+  PostPlayerReqBody({required this.playerId, required this.exp});
 
   @override
   Map<String, dynamic> toMap() => {
@@ -323,9 +335,9 @@ class PostMostRecentEpisodeResBody implements ResBody {
   final String errmsg;
   final bool error;
   final bool alreadyFinished;
-  final Display display;
+  final Display? display;
   final String episodeId;
-  final Para para;
+  final Para? para;
   final String completionCode;
 
   PostMostRecentEpisodeResBody.fromJson(Map<String, dynamic> json)
@@ -342,7 +354,7 @@ class PostMostRecentEpisodeResBody implements ResBody {
 class PostMostRecentEpisodeReqBody implements ReqBody {
   final String playerId;
 
-  PostMostRecentEpisodeReqBody({this.playerId});
+  PostMostRecentEpisodeReqBody({required this.playerId});
 
   @override
   Map<String, dynamic> toMap() => {
@@ -354,9 +366,9 @@ class PostNewEpisodeResBody implements ResBody {
   final String errmsg;
   final bool error;
   final bool alreadyFinished;
-  final Display display;
+  final Display? display;
   final String episodeId;
-  final Para para;
+  final Para? para;
   final String completionCode;
 
   PostNewEpisodeResBody.fromJson(Map<String, dynamic> json)
@@ -373,7 +385,7 @@ class PostNewEpisodeResBody implements ResBody {
 class PostNewEpisodeReqBody implements ReqBody {
   final String playerId;
 
-  PostNewEpisodeReqBody({this.playerId});
+  PostNewEpisodeReqBody({required this.playerId});
 
   @override
   Map<String, dynamic> toMap() => {
@@ -394,14 +406,14 @@ class GetDisplayResBody extends Display implements ResBody {
 class GetDisplayReqQuery implements ReqQuery {
   final String episode;
 
-  GetDisplayReqQuery({this.episode});
+  GetDisplayReqQuery({required this.episode});
 
   @override
   Map<String, dynamic> toMap() => {'episode': episode};
 }
 
 class PostMoveResBody implements ResBody {
-  final Board board;
+  final Board? board;
   final bool bonus;
   final int code;
   final String errmsg;
@@ -428,12 +440,12 @@ class PostMoveReqBody implements ReqBody {
   final int cnt;
 
   PostMoveReqBody({
-    this.episode,
-    this.x,
-    this.y,
-    this.bx,
-    this.by,
-    this.cnt,
+    required this.episode,
+    required this.x,
+    required this.y,
+    required this.bx,
+    required this.by,
+    required this.cnt,
   });
 
   @override
@@ -448,7 +460,7 @@ class PostMoveReqBody implements ReqBody {
 }
 
 class PostPickResBody implements ResBody {
-  final Board board;
+  final Board? board;
   final bool bonus;
   final int code;
   final String errmsg;
@@ -473,10 +485,10 @@ class PostPickReqBody implements ReqBody {
   final int cnt;
 
   PostPickReqBody({
-    this.episode,
-    this.x,
-    this.y,
-    this.cnt,
+    required this.episode,
+    required this.x,
+    required this.y,
+    required this.cnt,
   });
 
   @override
@@ -500,7 +512,7 @@ class PostActivateBonusResBody implements ResBody {
 class PostActivateBonusReqBody implements ReqBody {
   final String playerId;
 
-  PostActivateBonusReqBody({this.playerId});
+  PostActivateBonusReqBody({required this.playerId});
 
   @override
   Map<String, dynamic> toMap() => {
@@ -521,7 +533,7 @@ class PostGiveUpReqBody implements ReqBody {
   final String playerId;
   final int seriesNo;
 
-  PostGiveUpReqBody({this.playerId, this.seriesNo});
+  PostGiveUpReqBody({required this.playerId, required this.seriesNo});
 
   @override
   Map<String, dynamic> toMap() => {
@@ -549,9 +561,9 @@ class PostGuessReqBody implements ReqBody {
   final int confidence;
 
   PostGuessReqBody({
-    this.episode,
-    this.data,
-    this.confidence,
+    required this.episode,
+    required this.data,
+    required this.confidence,
   });
 
   @override

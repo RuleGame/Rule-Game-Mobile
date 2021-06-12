@@ -37,16 +37,16 @@ class RadioGroup extends HookWidget {
   final String label;
   final List<String> values;
   final bool isInvalid;
-  final void Function(String value) onChange;
-  final String selected;
+  final void Function(String? value) onChange;
+  final String? selected;
 
   RadioGroup({
-    this.required,
-    this.label,
-    this.values,
-    this.isInvalid,
-    this.onChange,
-    this.selected,
+    required this.required,
+    required this.label,
+    required this.values,
+    required this.isInvalid,
+    required this.onChange,
+    required this.selected,
   });
 
   @override
@@ -79,7 +79,7 @@ class RadioGroup extends HookWidget {
             title: Text(option),
             value: option,
             groupValue: selected,
-            onChanged: (String value) {
+            onChanged: (String? value) {
               onChange(value);
             },
           ),
@@ -96,13 +96,13 @@ class Demographics extends HookWidget {
   Widget build(BuildContext context) {
     final store = Provider.of<BoardStore>(context);
 
-    final selectedGender = useState<String>();
+    final selectedGender = useState<String?>(null);
     final invalidGender = useState<bool>(false);
-    final selectedNative = useState<String>();
+    final selectedNative = useState<String?>(null);
     final invalidNative = useState<bool>(false);
-    final selectedDegree = useState<String>();
+    final selectedDegree = useState<String?>(null);
     final invalidDegree = useState<bool>(false);
-    final selectedFun = useState<String>();
+    final selectedFun = useState<String?>(null);
     final invalidFun = useState<bool>(false);
     final textStyle = TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold);
 
@@ -219,7 +219,7 @@ class Demographics extends HookWidget {
                   invalid = true;
                 }
                 // Validate returns true if the form is valid, otherwise false.
-                if (_formKey.currentState.validate() && !invalid) {
+                if (_formKey.currentState!.validate() && !invalid) {
                   await store.recordDemographics(
                     {
                       'mobile': true,

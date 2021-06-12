@@ -11,13 +11,14 @@ import 'package:rulegamemobile/widgets/shape.dart';
 class Piece extends HookWidget {
   final BoardObject boardObject;
 
-  Piece({this.boardObject});
+  Piece({required this.boardObject});
 
   @override
   Widget build(BuildContext context) {
     final boardStore = Provider.of<BoardStore>(context);
 
     return Container(
+      constraints: BoxConstraints.expand(),
       child: Observer(
         builder: (_) => Stack(
           // fit: StackFit.expand,
@@ -32,26 +33,29 @@ class Piece extends HookWidget {
                   return Draggable(
                     maxSimultaneousDrags: canDrag ? 1 : 0,
                     data: boardObject,
-                    child: Shape(
-                        shape: boardObject.shape, color: boardObject.color),
                     feedback: Container(
+                        width: 100,
+                        height: 100,
                         child: Transform.translate(
                           offset: Offset(-75, -75),
                           child: Shape(
                             shape: boardObject.shape,
                             color: boardObject.color,
                           ),
-                        ),
-                        width: 100,
-                        height: 100),
-                    dragAnchor: DragAnchor.pointer,
+                        )),
+                    dragAnchorStrategy: pointerDragAnchorStrategy,
+                    child: Shape(
+                      shape: boardObject.shape,
+                      color: boardObject.color,
+                    ),
                   );
                 },
               ),
             ),
             if (boardObject.buckets.isEmpty)
               Positioned.fill(child: Shape(shape: SpecialShape.CLOSE)),
-            if (boardStore.showGridMemoryOrder)
+            if (boardStore.showGridMemoryOrder &&
+                boardStore.getMoveNum(boardObject.id) > 0)
               Container(
                 padding: EdgeInsets.all(0.5),
                 decoration: BoxDecoration(
@@ -64,7 +68,6 @@ class Piece extends HookWidget {
           ],
         ),
       ),
-      constraints: BoxConstraints.expand(),
     );
   }
 }

@@ -61,7 +61,7 @@ abstract class _BoardStore with Store {
   RulesSrc rulesSrc = RulesSrc();
 
   @observable
-  int ruleLineNo;
+  int? ruleLineNo;
 
   @observable
   int numMovesMade = 0;
@@ -73,19 +73,19 @@ abstract class _BoardStore with Store {
   int stackMemoryDepth = 0;
 
   @observable
-  int movesLeftToStayInBonus;
+  int? movesLeftToStayInBonus;
 
   @observable
-  TransitionMap transitionMap;
+  TransitionMap? transitionMap;
 
   @observable
-  String episodeId;
+  String? episodeId;
 
   @observable
   double maxPoints = 0;
 
   @observable
-  int giveUpAt;
+  int? giveUpAt;
 
   @observable
   String feedbackSwitches = FeedbackSwitches.FIXED;
@@ -95,7 +95,7 @@ abstract class _BoardStore with Store {
 
   // TODO: Implement logic to generate a random playerId
   @observable
-  String playerId = 'test-flutter1234567890123';
+  String playerId = 'test-flutter123456789012345';
 
   @observable
   String exp = 'vmColorTest';
@@ -107,7 +107,6 @@ abstract class _BoardStore with Store {
       finishCode == FinishCode.GIVEN_UP ||
       finishCode == FinishCode.FINISH;
 
-  @computed
   Iterable<BoardObject> binBoardObjects(int bucketPosition) =>
       transcript.reversed
           .where(
@@ -117,12 +116,11 @@ abstract class _BoardStore with Store {
                 step.bucketNo == bucketPosition,
           )
           .take(stackMemoryDepth)
-          .map((step) => board[step.pieceId]);
+          .map((step) => board[step.pieceId]!);
 
   @computed
   bool get displayBucketBins => stackMemoryDepth > 0;
 
-  @computed
   int getMoveNum(int boardObjectId) =>
       transcript.indexWhere((step) =>
           step.pieceId == boardObjectId &&
@@ -154,7 +152,7 @@ abstract class _BoardStore with Store {
       await newEpisode();
     } else {
       await updateEpisode(
-        postMostRecentEpisodeResBody.para,
+        postMostRecentEpisodeResBody.para!,
         postMostRecentEpisodeResBody.episodeId,
       );
       await updateBoard();
@@ -171,7 +169,7 @@ abstract class _BoardStore with Store {
       goToPage(Page.DEMOGRAPHICS_INSTRUCTIONS);
     } else {
       await updateEpisode(
-        postNewEpisodeResBody.para,
+        postNewEpisodeResBody.para!,
         postNewEpisodeResBody.episodeId,
       );
       await updateBoard();
@@ -194,7 +192,7 @@ abstract class _BoardStore with Store {
   @action
   Future<void> updateBoard() async {
     final getDisplayResBody =
-        await getDisplayApi(query: GetDisplayReqQuery(episode: episodeId));
+        await getDisplayApi(query: GetDisplayReqQuery(episode: episodeId!));
     if (getDisplayResBody.code < 0 &&
         getDisplayResBody.code != Code.JUST_A_DISPLAY) {
       throw Exception(getDisplayResBody.errmsg);
@@ -205,7 +203,7 @@ abstract class _BoardStore with Store {
       await newEpisode();
     } else {
       board = ObservableMap.of({
-        for (var boardObject in getDisplayResBody.board.value)
+        for (var boardObject in getDisplayResBody.board!.value)
           boardObject.id: boardObject
       });
 
@@ -213,11 +211,11 @@ abstract class _BoardStore with Store {
       bonusEpisodeNo = getDisplayResBody.bonusEpisodeNo;
       canActivateBonus = getDisplayResBody.canActivateBonus;
       finishCode = getDisplayResBody.finishCode;
-      totalRewardEarned = getDisplayResBody.totalRewardEarned;
+      totalRewardEarned = getDisplayResBody.totalRewardEarned!;
       totalBoardsPredicted = getDisplayResBody.totalBoardsPredicted;
       seriesNo = getDisplayResBody.seriesNo;
-      transcript = ObservableList.of(getDisplayResBody.transcript);
-      rulesSrc = getDisplayResBody.rulesSrc;
+      transcript = ObservableList.of(getDisplayResBody.transcript!);
+      rulesSrc = getDisplayResBody.rulesSrc!;
       ruleLineNo = getDisplayResBody.ruleLineNo;
       numMovesMade = getDisplayResBody.numMovesMade;
       episodeNo = getDisplayResBody.episodeNo;
@@ -235,14 +233,14 @@ abstract class _BoardStore with Store {
 
   @action
   Future<void> move(int boardObjectId, int bucket) async {
-    final boardObject = board[boardObjectId];
+    final boardObject = board[boardObjectId]!;
     final postMoveResBody = await postMoveApi(
       body: PostMoveReqBody(
-        episode: episodeId,
+        episode: episodeId!,
         x: boardObject.x,
         y: boardObject.y,
-        bx: boardPositionToBxBy[bucket].bx,
-        by: boardPositionToBxBy[bucket].by,
+        bx: boardPositionToBxBy[bucket]!.bx,
+        by: boardPositionToBxBy[bucket]!.by,
         cnt: numMovesMade,
       ),
     );
@@ -277,7 +275,7 @@ abstract class _BoardStore with Store {
   Future<void> guess(String data, int confidence) async {
     await postGuessApi(
       body: PostGuessReqBody(
-        episode: episodeId,
+        episode: episodeId!,
         data: data,
         confidence: confidence,
       ),
@@ -298,10 +296,10 @@ abstract class _BoardStore with Store {
 
   @action
   Future<void> pick(int boardObjectId) async {
-    final boardObject = board[boardObjectId];
+    final boardObject = board[boardObjectId]!;
     await postPickApi(
       body: PostPickReqBody(
-        episode: episodeId,
+        episode: episodeId!,
         x: boardObject.x,
         y: boardObject.y,
         cnt: numMovesMade,

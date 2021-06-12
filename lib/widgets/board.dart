@@ -19,60 +19,60 @@ class Board extends HookWidget {
       aspectRatio: 1,
       child: Container(
         child: LayoutGrid(
-          templateColumnSizes: [
+          columnSizes: [
             FlexibleTrackSize(1),
             FlexibleTrackSize(6),
             FlexibleTrackSize(1)
           ],
-          templateRowSizes: [
+          rowSizes: [
             FlexibleTrackSize(1),
             FlexibleTrackSize(6),
             FlexibleTrackSize(1)
           ],
           children: [
             GridPlacement(
+              rowStart: 0,
+              columnStart: 0,
               child: Bucket(pos: BucketPosition.TL),
-              rowStart: 0,
-              columnStart: 0,
             ),
             GridPlacement(
+              rowStart: 2,
+              columnStart: 2,
               child: Bucket(pos: BucketPosition.BR),
-              rowStart: 2,
-              columnStart: 2,
             ),
             GridPlacement(
-              child: Bucket(pos: BucketPosition.TR),
               rowStart: 0,
               columnStart: 2,
+              child: Bucket(pos: BucketPosition.TR),
             ),
             GridPlacement(
-              child: Bucket(pos: BucketPosition.BL),
               rowStart: 2,
               columnStart: 0,
+              child: Bucket(pos: BucketPosition.BL),
             ),
             GridPlacement(
+              rowStart: 1,
+              columnStart: 1,
               child: Container(
                 child: Observer(
                   builder: (_) => LayoutGrid(
-                    templateRowSizes:
+                    rowSizes:
                         List.generate(PIECES_ROWS, (_) => FlexibleTrackSize(1)),
-                    templateColumnSizes:
+                    columnSizes:
                         List.generate(PIECES_COLS, (_) => FlexibleTrackSize(1)),
                     children: [
                       for (var boardObject in store.board.values)
                         GridPlacement(
-                          child: Piece(boardObject: boardObject),
                           rowStart: PIECES_ROWS - boardObject.y,
                           columnStart: boardObject.x - 1,
                           rowSpan: 1,
                           columnSpan: 1,
+                          child: Piece(boardObject: boardObject),
                         ),
                     ],
                   ),
                 ),
               ),
-              rowStart: 1,
-              columnStart: 1,
             )
           ],
         ),

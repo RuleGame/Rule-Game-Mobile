@@ -9,13 +9,20 @@ part of 'board.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$BoardStore on _BoardStore, Store {
-  Computed<bool> _$isGameCompletedComputed;
+  Computed<bool>? _$isGameCompletedComputed;
 
   @override
   bool get isGameCompleted =>
       (_$isGameCompletedComputed ??= Computed<bool>(() => super.isGameCompleted,
               name: '_BoardStore.isGameCompleted'))
           .value;
+  Computed<bool>? _$displayBucketBinsComputed;
+
+  @override
+  bool get displayBucketBins => (_$displayBucketBinsComputed ??= Computed<bool>(
+          () => super.displayBucketBins,
+          name: '_BoardStore.displayBucketBins'))
+      .value;
 
   final _$boardAtom = Atom(name: '_BoardStore.board');
 
@@ -235,13 +242,13 @@ mixin _$BoardStore on _BoardStore, Store {
   final _$ruleLineNoAtom = Atom(name: '_BoardStore.ruleLineNo');
 
   @override
-  int get ruleLineNo {
+  int? get ruleLineNo {
     _$ruleLineNoAtom.reportRead();
     return super.ruleLineNo;
   }
 
   @override
-  set ruleLineNo(int value) {
+  set ruleLineNo(int? value) {
     _$ruleLineNoAtom.reportWrite(value, super.ruleLineNo, () {
       super.ruleLineNo = value;
     });
@@ -296,13 +303,13 @@ mixin _$BoardStore on _BoardStore, Store {
       Atom(name: '_BoardStore.movesLeftToStayInBonus');
 
   @override
-  int get movesLeftToStayInBonus {
+  int? get movesLeftToStayInBonus {
     _$movesLeftToStayInBonusAtom.reportRead();
     return super.movesLeftToStayInBonus;
   }
 
   @override
-  set movesLeftToStayInBonus(int value) {
+  set movesLeftToStayInBonus(int? value) {
     _$movesLeftToStayInBonusAtom
         .reportWrite(value, super.movesLeftToStayInBonus, () {
       super.movesLeftToStayInBonus = value;
@@ -312,13 +319,13 @@ mixin _$BoardStore on _BoardStore, Store {
   final _$transitionMapAtom = Atom(name: '_BoardStore.transitionMap');
 
   @override
-  TransitionMap get transitionMap {
+  TransitionMap? get transitionMap {
     _$transitionMapAtom.reportRead();
     return super.transitionMap;
   }
 
   @override
-  set transitionMap(TransitionMap value) {
+  set transitionMap(TransitionMap? value) {
     _$transitionMapAtom.reportWrite(value, super.transitionMap, () {
       super.transitionMap = value;
     });
@@ -327,13 +334,13 @@ mixin _$BoardStore on _BoardStore, Store {
   final _$episodeIdAtom = Atom(name: '_BoardStore.episodeId');
 
   @override
-  String get episodeId {
+  String? get episodeId {
     _$episodeIdAtom.reportRead();
     return super.episodeId;
   }
 
   @override
-  set episodeId(String value) {
+  set episodeId(String? value) {
     _$episodeIdAtom.reportWrite(value, super.episodeId, () {
       super.episodeId = value;
     });
@@ -357,13 +364,13 @@ mixin _$BoardStore on _BoardStore, Store {
   final _$giveUpAtAtom = Atom(name: '_BoardStore.giveUpAt');
 
   @override
-  int get giveUpAt {
+  int? get giveUpAt {
     _$giveUpAtAtom.reportRead();
     return super.giveUpAt;
   }
 
   @override
-  set giveUpAt(int value) {
+  set giveUpAt(int? value) {
     _$giveUpAtAtom.reportWrite(value, super.giveUpAt, () {
       super.giveUpAt = value;
     });
@@ -570,7 +577,8 @@ feedbackSwitches: ${feedbackSwitches},
 page: ${page},
 playerId: ${playerId},
 exp: ${exp},
-isGameCompleted: ${isGameCompleted}
+isGameCompleted: ${isGameCompleted},
+displayBucketBins: ${displayBucketBins}
     ''';
   }
 }
