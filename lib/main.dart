@@ -131,10 +131,10 @@ class DemographicsInstructionsPage extends HookWidget {
             style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
           ElevatedButton(
-            child: Text('Next'),
             onPressed: () {
               boardStore.goToPage(Page.DEMOGRAPHICS);
             },
+            child: Text('Next'),
           ),
         ],
       ),
@@ -150,8 +150,8 @@ class DemographicsPage extends HookWidget {
         title: Text('Demographics'),
       ),
       body: Container(
-        child: Demographics(),
         padding: EdgeInsets.all(10),
+        child: Demographics(),
       ),
     );
   }

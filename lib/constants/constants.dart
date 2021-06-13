@@ -21,10 +21,12 @@ const PAUSE_OPACITY = 0.5;
 
 const BUCKET_COLOR = 'RED';
 
-class PREF_KEY {
+class PrefKey {
   static const LAST_GUESS = 'LAST_GUESS';
   static const LAST_GUESS_SERIES_NO = 'LAST_GUESS_SERIES_NO';
   static const LAST_GUESS_PLAYER_ID = 'LAST_GUESS_PLAYER_ID';
   static const LAST_GUESS_EXP = 'LAST_GUESS_EXP';
-  static const WORKER_ID = 'WORKER_ID';
+  static const PLAYER_ID = 'WORKER_ID';
 }
+
+const EXPERIMENT = 'vmColorTest';

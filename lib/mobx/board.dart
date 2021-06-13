@@ -4,6 +4,8 @@ import 'package:rulegamemobile/utils/api.dart';
 import 'package:rulegamemobile/utils/board.dart';
 import 'package:rulegamemobile/utils/models.dart';
 import 'package:rulegamemobile/utils/page.dart';
+import 'package:rulegamemobile/utils/username_gen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Include generated file
 part 'board.g.dart';
@@ -93,12 +95,12 @@ abstract class _BoardStore with Store {
   @observable
   Page page = Page.INTRODUCTION;
 
-  // TODO: Implement logic to generate a random playerId
+  // playerId must be loaded first before accessing it
   @observable
-  String playerId = 'test-flutter123456789012345';
+  String playerId = 'UNSET';
 
   @observable
-  String exp = 'vmColorTest';
+  String exp = EXPERIMENT;
 
   @computed
   bool get isGameCompleted =>
@@ -135,6 +137,8 @@ abstract class _BoardStore with Store {
 
   @action
   Future<void> loadTrials() async {
+    await loadPlayerId();
+
     goToPage(Page.LOADING_TRIALS);
 
     await postPlayerApi(body: PostPlayerReqBody(playerId: playerId, exp: exp));
@@ -332,5 +336,16 @@ abstract class _BoardStore with Store {
     await postActivateBonusApi(
       body: PostActivateBonusReqBody(playerId: playerId),
     );
+  }
+
+  @action
+  Future<void> loadPlayerId({bool regenerate = false}) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!regenerate && prefs.containsKey(PrefKey.PLAYER_ID)) {
+      playerId = prefs.get(PrefKey.PLAYER_ID) as String;
+    } else {
+      playerId = 'mobile-${UsernameGen().generate()}';
+      await prefs.setString(PrefKey.PLAYER_ID, playerId);
+    }
   }
 }

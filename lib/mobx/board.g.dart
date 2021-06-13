@@ -523,6 +523,14 @@ mixin _$BoardStore on _BoardStore, Store {
     return _$activateBonusAsyncAction.run(() => super.activateBonus(playerId));
   }
 
+  final _$loadPlayerIdAsyncAction = AsyncAction('_BoardStore.loadPlayerId');
+
+  @override
+  Future<void> loadPlayerId({bool regenerate = false}) {
+    return _$loadPlayerIdAsyncAction
+        .run(() => super.loadPlayerId(regenerate: regenerate));
+  }
+
   final _$_BoardStoreActionController = ActionController(name: '_BoardStore');
 
   @override
