@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:rulegamemobile/constants/constants.dart';
 import 'package:rulegamemobile/mobx/board.dart';
 import 'package:rulegamemobile/utils/models.dart';
 import 'package:rulegamemobile/widgets/shape.dart';
@@ -16,6 +16,7 @@ class Piece extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final boardStore = Provider.of<BoardStore>(context);
+    final hasBeenDropped = boardObject.dropped != null;
 
     return Container(
       constraints: BoxConstraints.expand(),
@@ -52,8 +53,19 @@ class Piece extends HookWidget {
                 },
               ),
             ),
-            if (boardObject.buckets.isEmpty)
-              Positioned.fill(child: Shape(shape: SpecialShape.CLOSE)),
+            if (hasBeenDropped)
+              Positioned.fill(
+                child: SvgPicture.asset(
+                  'assets/images/check.svg',
+                  color: Color.fromRGBO(0, 128, 0, 1),
+                ),
+              ),
+            if (!hasBeenDropped &&
+                boardObject.buckets.isEmpty &&
+                boardStore.feedbackSwitches != FeedbackSwitches.FREE)
+              Positioned.fill(
+                child: SvgPicture.asset('assets/images/close.svg'),
+              ),
             if (boardStore.showGridMemoryOrder &&
                 boardStore.getMoveNum(boardObject.id) > 0)
               Container(
