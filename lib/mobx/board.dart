@@ -123,6 +123,10 @@ abstract class _BoardStore with Store {
   @computed
   bool get displayBucketBins => stackMemoryDepth > 0;
 
+  @computed
+  bool get hasMoreBonusRounds =>
+      isInBonus && (transitionMap?.bonus == 'DEFAULT');
+
   int getMoveNum(int boardObjectId) =>
       transcript.indexWhere((step) =>
           step.pieceId == boardObjectId &&
@@ -130,12 +134,16 @@ abstract class _BoardStore with Store {
           step.code == Code.ACCEPT) +
       1;
 
+  @computed
+  int get ruleNum => seriesNo + 1;
+
   @action
   void goToPage(Page page) {
     this.page = page;
   }
 
   @action
+  // TODO: Pass context as an argument to show dialog on network errors
   Future<void> loadTrials() async {
     await loadPlayerId();
 
@@ -332,7 +340,7 @@ abstract class _BoardStore with Store {
   }
 
   @action
-  Future<void> activateBonus(String playerId) async {
+  Future<void> activateBonus() async {
     await postActivateBonusApi(
       body: PostActivateBonusReqBody(playerId: playerId),
     );

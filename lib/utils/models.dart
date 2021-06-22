@@ -164,7 +164,8 @@ class Display {
             ? RulesSrc.fromJson(json['rulesSrc'])
             : null,
         ruleLineNo = json['ruleLineNo'],
-        movesLeftToStayInBonus = json['movesLeftToStayInBonus'],
+        movesLeftToStayInBonus =
+            (json['movesLeftToStayInBonus'] as num?)?.round(),
         transitionMap = json['transitionMap'] != null
             ? TransitionMap.fromJson(json['transitionMap'])
             : null,

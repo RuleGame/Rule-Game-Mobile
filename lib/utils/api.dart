@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rulegamemobile/utils/models.dart';
 
+// TODO: Use Sapir
 final API_HOST_ORIGIN = '192.168.1.9:7150';
 final BASE_ROUTE = '/w2020-dev';
 

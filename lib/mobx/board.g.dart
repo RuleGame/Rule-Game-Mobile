@@ -23,6 +23,13 @@ mixin _$BoardStore on _BoardStore, Store {
           () => super.displayBucketBins,
           name: '_BoardStore.displayBucketBins'))
       .value;
+  Computed<bool>? _$hasMoreBonusRoundsComputed;
+
+  @override
+  bool get hasMoreBonusRounds => (_$hasMoreBonusRoundsComputed ??=
+          Computed<bool>(() => super.hasMoreBonusRounds,
+              name: '_BoardStore.hasMoreBonusRounds'))
+      .value;
 
   final _$boardAtom = Atom(name: '_BoardStore.board');
 
@@ -519,8 +526,8 @@ mixin _$BoardStore on _BoardStore, Store {
   final _$activateBonusAsyncAction = AsyncAction('_BoardStore.activateBonus');
 
   @override
-  Future<void> activateBonus(String playerId) {
-    return _$activateBonusAsyncAction.run(() => super.activateBonus(playerId));
+  Future<void> activateBonus() {
+    return _$activateBonusAsyncAction.run(() => super.activateBonus());
   }
 
   final _$loadPlayerIdAsyncAction = AsyncAction('_BoardStore.loadPlayerId');
@@ -586,7 +593,8 @@ page: ${page},
 playerId: ${playerId},
 exp: ${exp},
 isGameCompleted: ${isGameCompleted},
-displayBucketBins: ${displayBucketBins}
+displayBucketBins: ${displayBucketBins},
+hasMoreBonusRounds: ${hasMoreBonusRounds}
     ''';
   }
 }

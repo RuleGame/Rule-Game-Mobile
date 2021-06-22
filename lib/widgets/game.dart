@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -20,12 +21,23 @@ class Game extends HookWidget {
         .apply(fontSizeFactor: 2.0)
         .apply(fontWeightDelta: 2);
 
+    final bonusActivated = useState(false);
+
+    useEffect(() {
+      bonusActivated.value = false;
+    }, [store.episodeNo]);
+
     return SingleChildScrollView(
       padding: EdgeInsets.all(16),
       child: Observer(
         builder: (_) => Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            Text(
+              'Rule ${store.ruleNum}' +
+                  (store.isInBonus ? ' (Bonus Round)' : ''),
+              style: textStyle,
+            ),
             Text(
               'Number of moves made: ${store.numMovesMade}',
               textAlign: TextAlign.center,
@@ -99,20 +111,80 @@ class Game extends HookWidget {
                 ),
               ],
             ),
-            if (store.finishCode == FinishCode.FINISH)
-              Text(
-                'Board succesfully cleared!',
-                textAlign: TextAlign.center,
-                style: textStyle.apply(color: Colors.green),
+            if (store.canActivateBonus &&
+                store.isGameCompleted &&
+                !store.isInBonus)
+              bonusActivated.value
+                  ? DottedBorder(
+                      color: Colors.black,
+                      radius: Radius.circular(12),
+                      padding: EdgeInsets.all(6),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18.0),
+                          ),
+                          child: Text(
+                            'Bonus activated next round!',
+                            style: textStyle,
+                          ),
+                        ),
+                      ),
+                    )
+                  : ElevatedButton(
+                      onPressed: () {
+                        bonusActivated.value = true;
+                        store.activateBonus();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.orange,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.red),
+                        ),
+                      ),
+                      // style: ButtonStyle(backgroundColor: Colors.orange),
+                      child: Observer(
+                        builder: (_) => Text(
+                          'Think you got it?\nActivate bonus rounds!',
+                          style: textStyle.apply(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+            if (store.isGameCompleted && !store.isInBonus) GuessRuleForm(),
+            if (store.isGameCompleted && store.isInBonus)
+              Column(
+                children: [
+                  store.finishCode == FinishCode.FINISH
+                      ? Text(
+                          'Board succesfully cleared!',
+                          textAlign: TextAlign.center,
+                          style: textStyle.apply(color: Colors.green),
+                        )
+                      : store.finishCode == FinishCode.STALEMATE ||
+                              store.finishCode == FinishCode.LOST
+                          ? Text(
+                              'No more moves left!',
+                              style: textStyle.apply(color: Colors.red),
+                            )
+                          : Container(),
+                  ElevatedButton(
+                    onPressed: () => store.loadNextBonus(),
+                    child: Observer(
+                      builder: (_) => Text(
+                        store.hasMoreBonusRounds
+                            ? 'Next Bonus Round'
+                            : store.finishCode == FinishCode.LOST
+                                ? 'Next Rule (Bonus Lost)'
+                                : 'Next Rule (Bonus Completed)',
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            if (store.finishCode == FinishCode.STALEMATE ||
-                store.finishCode == FinishCode.LOST)
-              Text(
-                'No more moves left!',
-                textAlign: TextAlign.center,
-                style: textStyle.apply(color: Colors.red),
-              ),
-            if (store.isGameCompleted) GuessRuleForm(),
           ],
         ),
       ),
