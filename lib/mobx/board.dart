@@ -349,10 +349,21 @@ abstract class _BoardStore with Store {
   @action
   Future<void> loadPlayerId({bool regenerate = false}) async {
     final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    if (!prefs.containsKey(PrefKey.PLAYER_ID_PREFIX)) {
+      await prefs.setString(
+        PrefKey.PLAYER_ID_PREFIX,
+        'mobile-${UsernameGen().generate()}',
+      );
+    }
+
     if (!regenerate && prefs.containsKey(PrefKey.PLAYER_ID)) {
       playerId = prefs.get(PrefKey.PLAYER_ID) as String;
     } else {
-      playerId = 'mobile-${UsernameGen().generate()}';
+      final prefix = prefs.getString(
+        PrefKey.PLAYER_ID_PREFIX,
+      );
+      playerId = '$prefix-${DateTime.now().millisecondsSinceEpoch}';
       await prefs.setString(PrefKey.PLAYER_ID, playerId);
     }
   }
