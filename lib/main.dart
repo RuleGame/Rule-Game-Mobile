@@ -6,6 +6,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:rulegamemobile/mobx/board.dart';
 import 'package:rulegamemobile/utils/email_text_span.dart';
+import 'package:rulegamemobile/utils/hooks.dart';
 import 'package:rulegamemobile/utils/page.dart';
 import 'package:rulegamemobile/widgets/demographics.dart';
 import 'package:rulegamemobile/widgets/game.dart';
@@ -142,7 +143,6 @@ class IntroductionPage extends HookWidget {
                   ? () {
                       boardStore.setExp(expController.text);
                       boardStore.goToPage(Page.LOADING_TRIALS);
-                      boardStore.loadTrials();
                     }
                   : null,
               child: Text('Start'),
@@ -169,6 +169,11 @@ class IntroductionPage extends HookWidget {
                     isResetChecked.value = value ?? false;
                   },
                 ),
+                ElevatedButton(
+                  onPressed: () =>
+                      buttonCarouselController.jumpToPage(items.length - 1),
+                  child: Text('Skip'),
+                )
               ],
             ),
           ],
@@ -181,6 +186,13 @@ class IntroductionPage extends HookWidget {
 class LoadingPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final boardStore = Provider.of<BoardStore>(context);
+
+    useMount(() {
+      boardStore.loadTrials(context);
+      return () {};
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text('First Route'),

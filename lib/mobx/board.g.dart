@@ -30,6 +30,12 @@ mixin _$BoardStore on _BoardStore, Store {
           Computed<bool>(() => super.hasMoreBonusRounds,
               name: '_BoardStore.hasMoreBonusRounds'))
       .value;
+  Computed<int>? _$ruleNumComputed;
+
+  @override
+  int get ruleNum => (_$ruleNumComputed ??=
+          Computed<int>(() => super.ruleNum, name: '_BoardStore.ruleNum'))
+      .value;
 
   final _$boardAtom = Atom(name: '_BoardStore.board');
 
@@ -446,8 +452,8 @@ mixin _$BoardStore on _BoardStore, Store {
   final _$loadTrialsAsyncAction = AsyncAction('_BoardStore.loadTrials');
 
   @override
-  Future<void> loadTrials() {
-    return _$loadTrialsAsyncAction.run(() => super.loadTrials());
+  Future<void> loadTrials(BuildContext context) {
+    return _$loadTrialsAsyncAction.run(() => super.loadTrials(context));
   }
 
   final _$newEpisodeAsyncAction = AsyncAction('_BoardStore.newEpisode');
@@ -563,6 +569,17 @@ mixin _$BoardStore on _BoardStore, Store {
   }
 
   @override
+  void setExp(String exp) {
+    final _$actionInfo =
+        _$_BoardStoreActionController.startAction(name: '_BoardStore.setExp');
+    try {
+      return super.setExp(exp);
+    } finally {
+      _$_BoardStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 board: ${board},
@@ -594,7 +611,8 @@ playerId: ${playerId},
 exp: ${exp},
 isGameCompleted: ${isGameCompleted},
 displayBucketBins: ${displayBucketBins},
-hasMoreBonusRounds: ${hasMoreBonusRounds}
+hasMoreBonusRounds: ${hasMoreBonusRounds},
+ruleNum: ${ruleNum}
     ''';
   }
 }

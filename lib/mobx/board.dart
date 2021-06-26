@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart' hide Page;
+import 'package:flutter/material.dart' hide Page;
 import 'package:mobx/mobx.dart';
 import 'package:rulegamemobile/constants/constants.dart';
 import 'package:rulegamemobile/utils/api.dart';
@@ -144,30 +146,60 @@ abstract class _BoardStore with Store {
 
   @action
   // TODO: Pass context as an argument to show dialog on network errors
-  Future<void> loadTrials() async {
-    await loadPlayerId();
+  Future<void> loadTrials(BuildContext context) async {
+    try {
+      await loadPlayerId();
 
-    goToPage(Page.LOADING_TRIALS);
+      goToPage(Page.LOADING_TRIALS);
 
-    await postPlayerApi(body: PostPlayerReqBody(playerId: playerId, exp: exp));
+      await postPlayerApi(
+          body: PostPlayerReqBody(playerId: playerId, exp: exp));
 
-    final postMostRecentEpisodeResBody = await postMostRecentEpisodeApi(
-      body: PostMostRecentEpisodeReqBody(playerId: playerId),
-    );
-    final noEpisodeStarted = postMostRecentEpisodeResBody.error &&
-        postMostRecentEpisodeResBody.errmsg ==
-            ErrorMsg.FAILED_TO_FIND_ANY_EPISODE;
-
-    goToPage(Page.TRIALS);
-
-    if (noEpisodeStarted) {
-      await newEpisode();
-    } else {
-      await updateEpisode(
-        postMostRecentEpisodeResBody.para!,
-        postMostRecentEpisodeResBody.episodeId,
+      final postMostRecentEpisodeResBody = await postMostRecentEpisodeApi(
+        body: PostMostRecentEpisodeReqBody(playerId: playerId),
       );
-      await updateBoard();
+      final noEpisodeStarted = postMostRecentEpisodeResBody.error &&
+          postMostRecentEpisodeResBody.errmsg ==
+              ErrorMsg.FAILED_TO_FIND_ANY_EPISODE;
+
+      goToPage(Page.TRIALS);
+
+      if (noEpisodeStarted) {
+        await newEpisode();
+      } else {
+        await updateEpisode(
+          postMostRecentEpisodeResBody.para!,
+          postMostRecentEpisodeResBody.episodeId,
+        );
+        await updateBoard();
+      }
+    } catch (error) {
+      print(error.toString());
+      await showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('An Error Ocurred'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(error.toString()),
+                  Text('Please restart the app. Or contact us.'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
