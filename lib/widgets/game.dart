@@ -111,6 +111,7 @@ class Game extends HookWidget {
                 ),
               ],
             ),
+            Divider(),
             if (store.canActivateBonus &&
                 store.isGameCompleted &&
                 !store.isInBonus)
@@ -154,6 +155,7 @@ class Game extends HookWidget {
                         ),
                       ),
                     ),
+            Divider(),
             if (store.isGameCompleted && !store.isInBonus) GuessRuleForm(),
             if (store.isGameCompleted && store.isInBonus)
               Column(

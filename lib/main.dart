@@ -337,16 +337,22 @@ class DebriefingPage extends HookWidget {
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
-            Text('Thank you for participating!'),
+            Text(
+              'Thank you for participating!',
+              textAlign: TextAlign.center,
+            ),
+            Divider(),
             Text(
               "We're using this task to better understand what kinds of "
               'rules are easy and hard for people compared to machine '
               'learning algorithms.',
+              textAlign: TextAlign.center,
             ),
+            Divider(),
             ElevatedButton(
               onPressed: () async {
                 await boardStore.loadPlayerId(regenerate: true);
-                await boardStore.loadTrials();
+                boardStore.goToPage(Page.INTRODUCTION);
               },
               // style: ButtonStyle(backgroundColor: Colors.orange),
               child: Text('Retry the game from start'),
