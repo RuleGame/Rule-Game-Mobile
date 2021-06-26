@@ -93,7 +93,7 @@ abstract class _BoardStore with Store {
   String feedbackSwitches = FeedbackSwitches.FIXED;
 
   @observable
-  Page page = Page.INTRODUCTION;
+  Page page = Page.CONSENT;
 
   // playerId must be loaded first before accessing it
   @observable
