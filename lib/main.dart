@@ -86,6 +86,8 @@ class IntroductionPage extends HookWidget {
     final boardStore = Provider.of<BoardStore>(context);
     final currPage = useState(1);
     final reachedEnd = useState(false);
+    final expController = useTextEditingController(text: boardStore.exp);
+    final isResetChecked = useState(false);
 
     useEffect(() {
       if (currPage.value == items.length) {
@@ -138,11 +140,36 @@ class IntroductionPage extends HookWidget {
             ElevatedButton(
               onPressed: reachedEnd.value
                   ? () {
+                      boardStore.setExp(expController.text);
                       boardStore.goToPage(Page.LOADING_TRIALS);
                       boardStore.loadTrials();
                     }
                   : null,
               child: Text('Start'),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: FractionallySizedBox(
+                    widthFactor: 0.5,
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Experiment Name',
+                      ),
+                      controller: expController,
+                    ),
+                  ),
+                ),
+                Text('Reset'),
+                Checkbox(
+                  checkColor: Colors.white,
+                  value: isResetChecked.value,
+                  onChanged: (bool? value) {
+                    isResetChecked.value = value ?? false;
+                  },
+                ),
+              ],
             ),
           ],
         ),

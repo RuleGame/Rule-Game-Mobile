@@ -367,4 +367,9 @@ abstract class _BoardStore with Store {
       await prefs.setString(PrefKey.PLAYER_ID, playerId);
     }
   }
+
+  @action
+  void setExp(String exp) {
+    this.exp = exp;
+  }
 }
