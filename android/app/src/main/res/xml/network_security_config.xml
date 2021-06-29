@@ -2,6 +2,7 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">sapir.psych.wisc.edu</domain>
-        <domain includeSubdomains="true">34.135.29.63</domain>
+<!--        Crashes app when using IP address-->
+<!--        <domain includeSubdomains="true">34.135.29.63</domain>-->
     </domain-config>
 </network-security-config>

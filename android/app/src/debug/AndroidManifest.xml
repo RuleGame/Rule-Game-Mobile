@@ -1,9 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.wisc.psych.sapir.rulegamemobile">
+    package="edu.wisc.psych.sapir.rulegamemobile"
+        xmlns:tools="http://schemas.android.com/tools">
     <!-- Flutter needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
     <!--        https://flutter.dev/docs/release/breaking-changes/network-policy-ios-android-->
-    <application android:usesCleartextTraffic="true"/>
+    <application android:usesCleartextTraffic="true" tools:node="merge" />
 </manifest>
