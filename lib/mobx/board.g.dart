@@ -6,7 +6,7 @@ part of 'board.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$BoardStore on _BoardStore, Store {
   Computed<bool>? _$isGameCompletedComputed;
@@ -37,7 +37,7 @@ mixin _$BoardStore on _BoardStore, Store {
           Computed<int>(() => super.ruleNum, name: '_BoardStore.ruleNum'))
       .value;
 
-  final _$boardAtom = Atom(name: '_BoardStore.board');
+  late final _$boardAtom = Atom(name: '_BoardStore.board', context: context);
 
   @override
   ObservableMap<int, BoardObject> get board {
@@ -52,7 +52,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$isInBonusAtom = Atom(name: '_BoardStore.isInBonus');
+  late final _$isInBonusAtom =
+      Atom(name: '_BoardStore.isInBonus', context: context);
 
   @override
   bool get isInBonus {
@@ -67,7 +68,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$bonusEpisodeNoAtom = Atom(name: '_BoardStore.bonusEpisodeNo');
+  late final _$bonusEpisodeNoAtom =
+      Atom(name: '_BoardStore.bonusEpisodeNo', context: context);
 
   @override
   int get bonusEpisodeNo {
@@ -82,7 +84,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$canActivateBonusAtom = Atom(name: '_BoardStore.canActivateBonus');
+  late final _$canActivateBonusAtom =
+      Atom(name: '_BoardStore.canActivateBonus', context: context);
 
   @override
   bool get canActivateBonus {
@@ -97,7 +100,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$finishCodeAtom = Atom(name: '_BoardStore.finishCode');
+  late final _$finishCodeAtom =
+      Atom(name: '_BoardStore.finishCode', context: context);
 
   @override
   int get finishCode {
@@ -112,7 +116,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$totalRewardEarnedAtom = Atom(name: '_BoardStore.totalRewardEarned');
+  late final _$totalRewardEarnedAtom =
+      Atom(name: '_BoardStore.totalRewardEarned', context: context);
 
   @override
   double get totalRewardEarned {
@@ -127,8 +132,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$totalBoardsPredictedAtom =
-      Atom(name: '_BoardStore.totalBoardsPredicted');
+  late final _$totalBoardsPredictedAtom =
+      Atom(name: '_BoardStore.totalBoardsPredicted', context: context);
 
   @override
   int get totalBoardsPredicted {
@@ -144,8 +149,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$showGridMemoryOrderAtom =
-      Atom(name: '_BoardStore.showGridMemoryOrder');
+  late final _$showGridMemoryOrderAtom =
+      Atom(name: '_BoardStore.showGridMemoryOrder', context: context);
 
   @override
   bool get showGridMemoryOrder {
@@ -160,8 +165,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$showStackMemoryOrderAtom =
-      Atom(name: '_BoardStore.showStackMemoryOrder');
+  late final _$showStackMemoryOrderAtom =
+      Atom(name: '_BoardStore.showStackMemoryOrder', context: context);
 
   @override
   bool get showStackMemoryOrder {
@@ -177,7 +182,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$bucketShapesAtom = Atom(name: '_BoardStore.bucketShapes');
+  late final _$bucketShapesAtom =
+      Atom(name: '_BoardStore.bucketShapes', context: context);
 
   @override
   ObservableMap<int, String> get bucketShapes {
@@ -192,7 +198,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$isPausedAtom = Atom(name: '_BoardStore.isPaused');
+  late final _$isPausedAtom =
+      Atom(name: '_BoardStore.isPaused', context: context);
 
   @override
   bool get isPaused {
@@ -207,7 +214,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$seriesNoAtom = Atom(name: '_BoardStore.seriesNo');
+  late final _$seriesNoAtom =
+      Atom(name: '_BoardStore.seriesNo', context: context);
 
   @override
   int get seriesNo {
@@ -222,7 +230,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$transcriptAtom = Atom(name: '_BoardStore.transcript');
+  late final _$transcriptAtom =
+      Atom(name: '_BoardStore.transcript', context: context);
 
   @override
   ObservableList<TranscriptElement> get transcript {
@@ -237,7 +246,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$rulesSrcAtom = Atom(name: '_BoardStore.rulesSrc');
+  late final _$rulesSrcAtom =
+      Atom(name: '_BoardStore.rulesSrc', context: context);
 
   @override
   RulesSrc get rulesSrc {
@@ -252,7 +262,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$ruleLineNoAtom = Atom(name: '_BoardStore.ruleLineNo');
+  late final _$ruleLineNoAtom =
+      Atom(name: '_BoardStore.ruleLineNo', context: context);
 
   @override
   int? get ruleLineNo {
@@ -267,7 +278,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$numMovesMadeAtom = Atom(name: '_BoardStore.numMovesMade');
+  late final _$numMovesMadeAtom =
+      Atom(name: '_BoardStore.numMovesMade', context: context);
 
   @override
   int get numMovesMade {
@@ -282,7 +294,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$episodeNoAtom = Atom(name: '_BoardStore.episodeNo');
+  late final _$episodeNoAtom =
+      Atom(name: '_BoardStore.episodeNo', context: context);
 
   @override
   int get episodeNo {
@@ -297,7 +310,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$stackMemoryDepthAtom = Atom(name: '_BoardStore.stackMemoryDepth');
+  late final _$stackMemoryDepthAtom =
+      Atom(name: '_BoardStore.stackMemoryDepth', context: context);
 
   @override
   int get stackMemoryDepth {
@@ -312,8 +326,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$movesLeftToStayInBonusAtom =
-      Atom(name: '_BoardStore.movesLeftToStayInBonus');
+  late final _$movesLeftToStayInBonusAtom =
+      Atom(name: '_BoardStore.movesLeftToStayInBonus', context: context);
 
   @override
   int? get movesLeftToStayInBonus {
@@ -329,7 +343,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$transitionMapAtom = Atom(name: '_BoardStore.transitionMap');
+  late final _$transitionMapAtom =
+      Atom(name: '_BoardStore.transitionMap', context: context);
 
   @override
   TransitionMap? get transitionMap {
@@ -344,7 +359,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$episodeIdAtom = Atom(name: '_BoardStore.episodeId');
+  late final _$episodeIdAtom =
+      Atom(name: '_BoardStore.episodeId', context: context);
 
   @override
   String? get episodeId {
@@ -359,7 +375,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$maxPointsAtom = Atom(name: '_BoardStore.maxPoints');
+  late final _$maxPointsAtom =
+      Atom(name: '_BoardStore.maxPoints', context: context);
 
   @override
   double get maxPoints {
@@ -374,7 +391,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$giveUpAtAtom = Atom(name: '_BoardStore.giveUpAt');
+  late final _$giveUpAtAtom =
+      Atom(name: '_BoardStore.giveUpAt', context: context);
 
   @override
   int? get giveUpAt {
@@ -389,7 +407,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$feedbackSwitchesAtom = Atom(name: '_BoardStore.feedbackSwitches');
+  late final _$feedbackSwitchesAtom =
+      Atom(name: '_BoardStore.feedbackSwitches', context: context);
 
   @override
   String get feedbackSwitches {
@@ -404,7 +423,7 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$pageAtom = Atom(name: '_BoardStore.page');
+  late final _$pageAtom = Atom(name: '_BoardStore.page', context: context);
 
   @override
   Page get page {
@@ -419,7 +438,8 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$playerIdAtom = Atom(name: '_BoardStore.playerId');
+  late final _$playerIdAtom =
+      Atom(name: '_BoardStore.playerId', context: context);
 
   @override
   String get playerId {
@@ -434,7 +454,7 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$expAtom = Atom(name: '_BoardStore.exp');
+  late final _$expAtom = Atom(name: '_BoardStore.exp', context: context);
 
   @override
   String get exp {
@@ -449,21 +469,101 @@ mixin _$BoardStore on _BoardStore, Store {
     });
   }
 
-  final _$loadTrialsAsyncAction = AsyncAction('_BoardStore.loadTrials');
+  late final _$emailAtom = Atom(name: '_BoardStore.email', context: context);
+
+  @override
+  String get email {
+    _$emailAtom.reportRead();
+    return super.email;
+  }
+
+  @override
+  set email(String value) {
+    _$emailAtom.reportWrite(value, super.email, () {
+      super.email = value;
+    });
+  }
+
+  late final _$nicknameAtom =
+      Atom(name: '_BoardStore.nickname', context: context);
+
+  @override
+  String get nickname {
+    _$nicknameAtom.reportRead();
+    return super.nickname;
+  }
+
+  @override
+  set nickname(String value) {
+    _$nicknameAtom.reportWrite(value, super.nickname, () {
+      super.nickname = value;
+    });
+  }
+
+  late final _$anonAtom = Atom(name: '_BoardStore.anon', context: context);
+
+  @override
+  bool get anon {
+    _$anonAtom.reportRead();
+    return super.anon;
+  }
+
+  @override
+  set anon(bool value) {
+    _$anonAtom.reportWrite(value, super.anon, () {
+      super.anon = value;
+    });
+  }
+
+  late final _$userAtom = Atom(name: '_BoardStore.user', context: context);
+
+  @override
+  User? get user {
+    _$userAtom.reportRead();
+    return super.user;
+  }
+
+  @override
+  set user(User? value) {
+    _$userAtom.reportWrite(value, super.user, () {
+      super.user = value;
+    });
+  }
+
+  late final _$ruleInfoListAtom =
+      Atom(name: '_BoardStore.ruleInfoList', context: context);
+
+  @override
+  List<RuleInfo>? get ruleInfoList {
+    _$ruleInfoListAtom.reportRead();
+    return super.ruleInfoList;
+  }
+
+  @override
+  set ruleInfoList(List<RuleInfo>? value) {
+    _$ruleInfoListAtom.reportWrite(value, super.ruleInfoList, () {
+      super.ruleInfoList = value;
+    });
+  }
+
+  late final _$loadTrialsAsyncAction =
+      AsyncAction('_BoardStore.loadTrials', context: context);
 
   @override
   Future<void> loadTrials(BuildContext context) {
     return _$loadTrialsAsyncAction.run(() => super.loadTrials(context));
   }
 
-  final _$newEpisodeAsyncAction = AsyncAction('_BoardStore.newEpisode');
+  late final _$newEpisodeAsyncAction =
+      AsyncAction('_BoardStore.newEpisode', context: context);
 
   @override
   Future<void> newEpisode() {
     return _$newEpisodeAsyncAction.run(() => super.newEpisode());
   }
 
-  final _$updateEpisodeAsyncAction = AsyncAction('_BoardStore.updateEpisode');
+  late final _$updateEpisodeAsyncAction =
+      AsyncAction('_BoardStore.updateEpisode', context: context);
 
   @override
   Future<void> updateEpisode(Para para, String episodeId) {
@@ -471,57 +571,64 @@ mixin _$BoardStore on _BoardStore, Store {
         .run(() => super.updateEpisode(para, episodeId));
   }
 
-  final _$updateBoardAsyncAction = AsyncAction('_BoardStore.updateBoard');
+  late final _$updateBoardAsyncAction =
+      AsyncAction('_BoardStore.updateBoard', context: context);
 
   @override
   Future<void> updateBoard() {
     return _$updateBoardAsyncAction.run(() => super.updateBoard());
   }
 
-  final _$moveAsyncAction = AsyncAction('_BoardStore.move');
+  late final _$moveAsyncAction =
+      AsyncAction('_BoardStore.move', context: context);
 
   @override
   Future<void> move(int boardObjectId, int bucket) {
     return _$moveAsyncAction.run(() => super.move(boardObjectId, bucket));
   }
 
-  final _$giveUpAsyncAction = AsyncAction('_BoardStore.giveUp');
+  late final _$giveUpAsyncAction =
+      AsyncAction('_BoardStore.giveUp', context: context);
 
   @override
   Future<void> giveUp() {
     return _$giveUpAsyncAction.run(() => super.giveUp());
   }
 
-  final _$guessAsyncAction = AsyncAction('_BoardStore.guess');
+  late final _$guessAsyncAction =
+      AsyncAction('_BoardStore.guess', context: context);
 
   @override
   Future<void> guess(String data, int confidence) {
     return _$guessAsyncAction.run(() => super.guess(data, confidence));
   }
 
-  final _$skipGuessAsyncAction = AsyncAction('_BoardStore.skipGuess');
+  late final _$skipGuessAsyncAction =
+      AsyncAction('_BoardStore.skipGuess', context: context);
 
   @override
   Future<void> skipGuess() {
     return _$skipGuessAsyncAction.run(() => super.skipGuess());
   }
 
-  final _$loadNextBonusAsyncAction = AsyncAction('_BoardStore.loadNextBonus');
+  late final _$loadNextBonusAsyncAction =
+      AsyncAction('_BoardStore.loadNextBonus', context: context);
 
   @override
   Future<void> loadNextBonus() {
     return _$loadNextBonusAsyncAction.run(() => super.loadNextBonus());
   }
 
-  final _$pickAsyncAction = AsyncAction('_BoardStore.pick');
+  late final _$pickAsyncAction =
+      AsyncAction('_BoardStore.pick', context: context);
 
   @override
   Future<void> pick(int boardObjectId) {
     return _$pickAsyncAction.run(() => super.pick(boardObjectId));
   }
 
-  final _$recordDemographicsAsyncAction =
-      AsyncAction('_BoardStore.recordDemographics');
+  late final _$recordDemographicsAsyncAction =
+      AsyncAction('_BoardStore.recordDemographics', context: context);
 
   @override
   Future<void> recordDemographics(String demographics) {
@@ -529,14 +636,16 @@ mixin _$BoardStore on _BoardStore, Store {
         .run(() => super.recordDemographics(demographics));
   }
 
-  final _$activateBonusAsyncAction = AsyncAction('_BoardStore.activateBonus');
+  late final _$activateBonusAsyncAction =
+      AsyncAction('_BoardStore.activateBonus', context: context);
 
   @override
   Future<void> activateBonus() {
     return _$activateBonusAsyncAction.run(() => super.activateBonus());
   }
 
-  final _$loadPlayerIdAsyncAction = AsyncAction('_BoardStore.loadPlayerId');
+  late final _$loadPlayerIdAsyncAction =
+      AsyncAction('_BoardStore.loadPlayerId', context: context);
 
   @override
   Future<void> loadPlayerId({bool regenerate = false}) {
@@ -544,7 +653,16 @@ mixin _$BoardStore on _BoardStore, Store {
         .run(() => super.loadPlayerId(regenerate: regenerate));
   }
 
-  final _$_BoardStoreActionController = ActionController(name: '_BoardStore');
+  late final _$registerUserAsyncAction =
+      AsyncAction('_BoardStore.registerUser', context: context);
+
+  @override
+  Future<void> registerUser() {
+    return _$registerUserAsyncAction.run(() => super.registerUser());
+  }
+
+  late final _$_BoardStoreActionController =
+      ActionController(name: '_BoardStore', context: context);
 
   @override
   void goToPage(Page page) {
@@ -580,6 +698,17 @@ mixin _$BoardStore on _BoardStore, Store {
   }
 
   @override
+  void setAnon(bool anon) {
+    final _$actionInfo =
+        _$_BoardStoreActionController.startAction(name: '_BoardStore.setAnon');
+    try {
+      return super.setAnon(anon);
+    } finally {
+      _$_BoardStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 board: ${board},
@@ -609,6 +738,11 @@ feedbackSwitches: ${feedbackSwitches},
 page: ${page},
 playerId: ${playerId},
 exp: ${exp},
+email: ${email},
+nickname: ${nickname},
+anon: ${anon},
+user: ${user},
+ruleInfoList: ${ruleInfoList},
 isGameCompleted: ${isGameCompleted},
 displayBucketBins: ${displayBucketBins},
 hasMoreBonusRounds: ${hasMoreBonusRounds},

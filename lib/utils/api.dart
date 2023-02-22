@@ -69,13 +69,19 @@ Future<PostGuessResBody> postGuessApi({required PostGuessReqBody body}) async =>
       await postApiJson('/game-data/GameService2/guess', body: body),
     );
 
-//Future<String> getShapeApi(shape) async =>
-//    (await getApi('/admin/getSvg.jsp', query: GetShapeReqQuery(shape: shape)))
-//        .replaceAll('currentColor', 'black');
+Future<GetFindPlansResBody> getFindPlansApi({required GetFindPlansReqQuery query}) async =>
+    GetFindPlansResBody.fromJson(
+      await getApiJson('/game-data/GameService2/findPlans', query: query),
+    );
 
 Future<String> getShapeApi(shape) async =>
     (await getApi('/admin/getSvg.jsp', query: GetShapeReqQuery(shape: shape)))
         .replaceAll('currentColor', 'black');
+
+Future<PostRegisterUserResBody> postRegisterUserApi({required PostRegisterUserReqBody body}) async =>
+    PostRegisterUserResBody.fromJson(
+      await postApiJson('/game-data/GameService2/registerUser', body: body),
+    );
 
 Future<String> getApi(String route, {ReqQuery? query}) async {
   query ??= DummyReqQuery();

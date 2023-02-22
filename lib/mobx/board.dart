@@ -95,7 +95,7 @@ abstract class _BoardStore with Store {
   String feedbackSwitches = FeedbackSwitches.FIXED;
 
   @observable
-  Page page = Page.CONSENT;
+  Page page = Page.REGISTER;
 
   // playerId must be loaded first before accessing it
   @observable
@@ -103,6 +103,21 @@ abstract class _BoardStore with Store {
 
   @observable
   String exp = EXPERIMENT;
+
+  @observable
+  String email = '';
+
+  @observable
+  String nickname = '';
+
+  @observable
+  bool anon = false;
+
+  @observable
+  User? user;
+
+  @observable
+  List<RuleInfo>? ruleInfoList;
 
   @computed
   bool get isGameCompleted =>
@@ -403,5 +418,31 @@ abstract class _BoardStore with Store {
   @action
   void setExp(String exp) {
     this.exp = exp;
+  }
+
+  @action
+  void setAnon(bool anon) {
+    this.anon = anon;
+  }
+
+  @action
+  Future<void> registerUser() async {
+    // TODO: Handle errors
+    final postRegisterUserRes = await postRegisterUserApi(
+      body: PostRegisterUserReqBody(
+          email: email, nickname: nickname, anon: anon
+      ),
+    );
+
+    if (!postRegisterUserRes.error) {
+      user = postRegisterUserRes.user;
+      final findPlansRes = await getFindPlansApi(
+          query: GetFindPlansReqQuery(uid: postRegisterUserRes.user.id));
+      goToPage(Page.CONSENT);
+      if (!findPlansRes.error) {
+        ruleInfoList = findPlansRes.ruleInfo;
+        exp = findPlansRes.ruleInfo[0].exp;
+      }
+    }
   }
 }

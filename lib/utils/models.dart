@@ -574,3 +574,94 @@ class PostGuessReqBody implements ReqBody {
         'confidence': confidence,
       };
 }
+
+class RuleInfo {
+  final bool completed;
+  final List<String> description;
+  final String display;
+  final int episodeCnt;
+  final String exp;
+  final String name;
+  final String playerId;
+
+  RuleInfo.fromJson(Map<String, dynamic> json)
+      : completed = json['completed'],
+        description = List.castFrom(json['description']),
+        display = json['display'],
+        episodeCnt = json['episodeCnt'],
+        exp = json['exp'],
+        name = json['name'],
+        playerId = json['playerId'];
+}
+
+class GetFindPlansResBody implements ResBody {
+  final bool error;
+  final List<RuleInfo> ruleInfo;
+
+
+  GetFindPlansResBody.fromJson(Map<String, dynamic> json)
+      : error = json['error'],
+        ruleInfo = fromJsonList(json['ruleInfo'], RuleInfo.fromJson);
+}
+
+class GetFindPlansReqQuery implements ReqQuery {
+  final int uid;
+
+  GetFindPlansReqQuery({required this.uid});
+
+  @override
+  Map<String, dynamic> toMap() => {'uid': uid};
+}
+
+class User {
+ final String date;
+ final String email;
+ final int id;
+ final String idCode;
+ final String nickname;
+
+ User.fromJson(Map<String, dynamic> json)
+     : date = json['date'],
+       email = json['email'],
+       id = json['id'],
+       idCode = json['idCode'],
+       nickname = json['nickname'];
+}
+
+class PostRegisterUserResBody implements ResBody {
+  final bool error;
+  final bool newlyRegistered;
+  final User user;
+
+  PostRegisterUserResBody.fromJson(Map<String, dynamic> json)
+      : error = json['error'],
+        newlyRegistered = json['newlyRegistered'],
+        user = User.fromJson(json['user']);
+}
+
+class PostRegisterUserReqBody implements ReqBody {
+  final String email;
+  final String nickname;
+  final bool? anon;
+
+  PostRegisterUserReqBody({
+    required this.email,
+    required this.nickname,
+    this.anon,
+  });
+
+  @override
+  Map<String, dynamic> toMap() => {
+    'email': email,
+    'nickname': nickname,
+    'anon': anon,
+  };
+}
+
+List<T> fromJsonList<T>(dynamic value, T Function(Map<String, dynamic> element) fromJson) {
+  return value != null
+      ? (List.castFrom<dynamic, Map<String, dynamic>>(value))
+      .map((m) => fromJson(m))
+      .toList()
+      : [];
+}

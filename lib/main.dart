@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -7,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:rulegamemobile/mobx/board.dart';
 import 'package:rulegamemobile/utils/email_text_span.dart';
 import 'package:rulegamemobile/utils/hooks.dart';
+import 'package:rulegamemobile/utils/models.dart';
 import 'package:rulegamemobile/utils/page.dart';
 import 'package:rulegamemobile/widgets/demographics.dart';
 import 'package:rulegamemobile/widgets/game.dart';
@@ -55,6 +55,8 @@ class Pages extends HookWidget {
           // TODO: Handle this case.
           // TODO: Include play again button and regenerate player id
           return DebriefingPage();
+        case Page.REGISTER:
+          return RegisterPage();
       }
     });
   }
@@ -87,13 +89,17 @@ class IntroductionPage extends HookWidget {
     final boardStore = Provider.of<BoardStore>(context);
     final currPage = useState(1);
     final reachedEnd = useState(false);
-    final expController = useTextEditingController(text: boardStore.exp);
     final isResetChecked = useState(false);
+    final ruleInfoMap = useMemoized(() => {
+          for (var ruleInfo in boardStore.ruleInfoList!) ruleInfo.exp: ruleInfo
+        });
+    final ruleInfo = ruleInfoMap[boardStore.exp]!;
 
     useEffect(() {
       if (currPage.value == items.length) {
         reachedEnd.value = true;
       }
+      return null;
     }, [currPage.value]);
 
     return Scaffold(
@@ -138,42 +144,63 @@ class IntroductionPage extends HookWidget {
                 ),
               ],
             ),
-            ElevatedButton(
-              onPressed: reachedEnd.value
-                  ? () {
-                      boardStore.setExp(expController.text);
-                      boardStore.goToPage(Page.LOADING_TRIALS);
-                    }
-                  : null,
-              child: Text('Start'),
+            Divider(),
+            Text('Select your game below:'),
+            Observer(
+              builder: (_) => DropdownButton<String>(
+                value: boardStore.exp,
+                icon: const Icon(Icons.arrow_downward),
+                elevation: 16,
+                style: const TextStyle(color: Colors.deepPurple),
+                underline: Container(
+                  height: 2,
+                  color: Colors.deepPurpleAccent,
+                ),
+                onChanged: (String? value) {
+                  if (value != null) {
+                    boardStore.setExp(value);
+                  }
+                },
+                items: boardStore.ruleInfoList!
+                    .map<DropdownMenuItem<String>>(
+                        (RuleInfo ruleInfo) => DropdownMenuItem<String>(
+                              value: ruleInfo.exp,
+                              child: Text(ruleInfo.display),
+                            ))
+                    .toList(),
+              ),
             ),
-            Row(
+            Observer(
+                builder: (_) => Text(
+                      'Completed: ${ruleInfo.completed}\nDescription: ${ruleInfo.description.join('\n')}',
+                      textAlign: TextAlign.center,
+                    )),
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Flexible(
-                  child: FractionallySizedBox(
-                    widthFactor: 0.5,
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Experiment Name',
-                      ),
-                      controller: expController,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Reset Game'),
+                    Checkbox(
+                      checkColor: Colors.white,
+                      value: isResetChecked.value,
+                      onChanged: (bool? value) {
+                        isResetChecked.value = value ?? false;
+                      },
                     ),
-                  ),
-                ),
-                Text('Reset'),
-                Checkbox(
-                  checkColor: Colors.white,
-                  value: isResetChecked.value,
-                  onChanged: (bool? value) {
-                    isResetChecked.value = value ?? false;
-                  },
+                  ],
                 ),
                 ElevatedButton(
-                  onPressed: () =>
-                      buttonCarouselController.jumpToPage(items.length - 1),
-                  child: Text('Skip'),
-                )
+                  onPressed: () => boardStore.goToPage(Page.LOADING_TRIALS),
+                    // TODO: Uncomment the below to have the player read all the instructions before continuing.
+                  // onPressed: reachedEnd.value
+                  //     ? () {
+                  //         boardStore.goToPage(Page.LOADING_TRIALS);
+                  //       }
+                  //     : null,
+                  child: Text('Start'),
+                ),
               ],
             ),
           ],
@@ -400,5 +427,73 @@ class DebriefingPage extends HookWidget {
         ),
       ),
     );
+  }
+}
+
+class RegisterPage extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final boardStore = Provider.of<BoardStore>(context);
+    final emailController = useTextEditingController(text: boardStore.email);
+    final nicknameController =
+        useTextEditingController(text: boardStore.nickname);
+
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('First Route'),
+        ),
+        body: Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: FractionallySizedBox(
+                    widthFactor: 0.5,
+                    child: Observer(
+                      builder: (_) => TextFormField(
+                        enabled: !boardStore.anon,
+                        decoration: const InputDecoration(
+                          labelText: 'Email',
+                        ),
+                        controller: emailController,
+                      ),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: FractionallySizedBox(
+                    widthFactor: 0.5,
+                    child: Observer(
+                      builder: (_) => TextFormField(
+                        enabled: !boardStore.anon,
+                        decoration: const InputDecoration(
+                          labelText: 'Nickname',
+                        ),
+                        controller: nicknameController,
+                      ),
+                    ),
+                  ),
+                ),
+                Observer(
+                    builder: (_) => CheckboxListTile(
+                          title: Text('Anonymous'),
+                          checkColor: Colors.white,
+                          value: boardStore.anon,
+                          onChanged: (bool? value) {
+                            print(value);
+                            if (value != null) {
+                              boardStore.setAnon(value);
+                            }
+                          },
+                        )),
+                ElevatedButton(
+                  onPressed: () async {
+                    await boardStore.registerUser();
+                  },
+                  child: Text('Register'),
+                )
+              ],
+            )));
   }
 }
