@@ -242,10 +242,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_layout_grid
-      sha256: "6792b774d26085a81959af1d745bbeb5f3a229180f3cb042a4abad97b1ff1417"
+      sha256: "86c1b21520612edfbb93f189b3ec05058470570f3a5c08ce10c92cc76a6e814e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.11.7"
+    version: "1.0.6"
   flutter_mobx:
     dependency: "direct main"
     description:
@@ -540,10 +540,10 @@ packages:
     dependency: transitive
     description:
       name: quiver
-      sha256: e83f7ad1e6375da1400b54eea8793bba804d1731d68c5694490bf9296cd3ca24
+      sha256: b1c1ac5ce6688d77f65f3375a9abb9319b3cb32486bdc7a1e0fdf004d7ba4e47
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.5"
+    version: "3.2.1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -822,5 +822,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.19.0 <3.0.0"
+  dart: ">=2.19.0 <4.0.0"
   flutter: ">=3.0.0"
