@@ -7,6 +7,7 @@ import 'package:rulegamemobile/utils/board.dart';
 import 'package:rulegamemobile/utils/models.dart';
 import 'package:rulegamemobile/utils/page.dart';
 import 'package:rulegamemobile/utils/username_gen.dart';
+import 'package:rulegamemobile/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Include generated file
@@ -188,33 +189,8 @@ abstract class _BoardStore with Store {
         );
         await updateBoard();
       }
-    } catch (error) {
-      print(error.toString());
-      await showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('An Error Ocurred'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(error.toString()),
-                  Text('Please restart the app. Or contact us.'),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Close'),
-              ),
-            ],
-          );
-        },
-      );
+    } on Exception catch (e) {
+      showErrorAlert(context, e);
     }
   }
 
@@ -426,23 +402,27 @@ abstract class _BoardStore with Store {
   }
 
   @action
-  Future<void> registerUser() async {
+  Future<void> registerUser(BuildContext context) async {
     // TODO: Handle errors
-    final postRegisterUserRes = await postRegisterUserApi(
-      body: PostRegisterUserReqBody(
-          email: email, nickname: nickname, anon: anon
-      ),
-    );
+    try {
+      final postRegisterUserRes = await postRegisterUserApi(
+        body: PostRegisterUserReqBody(
+            email: email, nickname: nickname, anon: anon
+        ),
+      );
 
-    if (!postRegisterUserRes.error) {
-      user = postRegisterUserRes.user;
-      final findPlansRes = await getFindPlansApi(
-          query: GetFindPlansReqQuery(uid: postRegisterUserRes.user.id));
-      goToPage(Page.CONSENT);
-      if (!findPlansRes.error) {
-        ruleInfoList = findPlansRes.ruleInfo;
-        exp = findPlansRes.ruleInfo[0].exp;
+      if (!postRegisterUserRes.error) {
+        user = postRegisterUserRes.user;
+        final findPlansRes = await getFindPlansApi(
+            query: GetFindPlansReqQuery(uid: postRegisterUserRes.user.id));
+        goToPage(Page.CONSENT);
+        if (!findPlansRes.error) {
+          ruleInfoList = findPlansRes.ruleInfo;
+          exp = findPlansRes.ruleInfo[0].exp;
+        }
       }
+    } on Exception catch (e) {
+      showErrorAlert(context, e);
     }
   }
 }

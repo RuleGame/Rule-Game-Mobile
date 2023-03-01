@@ -657,8 +657,8 @@ mixin _$BoardStore on _BoardStore, Store {
       AsyncAction('_BoardStore.registerUser', context: context);
 
   @override
-  Future<void> registerUser() {
-    return _$registerUserAsyncAction.run(() => super.registerUser());
+  Future<void> registerUser(BuildContext context) {
+    return _$registerUserAsyncAction.run(() => super.registerUser(context));
   }
 
   late final _$_BoardStoreActionController =

@@ -489,7 +489,7 @@ class RegisterPage extends HookWidget {
                         )),
                 ElevatedButton(
                   onPressed: () async {
-                    await boardStore.registerUser();
+                    await boardStore.registerUser(context);
                   },
                   child: Text('Register'),
                 )
