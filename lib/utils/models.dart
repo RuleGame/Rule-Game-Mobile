@@ -597,11 +597,12 @@ class RuleInfo {
 class GetFindPlansResBody implements ResBody {
   final bool error;
   final List<RuleInfo> ruleInfo;
-
+  final String errmsg;
 
   GetFindPlansResBody.fromJson(Map<String, dynamic> json)
       : error = json['error'],
-        ruleInfo = fromJsonList(json['ruleInfo'], RuleInfo.fromJson);
+        ruleInfo = fromJsonList(json['ruleInfo'], RuleInfo.fromJson),
+        errmsg = json['errmsg'];
 }
 
 class GetFindPlansReqQuery implements ReqQuery {
@@ -632,11 +633,13 @@ class PostRegisterUserResBody implements ResBody {
   final bool error;
   final bool newlyRegistered;
   final User user;
+  final String errmsg;
 
   PostRegisterUserResBody.fromJson(Map<String, dynamic> json)
       : error = json['error'],
         newlyRegistered = json['newlyRegistered'],
-        user = User.fromJson(json['user']);
+        user = User.fromJson(json['user']),
+        errmsg = json['errmsg'];
 }
 
 class PostRegisterUserReqBody implements ReqBody {

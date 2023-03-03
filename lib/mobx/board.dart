@@ -403,7 +403,6 @@ abstract class _BoardStore with Store {
 
   @action
   Future<void> registerUser(BuildContext context) async {
-    // TODO: Handle errors
     try {
       final postRegisterUserRes = await postRegisterUserApi(
         body: PostRegisterUserReqBody(
@@ -411,16 +410,19 @@ abstract class _BoardStore with Store {
         ),
       );
 
-      if (!postRegisterUserRes.error) {
-        user = postRegisterUserRes.user;
-        final findPlansRes = await getFindPlansApi(
-            query: GetFindPlansReqQuery(uid: postRegisterUserRes.user.id));
-        goToPage(Page.CONSENT);
-        if (!findPlansRes.error) {
-          ruleInfoList = findPlansRes.ruleInfo;
-          exp = findPlansRes.ruleInfo[0].exp;
-        }
+      if (postRegisterUserRes.error) {
+        throw Exception(postRegisterUserRes.errmsg);
       }
+
+      user = postRegisterUserRes.user;
+      final findPlansRes = await getFindPlansApi(
+          query: GetFindPlansReqQuery(uid: postRegisterUserRes.user.id));
+      goToPage(Page.CONSENT);
+      if (findPlansRes.error) {
+        throw Exception(findPlansRes.errmsg);
+      }
+      ruleInfoList = findPlansRes.ruleInfo;
+      exp = findPlansRes.ruleInfo[0].exp;
     } on Exception catch (e) {
       showErrorAlert(context, e);
     }
