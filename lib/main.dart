@@ -10,8 +10,28 @@ import 'package:rulegamemobile/utils/models.dart';
 import 'package:rulegamemobile/utils/page.dart';
 import 'package:rulegamemobile/widgets/demographics.dart';
 import 'package:rulegamemobile/widgets/game.dart';
+import 'package:flutter/foundation.dart';
 
 void main() {
+  // Set the ErrorWidget's builder before the app is started.
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    // If we're in debug mode, use the normal error widget which shows the error
+    // message:
+    if (kDebugMode) {
+      return ErrorWidget(details.exception);
+    }
+    // In release builds, show a yellow-on-blue message instead:
+    return Container(
+      alignment: Alignment.center,
+      child: Text(
+        'Error!\n${details.exception}',
+        style: const TextStyle(color: Colors.yellow),
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      ),
+    );
+  };
+
   runApp(MyApp());
 }
 
@@ -93,7 +113,6 @@ class IntroductionPage extends HookWidget {
     final ruleInfoMap = useMemoized(() => {
           for (var ruleInfo in boardStore.ruleInfoList!) ruleInfo.exp: ruleInfo
         });
-    final ruleInfo = ruleInfoMap[boardStore.exp]!;
 
     useEffect(() {
       if (currPage.value == items.length) {
@@ -172,7 +191,7 @@ class IntroductionPage extends HookWidget {
             ),
             Observer(
                 builder: (_) => Text(
-                      'Completed: ${ruleInfo.completed}\nDescription: ${ruleInfo.description.join('\n')}',
+                      'Completed: ${ruleInfoMap[boardStore.exp]!.completed}\nDescription: ${ruleInfoMap[boardStore.exp]!.description.join('\n')}',
                       textAlign: TextAlign.center,
                     )),
             Column(
@@ -216,7 +235,7 @@ class LoadingPage extends HookWidget {
     final boardStore = Provider.of<BoardStore>(context);
 
     useMount(() {
-      boardStore.loadTrials(context);
+      Future.microtask(() => boardStore.loadTrials(context));
       return () {};
     });
 

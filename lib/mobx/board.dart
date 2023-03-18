@@ -191,6 +191,8 @@ abstract class _BoardStore with Store {
       }
     } on Exception catch (e) {
       showErrorAlert(context, e);
+    } catch (e, stacktrace) {
+      showErrorAlert(context, Exception('Fatal error: ${e.toString()}\n$stacktrace'));
     }
   }
 
@@ -414,9 +416,11 @@ abstract class _BoardStore with Store {
         throw Exception(postRegisterUserRes.errmsg);
       }
 
-      user = postRegisterUserRes.user;
+      var user = postRegisterUserRes.user!;
+
       final findPlansRes = await getFindPlansApi(
-          query: GetFindPlansReqQuery(uid: postRegisterUserRes.user.id));
+          query: GetFindPlansReqQuery(uid: user.id));
+
       goToPage(Page.CONSENT);
       if (findPlansRes.error) {
         throw Exception(findPlansRes.errmsg);
@@ -425,6 +429,8 @@ abstract class _BoardStore with Store {
       exp = findPlansRes.ruleInfo[0].exp;
     } on Exception catch (e) {
       showErrorAlert(context, e);
+    } catch (e, stacktrace) {
+      showErrorAlert(context, Exception('Fatal error: ${e.toString()}\n$stacktrace'));
     }
   }
 }

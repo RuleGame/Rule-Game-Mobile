@@ -260,7 +260,7 @@ class DummyResBody implements ResBody {
 }
 
 class GetColorMapResBody implements ResBody {
-  final String errmsg;
+  final String? errmsg;
   final bool error;
   final Map<String, List<int>> colorToRgbMap;
 
@@ -294,7 +294,7 @@ class PostWriteFileReqBody implements ReqBody {
 }
 
 class PostPlayerResBody implements ResBody {
-  final String errmsg;
+  final String? errmsg;
   final bool error;
   final bool newlyRegistered;
   final String trialListId;
@@ -333,7 +333,7 @@ class PostPlayerReqBody implements ReqBody {
 }
 
 class PostMostRecentEpisodeResBody implements ResBody {
-  final String errmsg;
+  final String? errmsg;
   final bool error;
   final bool alreadyFinished;
   final Display? display;
@@ -364,7 +364,7 @@ class PostMostRecentEpisodeReqBody implements ReqBody {
 }
 
 class PostNewEpisodeResBody implements ResBody {
-  final String errmsg;
+  final String? errmsg;
   final bool error;
   final bool alreadyFinished;
   final Display? display;
@@ -396,7 +396,7 @@ class PostNewEpisodeReqBody implements ReqBody {
 
 class GetDisplayResBody extends Display implements ResBody {
   final int code;
-  final String errmsg;
+  final String? errmsg;
 
   GetDisplayResBody.fromJson(Map<String, dynamic> json)
       : code = json['code'],
@@ -417,7 +417,7 @@ class PostMoveResBody implements ResBody {
   final Board? board;
   final bool bonus;
   final int code;
-  final String errmsg;
+  final String? errmsg;
   final int finishCode;
   final int numMovesMade;
   final int totalRewardEarned;
@@ -464,7 +464,7 @@ class PostPickResBody implements ResBody {
   final Board? board;
   final bool bonus;
   final int code;
-  final String errmsg;
+  final String? errmsg;
   final int finishCode;
   final int numMovesMade;
   final int totalRewardEarned;
@@ -502,7 +502,7 @@ class PostPickReqBody implements ReqBody {
 }
 
 class PostActivateBonusResBody implements ResBody {
-  final String errmsg;
+  final String? errmsg;
   final bool error;
 
   PostActivateBonusResBody.fromJson(Map<String, dynamic> json)
@@ -522,7 +522,7 @@ class PostActivateBonusReqBody implements ReqBody {
 }
 
 class PostGiveUpResBody implements ResBody {
-  final String errmsg;
+  final String? errmsg;
   final bool error;
 
   PostGiveUpResBody.fromJson(Map<String, dynamic> json)
@@ -544,7 +544,7 @@ class PostGiveUpReqBody implements ReqBody {
 }
 
 class PostGuessResBody implements ResBody {
-  final String errmsg;
+  final String? errmsg;
   final bool error;
   final int byteCnt;
   final String path;
@@ -582,7 +582,7 @@ class RuleInfo {
   final int episodeCnt;
   final String exp;
   final String name;
-  final String playerId;
+  final String? playerId;
 
   RuleInfo.fromJson(Map<String, dynamic> json)
       : completed = json['completed'],
@@ -597,7 +597,7 @@ class RuleInfo {
 class GetFindPlansResBody implements ResBody {
   final bool error;
   final List<RuleInfo> ruleInfo;
-  final String errmsg;
+  final String? errmsg;
 
   GetFindPlansResBody.fromJson(Map<String, dynamic> json)
       : error = json['error'],
@@ -616,10 +616,10 @@ class GetFindPlansReqQuery implements ReqQuery {
 
 class User {
  final String date;
- final String email;
+ final String? email;
  final int id;
  final String idCode;
- final String nickname;
+ final String? nickname;
 
  User.fromJson(Map<String, dynamic> json)
      : date = json['date'],
@@ -632,13 +632,13 @@ class User {
 class PostRegisterUserResBody implements ResBody {
   final bool error;
   final bool newlyRegistered;
-  final User user;
-  final String errmsg;
+  final User? user;
+  final String? errmsg;
 
   PostRegisterUserResBody.fromJson(Map<String, dynamic> json)
       : error = json['error'],
         newlyRegistered = json['newlyRegistered'],
-        user = User.fromJson(json['user']),
+        user = json['user'] != null ? User.fromJson(json['user']) : null,
         errmsg = json['errmsg'];
 }
 
