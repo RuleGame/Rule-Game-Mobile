@@ -13,7 +13,7 @@ import 'package:rulegamemobile/widgets/piece.dart';
 class Board extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final store = Provider.of<BoardStore>(context);
+    final boardStore = Provider.of<BoardStore>(context);
 
     return AspectRatio(
       aspectRatio: 1,
@@ -55,14 +55,18 @@ class Board extends HookWidget {
               columnStart: 1,
               child: Container(
                 child: Observer(
-                  builder: (_) => LayoutGrid(
+                  builder: (_) {
+                    final boardObjects = boardStore.board.values;
+
+                    return LayoutGrid(
                     rowSizes:
                         List.generate(PIECES_ROWS, (_) => FlexibleTrackSize(1)),
                     columnSizes:
                         List.generate(PIECES_COLS, (_) => FlexibleTrackSize(1)),
                     children: [
-                      for (var boardObject in store.board.values)
+                      for (var boardObject in boardObjects)
                         GridPlacement(
+                          key: Key('${boardObject.id}'),
                           rowStart: PIECES_ROWS - boardObject.y,
                           columnStart: boardObject.x - 1,
                           rowSpan: 1,
@@ -70,7 +74,8 @@ class Board extends HookWidget {
                           child: Piece(boardObject: boardObject),
                         ),
                     ],
-                  ),
+                  );
+                  },
                 ),
               ),
             )

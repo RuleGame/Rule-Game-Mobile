@@ -13,7 +13,7 @@ class Bin extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final store = Provider.of<BoardStore>(context);
+    final boardStore = Provider.of<BoardStore>(context);
 
     return Container(
       width: 46,
@@ -28,20 +28,22 @@ class Bin extends HookWidget {
       child: SingleChildScrollView(
         reverse: true,
         child: Observer(
-          builder: (_) => Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ...store
-                  .binBoardObjects(bucketPosition)
-                  .map(
-                    (boardObject) => BinObject(
-                      boardObject: boardObject,
-                    ),
-                  )
-                  .toList(),
-            ],
-          ),
+          builder: (_) {
+            final binBoardObjects = boardStore
+                .binBoardObjects(bucketPosition)
+                .map(
+                  (boardObject) => BinObject(
+                    boardObject: boardObject,
+                  ),
+                )
+                .toList();
+
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: binBoardObjects,
+            );
+          },
         ),
       ),
     );

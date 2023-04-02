@@ -21,36 +21,37 @@ class Piece extends HookWidget {
     return Container(
       constraints: BoxConstraints.expand(),
       child: Observer(
-        builder: (_) => Stack(
+        builder: (_) {
+          final canDrag =
+              !boardStore.isPaused && boardObject.buckets.isNotEmpty;
+          final shouldShowClosedIcon = !hasBeenDropped &&
+              boardObject.buckets.isEmpty &&
+              boardStore.feedbackSwitches != FeedbackSwitches.FREE;
+          final shouldAddMoveNum = boardStore.showGridMemoryOrder &&
+              boardStore.getMoveNum(boardObject.id) > 0;
+
+          return Stack(
           // fit: StackFit.expand,
           children: [
             Positioned.fill(
-              child: Observer(
-                builder: (_) {
-                  // Put isPaused observable inside to avoid the no observable found
-                  // warning
-                  final canDrag =
-                      !boardStore.isPaused && boardObject.buckets.isNotEmpty;
-                  return Draggable(
-                    maxSimultaneousDrags: canDrag ? 1 : 0,
-                    data: boardObject,
-                    feedback: Container(
-                        width: 100,
-                        height: 100,
-                        child: Transform.translate(
-                          offset: Offset(-75, -75),
-                          child: Shape(
-                            shape: boardObject.shape,
-                            color: boardObject.color,
-                          ),
-                        )),
-                    dragAnchorStrategy: pointerDragAnchorStrategy,
-                    child: Shape(
-                      shape: boardObject.shape,
-                      color: boardObject.color,
-                    ),
-                  );
-                },
+              child: Draggable(
+                maxSimultaneousDrags: canDrag ? 1 : 0,
+                data: boardObject,
+                feedback: Container(
+                    width: 100,
+                    height: 100,
+                    child: Transform.translate(
+                      offset: Offset(-75, -75),
+                      child: Shape(
+                        shape: boardObject.shape,
+                        color: boardObject.color,
+                      ),
+                    )),
+                dragAnchorStrategy: pointerDragAnchorStrategy,
+                child: Shape(
+                  shape: boardObject.shape,
+                  color: boardObject.color,
+                ),
               ),
             ),
             if (hasBeenDropped)
@@ -60,14 +61,11 @@ class Piece extends HookWidget {
                   color: Color.fromRGBO(0, 128, 0, 1),
                 ),
               ),
-            if (!hasBeenDropped &&
-                boardObject.buckets.isEmpty &&
-                boardStore.feedbackSwitches != FeedbackSwitches.FREE)
+            if (shouldShowClosedIcon)
               Positioned.fill(
                 child: SvgPicture.asset('assets/images/close.svg'),
               ),
-            if (boardStore.showGridMemoryOrder &&
-                boardStore.getMoveNum(boardObject.id) > 0)
+            if (shouldAddMoveNum)
               Container(
                 padding: EdgeInsets.all(0.5),
                 decoration: BoxDecoration(
@@ -78,7 +76,8 @@ class Piece extends HookWidget {
                 child: Text('${boardStore.getMoveNum(boardObject.id)}'),
               ),
           ],
-        ),
+        );
+        },
       ),
     );
   }

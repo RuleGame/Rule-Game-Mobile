@@ -13,7 +13,7 @@ import 'package:rulegamemobile/widgets/guess_rule_form.dart';
 class Game extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final store = Provider.of<BoardStore>(context);
+    final boardStore = Provider.of<BoardStore>(context);
     final binPadding = 0.5;
 
     final textStyle = DefaultTextStyle.of(context)
@@ -25,21 +25,34 @@ class Game extends HookWidget {
 
     useEffect(() {
       bonusActivated.value = false;
-    }, [store.episodeNo]);
+    }, [boardStore.episodeNo]);
 
     return SingleChildScrollView(
       padding: EdgeInsets.all(16),
       child: Observer(
-        builder: (_) => Column(
+        builder: (_) {
+          final ruleNum = boardStore.ruleNum;
+          final isInBonus = boardStore.isInBonus;
+          final numMovesMade = boardStore.numMovesMade;
+          final displayBucketBins = boardStore.displayBucketBins;
+          final episodeNo = boardStore.episodeNo;
+          final totalRewardEarned = boardStore.totalRewardEarned;
+          final totalBoardsPredicted = boardStore.totalBoardsPredicted;
+          final canActivateBonus = boardStore.canActivateBonus;
+          final isGameCompleted = boardStore.isGameCompleted;
+          final finishCode = boardStore.finishCode;
+          final hasMoreBonusRounds = boardStore.hasMoreBonusRounds;
+
+          return Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Text(
-              'Rule ${store.ruleNum}' +
-                  (store.isInBonus ? ' (Bonus Round)' : ''),
+              'Rule $ruleNum' +
+                  (isInBonus ? ' (Bonus Round)' : ''),
               style: textStyle,
             ),
             Text(
-              'Number of moves made: ${store.numMovesMade}',
+              'Number of moves made: $numMovesMade',
               textAlign: TextAlign.center,
               style: textStyle,
             ),
@@ -47,7 +60,7 @@ class Game extends HookWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (store.displayBucketBins)
+                  if (displayBucketBins)
                     Container(
                       // Forces IntrinsicHeight to size based on Board child only
                       height: 0,
@@ -70,7 +83,7 @@ class Game extends HookWidget {
                       ),
                     ),
                   Expanded(child: Board()),
-                  if (store.displayBucketBins)
+                  if (displayBucketBins)
                     Container(
                       // Forces IntrinsicHeight to size based on Board child only
                       height: 0,
@@ -97,24 +110,20 @@ class Game extends HookWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Observer(
-                  builder: (_) => Text(
-                    'Board ${store.episodeNo + 1} of ${store.totalBoardsPredicted}',
-                    style: textStyle,
-                  ),
+                Text(
+                  'Board ${episodeNo + 1} of $totalBoardsPredicted',
+                  style: textStyle,
                 ),
-                Observer(
-                  builder: (_) => Text(
-                    'Points: ${store.totalRewardEarned}',
-                    style: textStyle,
-                  ),
+                Text(
+                  'Points: $totalRewardEarned',
+                  style: textStyle,
                 ),
               ],
             ),
             Divider(),
-            if (store.canActivateBonus &&
-                store.isGameCompleted &&
-                !store.isInBonus)
+            if (canActivateBonus &&
+                isGameCompleted &&
+                !isInBonus)
               bonusActivated.value
                   ? DottedBorder(
                       color: Colors.black,
@@ -137,7 +146,7 @@ class Game extends HookWidget {
                   : ElevatedButton(
                       onPressed: () {
                         bonusActivated.value = true;
-                        store.activateBonus();
+                        boardStore.activateBonus();
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.orange,
@@ -147,48 +156,45 @@ class Game extends HookWidget {
                         ),
                       ),
                       // style: ButtonStyle(backgroundColor: Colors.orange),
-                      child: Observer(
-                        builder: (_) => Text(
-                          'Think you got it?\nActivate bonus rounds!',
-                          style: textStyle.apply(color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ),
+                      child: Text(
+                        'Think you got it?\nActivate bonus rounds!',
+                        style: textStyle.apply(color: Colors.white),
+                        textAlign: TextAlign.center,
                       ),
                     ),
             Divider(),
-            if (store.isGameCompleted && !store.isInBonus) GuessRuleForm(),
-            if (store.isGameCompleted && store.isInBonus)
+            if (isGameCompleted && !isInBonus) GuessRuleForm(),
+            if (isGameCompleted && isInBonus)
               Column(
                 children: [
-                  store.finishCode == FinishCode.FINISH
+                  finishCode == FinishCode.FINISH
                       ? Text(
                           'Board succesfully cleared!',
                           textAlign: TextAlign.center,
                           style: textStyle.apply(color: Colors.green),
                         )
-                      : store.finishCode == FinishCode.STALEMATE ||
-                              store.finishCode == FinishCode.LOST
+                      : finishCode == FinishCode.STALEMATE ||
+                              finishCode == FinishCode.LOST
                           ? Text(
                               'No more moves left!',
                               style: textStyle.apply(color: Colors.red),
                             )
                           : Container(),
                   ElevatedButton(
-                    onPressed: () => store.loadNextBonus(),
-                    child: Observer(
-                      builder: (_) => Text(
-                        store.hasMoreBonusRounds
-                            ? 'Next Bonus Round'
-                            : store.finishCode == FinishCode.LOST
-                                ? 'Next Rule (Bonus Lost)'
-                                : 'Next Rule (Bonus Completed)',
-                      ),
+                    onPressed: () => boardStore.loadNextBonus(),
+                    child: Text(
+                      hasMoreBonusRounds
+                          ? 'Next Bonus Round'
+                          : finishCode == FinishCode.LOST
+                              ? 'Next Rule (Bonus Lost)'
+                              : 'Next Rule (Bonus Completed)',
                     ),
                   ),
                 ],
               ),
           ],
-        ),
+        );
+        },
       ),
     );
   }

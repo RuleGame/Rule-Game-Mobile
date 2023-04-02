@@ -166,28 +166,33 @@ class IntroductionPage extends HookWidget {
             Divider(),
             Text('Select your game below:'),
             Observer(
-              builder: (_) => DropdownButton<String>(
-                value: boardStore.exp,
-                icon: const Icon(Icons.arrow_downward),
-                elevation: 16,
-                style: const TextStyle(color: Colors.deepPurple),
-                underline: Container(
-                  height: 2,
-                  color: Colors.deepPurpleAccent,
-                ),
-                onChanged: (String? value) {
-                  if (value != null) {
-                    boardStore.setExp(value);
-                  }
-                },
-                items: boardStore.ruleInfoList!
-                    .map<DropdownMenuItem<String>>(
-                        (RuleInfo ruleInfo) => DropdownMenuItem<String>(
-                              value: ruleInfo.exp,
-                              child: Text(ruleInfo.display),
-                            ))
-                    .toList(),
-              ),
+              builder: (_) {
+                final exp = boardStore.exp;
+                final ruleInfoList = boardStore.ruleInfoList!;
+
+                return DropdownButton<String>(
+                  value: exp,
+                  icon: const Icon(Icons.arrow_downward),
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.deepPurple),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      boardStore.setExp(value);
+                    }
+                  },
+                  items: ruleInfoList
+                      .map<DropdownMenuItem<String>>(
+                          (RuleInfo ruleInfo) => DropdownMenuItem<String>(
+                                value: ruleInfo.exp,
+                                child: Text(ruleInfo.display),
+                              ))
+                      .toList(),
+                );
+              },
             ),
             Observer(
                 builder: (_) => Text(
@@ -212,7 +217,7 @@ class IntroductionPage extends HookWidget {
                 ),
                 ElevatedButton(
                   onPressed: () => boardStore.goToPage(Page.LOADING_TRIALS),
-                    // TODO: Uncomment the below to have the player read all the instructions before continuing.
+                  // TODO: Uncomment the below to have the player read all the instructions before continuing.
                   // onPressed: reachedEnd.value
                   //     ? () {
                   //         boardStore.goToPage(Page.LOADING_TRIALS);
@@ -500,7 +505,6 @@ class RegisterPage extends HookWidget {
                           checkColor: Colors.white,
                           value: boardStore.anon,
                           onChanged: (bool? value) {
-                            print(value);
                             if (value != null) {
                               boardStore.setAnon(value);
                             }
