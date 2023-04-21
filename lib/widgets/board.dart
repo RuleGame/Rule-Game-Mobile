@@ -9,7 +9,6 @@ import 'package:rulegamemobile/mobx/board.dart';
 import 'package:rulegamemobile/utils/models.dart';
 import 'package:rulegamemobile/widgets/bucket.dart';
 import 'package:rulegamemobile/widgets/piece.dart';
-
 class Board extends HookWidget {
   @override
   Widget build(BuildContext context) {
@@ -57,6 +56,7 @@ class Board extends HookWidget {
                 child: Observer(
                   builder: (_) {
                     final boardObjects = boardStore.board.values;
+                    final episodeId = boardStore.episodeId;
 
                     return LayoutGrid(
                     rowSizes:
@@ -66,7 +66,7 @@ class Board extends HookWidget {
                     children: [
                       for (var boardObject in boardObjects)
                         GridPlacement(
-                          key: Key('${boardObject.id}'),
+                          key: Key('$episodeId-${boardObject.id}'),
                           rowStart: PIECES_ROWS - boardObject.y,
                           columnStart: boardObject.x - 1,
                           rowSpan: 1,

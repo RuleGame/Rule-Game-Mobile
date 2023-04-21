@@ -181,7 +181,7 @@ class IntroductionPage extends HookWidget {
                   ),
                   onChanged: (String? value) {
                     if (value != null) {
-                      boardStore.setExp(value);
+                      boardStore.exp = value;
                     }
                   },
                   items: ruleInfoList
@@ -216,7 +216,7 @@ class IntroductionPage extends HookWidget {
                   ],
                 ),
                 ElevatedButton(
-                  onPressed: () => boardStore.goToPage(Page.LOADING_TRIALS),
+                  onPressed: () => boardStore.page = Page.LOADING_TRIALS,
                   // TODO: Uncomment the below to have the player read all the instructions before continuing.
                   // onPressed: reachedEnd.value
                   //     ? () {
@@ -287,7 +287,7 @@ class DemographicsInstructionsPage extends HookWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              boardStore.goToPage(Page.DEMOGRAPHICS);
+              boardStore.page = Page.DEMOGRAPHICS;
             },
             child: Text('Next'),
           ),
@@ -401,7 +401,7 @@ class ConsentPage extends HookWidget {
               ElevatedButton(
                 onPressed: isChecked.value
                     ? () {
-                        boardStore.goToPage(Page.INTRODUCTION);
+                        boardStore.page = Page.INTRODUCTION;
                       }
                     : null,
                 child: Text('Start'),
@@ -442,7 +442,7 @@ class DebriefingPage extends HookWidget {
             ElevatedButton(
               onPressed: () async {
                 await boardStore.loadPlayerId(regenerate: true);
-                boardStore.goToPage(Page.INTRODUCTION);
+                boardStore.page = Page.INTRODUCTION;
               },
               // style: ButtonStyle(backgroundColor: Colors.orange),
               child: Text('Retry the game from start'),
@@ -506,7 +506,7 @@ class RegisterPage extends HookWidget {
                           value: boardStore.anon,
                           onChanged: (bool? value) {
                             if (value != null) {
-                              boardStore.setAnon(value);
+                              boardStore.anon = value;
                             }
                           },
                         )),

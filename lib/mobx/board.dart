@@ -156,17 +156,12 @@ abstract class _BoardStore with Store {
   int get ruleNum => seriesNo + 1;
 
   @action
-  void goToPage(Page page) {
-    this.page = page;
-  }
-
-  @action
   // TODO: Pass context as an argument to show dialog on network errors
   Future<void> loadTrials(BuildContext context) async {
     try {
       await loadPlayerId();
 
-      goToPage(Page.LOADING_TRIALS);
+      page = Page.LOADING_TRIALS;
 
       await postPlayerApi(
           body: PostPlayerReqBody(playerId: playerId, exp: exp));
@@ -178,7 +173,7 @@ abstract class _BoardStore with Store {
           postMostRecentEpisodeResBody.errmsg ==
               ErrorMsg.FAILED_TO_FIND_ANY_EPISODE;
 
-      goToPage(Page.TRIALS);
+      page = Page.TRIALS;
 
       if (noEpisodeStarted) {
         await newEpisode();
@@ -203,14 +198,14 @@ abstract class _BoardStore with Store {
     episodeId = postNewEpisodeResBody.episodeId;
 
     if (postNewEpisodeResBody.alreadyFinished) {
-      goToPage(Page.DEMOGRAPHICS_INSTRUCTIONS);
+      page = Page.DEMOGRAPHICS_INSTRUCTIONS;
     } else {
       await updateEpisode(
         postNewEpisodeResBody.para!,
         postNewEpisodeResBody.episodeId,
       );
       await updateBoard();
-      goToPage(Page.TRIALS);
+      page = Page.TRIALS;
     }
     isPaused = false;
   }
@@ -347,11 +342,6 @@ abstract class _BoardStore with Store {
   }
 
   @action
-  void setIsInBonus(bool isInBonus) {
-    this.isInBonus = isInBonus;
-  }
-
-  @action
   Future<void> recordDemographics(String demographics) async {
     await postWriteFileApi(
       body: PostWriteFileReqBody(
@@ -361,7 +351,7 @@ abstract class _BoardStore with Store {
       ),
     );
 
-    goToPage(Page.DEBRIEFING);
+    page = Page.DEBRIEFING;
   }
 
   @action
@@ -394,16 +384,6 @@ abstract class _BoardStore with Store {
   }
 
   @action
-  void setExp(String exp) {
-    this.exp = exp;
-  }
-
-  @action
-  void setAnon(bool anon) {
-    this.anon = anon;
-  }
-
-  @action
   Future<void> registerUser(BuildContext context) async {
     try {
       final postRegisterUserRes = await postRegisterUserApi(
@@ -421,7 +401,7 @@ abstract class _BoardStore with Store {
       final findPlansRes = await getFindPlansApi(
           query: GetFindPlansReqQuery(uid: user.id));
 
-      goToPage(Page.CONSENT);
+      page = Page.CONSENT;
       if (findPlansRes.error) {
         throw Exception(findPlansRes.errmsg);
       }

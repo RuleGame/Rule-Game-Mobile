@@ -661,53 +661,6 @@ mixin _$BoardStore on _BoardStore, Store {
     return _$registerUserAsyncAction.run(() => super.registerUser(context));
   }
 
-  late final _$_BoardStoreActionController =
-      ActionController(name: '_BoardStore', context: context);
-
-  @override
-  void goToPage(Page page) {
-    final _$actionInfo =
-        _$_BoardStoreActionController.startAction(name: '_BoardStore.goToPage');
-    try {
-      return super.goToPage(page);
-    } finally {
-      _$_BoardStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setIsInBonus(bool isInBonus) {
-    final _$actionInfo = _$_BoardStoreActionController.startAction(
-        name: '_BoardStore.setIsInBonus');
-    try {
-      return super.setIsInBonus(isInBonus);
-    } finally {
-      _$_BoardStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setExp(String exp) {
-    final _$actionInfo =
-        _$_BoardStoreActionController.startAction(name: '_BoardStore.setExp');
-    try {
-      return super.setExp(exp);
-    } finally {
-      _$_BoardStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setAnon(bool anon) {
-    final _$actionInfo =
-        _$_BoardStoreActionController.startAction(name: '_BoardStore.setAnon');
-    try {
-      return super.setAnon(anon);
-    } finally {
-      _$_BoardStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
   @override
   String toString() {
     return '''

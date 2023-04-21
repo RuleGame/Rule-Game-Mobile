@@ -11,15 +11,13 @@ AsyncSnapshot<T?> useQuery<T>(Future<T> Function() create,
   return useFuture<T?>(future, initialData: null);
 }
 
-Map<String, List<int>>? cachedColorMap;
+Map<String, List<int>>? colorMap;
 
 Color? useColorRgb<T>(String? colorName, {double? opacity}) {
-  final response = useQuery(
-      () async => cachedColorMap ?? (await getColorMapApi()).colorToRgbMap,
-      [colorName]);
-  if (response.data != null && colorName != null) {
-    cachedColorMap = response.data;
-    final colorRgbTuple = response.data![colorName];
+  final response = useQuery(() async {
+    colorMap ??= (await getColorMapApi()).colorToRgbMap;
+
+    final colorRgbTuple = colorMap![colorName];
     if (colorRgbTuple == null) {
       throw Exception(
           'RGB color for "$colorName" is missing in color mapping.');
@@ -30,20 +28,19 @@ Color? useColorRgb<T>(String? colorName, {double? opacity}) {
       colorRgbTuple[2],
       opacity ?? 1.0,
     );
-  }
+  }, [colorName]);
 
-  return null;
+  return response.data;
 }
 
 //Map<String, String> cachedSvgs = {"HAPPY": "hi"};
-Map<String, String> cachedSvgs = {};
+Map<String, String> svgsMap = {};
 
 String? useSvg<T>(String shape) {
-  final response = useQuery(
-      () async => (cachedSvgs[shape] ?? (await getShapeApi(shape))), [shape]);
-  if (response.data != null) {
-    cachedSvgs[shape] = response.data!;
-  }
+  final response = useQuery(() async {
+    svgsMap[shape] ??= await getShapeApi(shape);
+    return svgsMap[shape];
+  }, [shape]);
   return response.data;
 }
 
